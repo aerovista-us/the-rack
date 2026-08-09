@@ -4,11 +4,10 @@ The Rack shelf UI stays the same. The in-page comic reader uses **StPageFlip** (
 
 ## Behavior
 
-- Image and video sequence items from `rack.json` become flip pages.
-- Drag a corner, swipe, arrows, or keyboard to turn.
-- Thumbnails / deep links use `turnToPage`; adjacent nav uses animated `flipNext` / `flipPrev`.
-- Off-screen videos pause when you leave their page.
-- Stage size follows `#readerStage` via `getBoundingClientRect` + `visualViewport` + `ResizeObserver` (portrait, fixed size, `object-fit: contain`).
+- **Images** load into StPageFlip. The flip book is sized to the comic page aspect ratio and centered in `#stageFrame`, so turn hit-targets match the art (not the letterbox).
+- **Videos** ("motion moments") render in `#momentStage` outside the flip widget so native controls work. Leaving a moment pauses the video.
+- Drag a corner, swipe, arrows, or keyboard to move through the full `rack.json` sequence.
+- Thumbnails / deep links jump by sequence index; adjacent image→image nav animates with `flipNext` / `flipPrev`.
 - If the library fails to load, the reader falls back to the previous flat image/video stage.
 
 ## Files

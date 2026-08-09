@@ -71,13 +71,16 @@
       <aside id="thumbnailRail" class="thumbnail-rail"></aside>
       <section class="stage-wrap">
         <button id="prevItem" class="nav-arrow left" aria-label="Previous page">‹</button>
-        <div id="readerStage" class="reader-stage"></div>
+        <div id="stageFrame" class="stage-frame">
+          <div id="readerStage" class="reader-stage"></div>
+          <div id="momentStage" class="moment-stage" hidden></div>
+        </div>
         <button id="nextItem" class="nav-arrow right" aria-label="Next page">›</button>
       </section>
     </div>
     <footer class="reader-footer">
       <div class="progress-track"><span id="progressBar"></span></div>
-      <p>Drag a corner or swipe to turn pages. Arrow keys work too. Motion moments sit in the sequence.</p>
+      <p>Drag a page corner to turn. Motion moments play full-screen in the sequence with normal video controls.</p>
     </footer>
   </div>
 

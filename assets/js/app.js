@@ -2,7 +2,8 @@
 
 /**
  * The Rack — comic shelf + StPageFlip reader.
- * Page-turn / mobile sizing adapted from the_rack/template magazine viewer.
+ * Image pages flip (aspect-fitted to art). Video "motion moments" play in a
+ * separate overlay so controls work — PageFlip steals gestures from <video>.
  */
 
 const PAGE_FLIP_CDN =
@@ -14,6 +15,9 @@ const FLIP = {
   flippingTime: 1100,
   flippingTimeReducedMotion: 240,
   maxShadowOpacity: 0.58,
+  /** Remodel SOS pages are ~1122×1402; used until first image reports natural size. */
+  defaultAspect: 1122 / 1402,
+  stagePad: 8,
 };
 
 const state = {
@@ -22,6 +26,14 @@ const state = {
   index: 0,
   pageFlip: null,
   cleanup: null,
+  /** sequence index → flip page index (images only) */
+  seqToFlip: [],
+  /** flip page index → sequence index */
+  flipToSeq: [],
+  aspect: FLIP.defaultAspect,
+  flipW: 0,
+  flipH: 0,
+  mode: 'image', // 'image' | 'moment' | 'fallback'
 };
 
 const $ = (s) => document.querySelector(s);
@@ -29,7 +41,9 @@ const els = {
   grid: $('#bookGrid'),
   hero: $('#heroRack'),
   reader: $('#reader'),
+  frame: $('#stageFrame'),
   stage: $('#readerStage'),
+  moment: $('#momentStage'),
   rail: $('#thumbnailRail'),
   title: $('#readerBookTitle'),
   position: $('#readerPosition'),
@@ -78,18 +92,7 @@ async function ensurePageFlip() {
   throw lastErr || new Error('page-flip library did not register global St.PageFlip');
 }
 
-function measureBook(bookEl) {
-  const r = bookEl.getBoundingClientRect();
-  const vv = window.visualViewport;
-  const w = Math.round(r.width > 2 ? r.width : vv?.width ?? window.innerWidth);
-  const h = Math.round(r.height > 2 ? r.height : vv?.height ?? window.innerHeight);
-  return {
-    w: Math.max(240, w),
-    h: Math.max(320, h),
-  };
-}
-
-function waitLayout(el, cb) {
+function waitLayout(cb) {
   requestAnimationFrame(() => {
     requestAnimationFrame(cb);
   });
@@ -97,6 +100,56 @@ function waitLayout(el, cb) {
 
 function resolveUrl(relative) {
   return new URL(relative, window.location.href).href;
+}
+
+function buildIndexMaps(sequence) {
+  const seqToFlip = [];
+  const flipToSeq = [];
+  let flip = 0;
+  sequence.forEach((item, i) => {
+    if (item.type === 'video') {
+      seqToFlip[i] = -1;
+    } else {
+      seqToFlip[i] = flip;
+      flipToSeq[flip] = i;
+      flip += 1;
+    }
+  });
+  return { seqToFlip, flipToSeq };
+}
+
+function measureFlipSize(aspect) {
+  const host = els.frame || els.stage.parentElement || els.stage;
+  const r = host.getBoundingClientRect();
+  const vv = window.visualViewport;
+  const pad = FLIP.stagePad;
+  const availW = Math.max(200, Math.round((r.width > 2 ? r.width : vv?.width ?? window.innerWidth) - pad * 2));
+  const availH = Math.max(240, Math.round((r.height > 2 ? r.height : vv?.height ?? window.innerHeight) - pad * 2));
+  let w = availW;
+  let h = Math.round(w / aspect);
+  if (h > availH) {
+    h = availH;
+    w = Math.round(h * aspect);
+  }
+  return {
+    w: Math.max(180, w),
+    h: Math.max(220, h),
+  };
+}
+
+function loadImageAspect(src) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => {
+      if (img.naturalWidth > 0 && img.naturalHeight > 0) {
+        resolve(img.naturalWidth / img.naturalHeight);
+      } else {
+        resolve(FLIP.defaultAspect);
+      }
+    };
+    img.onerror = () => resolve(FLIP.defaultAspect);
+    img.src = resolveUrl(src);
+  });
 }
 
 async function loadRack() {
@@ -163,65 +216,41 @@ function destroyFlip() {
     state.pageFlip = null;
   }
   els.stage.innerHTML = '';
-  els.stage.classList.remove('is-flip', 'is-fallback');
+  els.stage.classList.remove('is-flip', 'is-fallback', 'is-hidden');
+  els.stage.hidden = false;
+  if (els.moment) {
+    els.moment.innerHTML = '';
+    els.moment.hidden = true;
+    els.moment.classList.remove('is-active');
+  }
+  state.mode = 'image';
 }
 
-function buildPageElements(sequence, bookTitle) {
+function buildImagePageElements(sequence, bookTitle, flipToSeq) {
   const frag = document.createDocumentFragment();
   const pages = [];
   let firstImage = false;
 
-  sequence.forEach((item, i) => {
+  flipToSeq.forEach((seqIndex, flipIndex) => {
+    const item = sequence[seqIndex];
     const page = document.createElement('div');
     page.className = 'page';
     page.dataset.density = 'soft';
-    page.dataset.index = String(i);
+    page.dataset.seq = String(seqIndex);
+    page.dataset.flip = String(flipIndex);
 
-    if (item.type === 'video') {
-      page.classList.add('page--video');
-      const wrap = document.createElement('div');
-      wrap.className = 'video-card';
-      if (item.caption) {
-        const h = document.createElement('h3');
-        h.textContent = item.caption;
-        wrap.append(h);
-      }
-      const v = document.createElement('video');
-      v.src = item.src;
-      v.controls = true;
-      v.playsInline = true;
-      v.preload = 'metadata';
-      v.setAttribute('playsinline', '');
-      if (item.poster) v.poster = item.poster;
-      if (item.autoplay) {
-        v.autoplay = true;
-        v.muted = Boolean(item.muted ?? true);
-      }
-      if (item.advanceOnEnd) {
-        v.addEventListener('ended', () => goTo(i + 1));
-      }
-      wrap.append(v);
-      if (item.note) {
-        const p = document.createElement('p');
-        p.textContent = item.note;
-        wrap.append(p);
-      }
-      page.append(wrap);
-    } else {
-      const img = document.createElement('img');
-      img.className = 'page__img';
-      img.alt = item.alt || `${bookTitle}, page ${i + 1}`;
-      img.decoding = 'async';
-      img.loading = 'eager';
-      img.draggable = false;
-      if (!firstImage) {
-        img.fetchPriority = 'high';
-        firstImage = true;
-      }
-      img.src = resolveUrl(item.src);
-      page.append(img);
+    const img = document.createElement('img');
+    img.className = 'page__img';
+    img.alt = item.alt || `${bookTitle}, page ${seqIndex + 1}`;
+    img.decoding = 'async';
+    img.loading = 'eager';
+    img.draggable = false;
+    if (!firstImage) {
+      img.fetchPriority = 'high';
+      firstImage = true;
     }
-
+    img.src = resolveUrl(item.src);
+    page.append(img);
     frag.append(page);
     pages.push(page);
   });
@@ -229,18 +258,49 @@ function buildPageElements(sequence, bookTitle) {
   return { frag, pages };
 }
 
-function pauseOffscreenVideos(activeIndex) {
-  els.stage.querySelectorAll('.page').forEach((page) => {
-    const idx = Number(page.dataset.index);
-    page.querySelectorAll('video').forEach((v) => {
-      if (idx !== activeIndex) {
-        try {
-          v.pause();
-        } catch (_) {
-          /* ignore */
-        }
-      }
-    });
+function buildMomentCard(item, seqIndex) {
+  const wrap = document.createElement('div');
+  wrap.className = 'video-card moment-card';
+  const kicker = document.createElement('p');
+  kicker.className = 'moment-kicker';
+  kicker.textContent = 'Motion moment';
+  wrap.append(kicker);
+  if (item.caption) {
+    const h = document.createElement('h3');
+    h.textContent = item.caption;
+    wrap.append(h);
+  }
+  const v = document.createElement('video');
+  v.src = item.src;
+  v.controls = true;
+  v.playsInline = true;
+  v.preload = 'metadata';
+  v.setAttribute('playsinline', '');
+  v.setAttribute('controlsList', 'nodownload');
+  if (item.poster) v.poster = item.poster;
+  if (item.autoplay) {
+    v.autoplay = true;
+    v.muted = Boolean(item.muted ?? true);
+  }
+  if (item.advanceOnEnd) {
+    v.addEventListener('ended', () => goTo(seqIndex + 1));
+  }
+  wrap.append(v);
+  if (item.note) {
+    const p = document.createElement('p');
+    p.textContent = item.note;
+    wrap.append(p);
+  }
+  return wrap;
+}
+
+function pauseMomentVideo() {
+  els.moment?.querySelectorAll('video').forEach((v) => {
+    try {
+      v.pause();
+    } catch (_) {
+      /* ignore */
+    }
   });
 }
 
@@ -248,7 +308,7 @@ function preloadAround(sequence, index) {
   const neighbors = [sequence[index - 1], sequence[index + 1]].filter(Boolean);
   const seen = new Set();
   for (const item of neighbors) {
-    if (item.type !== 'image') continue;
+    if (item.type === 'video') continue;
     const url = resolveUrl(item.src);
     if (seen.has(url)) continue;
     seen.add(url);
@@ -300,21 +360,103 @@ function renderThumbs() {
   });
 }
 
-function initFlip(startIndex) {
+function showMoment(seqIndex) {
+  const item = state.book.sequence[seqIndex];
+  state.mode = 'moment';
+  state.index = seqIndex;
+  pauseMomentVideo();
+  els.moment.innerHTML = '';
+  els.moment.append(buildMomentCard(item, seqIndex));
+  els.moment.hidden = false;
+  els.moment.classList.add('is-active');
+  els.stage.classList.add('is-hidden');
+  els.stage.setAttribute('aria-hidden', 'true');
+  preloadAround(state.book.sequence, seqIndex);
+  syncChrome();
+}
+
+function hideMoment() {
+  pauseMomentVideo();
+  els.moment.innerHTML = '';
+  els.moment.hidden = true;
+  els.moment.classList.remove('is-active');
+  els.stage.classList.remove('is-hidden');
+  els.stage.removeAttribute('aria-hidden');
+}
+
+function showFlipAtSeq(seqIndex, animate) {
+  const flipIndex = state.seqToFlip[seqIndex];
+  if (flipIndex < 0 || !state.pageFlip) {
+    showMoment(seqIndex);
+    return;
+  }
+  hideMoment();
+  state.mode = 'image';
+  state.index = seqIndex;
+
+  const cur = state.pageFlip.getCurrentPageIndex();
+  if (flipIndex === cur) {
+    syncChrome();
+    return;
+  }
+  if (animate && flipIndex === cur + 1) {
+    state.pageFlip.flipNext('top');
+    return;
+  }
+  if (animate && flipIndex === cur - 1) {
+    state.pageFlip.flipPrev('top');
+    return;
+  }
+  state.pageFlip.turnToPage(flipIndex);
+  state.index = state.flipToSeq[state.pageFlip.getCurrentPageIndex()] ?? seqIndex;
+  preloadAround(state.book.sequence, state.index);
+  syncChrome();
+}
+
+function applyView(seqIndex, animate) {
+  if (!state.book) return;
+  const item = state.book.sequence[seqIndex];
+  if (!item) return;
+  if (item.type === 'video') {
+    showMoment(seqIndex);
+  } else if (state.pageFlip) {
+    showFlipAtSeq(seqIndex, animate);
+  } else {
+    state.index = seqIndex;
+    renderFallback();
+  }
+}
+
+function initFlip(startSeqIndex) {
   const book = state.book;
   const PageFlip = globalThis.St.PageFlip;
   const bookEl = els.stage;
+  const maps = buildIndexMaps(book.sequence);
+  state.seqToFlip = maps.seqToFlip;
+  state.flipToSeq = maps.flipToSeq;
 
-  waitLayout(bookEl, () => {
-    const { w, h } = measureBook(bookEl);
+  if (maps.flipToSeq.length === 0) {
+    // Video-only book
+    applyView(startSeqIndex, false);
+    return;
+  }
+
+  waitLayout(() => {
+    const { w, h } = measureFlipSize(state.aspect);
+    state.flipW = w;
+    state.flipH = h;
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const flippingTime = reduceMotion ? FLIP.flippingTimeReducedMotion : FLIP.flippingTime;
 
-    const { frag, pages } = buildPageElements(book.sequence, book.title);
+    const { frag, pages } = buildImagePageElements(book.sequence, book.title, maps.flipToSeq);
     bookEl.append(frag);
     bookEl.classList.add('is-flip');
 
-    const safeStart = Math.max(0, Math.min(startIndex, pages.length - 1));
+    let startFlip = maps.seqToFlip[startSeqIndex];
+    if (startFlip < 0) {
+      // Open nearest image under the hood; moment overlay covers it.
+      startFlip = maps.seqToFlip.find((x) => x >= 0) ?? 0;
+    }
 
     const pf = new PageFlip(bookEl, {
       width: w,
@@ -333,33 +475,79 @@ function initFlip(startIndex) {
       swipeDistance: FLIP.swipeDistance,
       showCover: false,
       showPageCorners: true,
-      clickEventForward: true,
+      clickEventForward: false,
       useMouseEvents: true,
-      startPage: safeStart,
+      startPage: startFlip,
       startZIndex: 0,
     });
 
     pf.loadFromHTML(pages);
     state.pageFlip = pf;
-    state.index = pf.getCurrentPageIndex();
-    preloadAround(book.sequence, state.index);
-    pauseOffscreenVideos(state.index);
-    syncChrome();
 
     pf.on('flip', () => {
-      state.index = pf.getCurrentPageIndex();
-      preloadAround(book.sequence, state.index);
-      pauseOffscreenVideos(state.index);
+      if (state.mode === 'moment') return;
+      const flipIdx = pf.getCurrentPageIndex();
+      const seqIdx = state.flipToSeq[flipIdx];
+      if (typeof seqIdx !== 'number') return;
+      state.index = seqIdx;
+      preloadAround(book.sequence, seqIdx);
       syncChrome();
     });
 
     const scheduleReflow = () => {
-      const ui = pf.getUI?.();
-      if (ui && typeof ui.update === 'function') ui.update();
+      const size = measureFlipSize(state.aspect);
+      if (
+        state.pageFlip &&
+        (Math.abs(size.w - state.flipW) >= 24 || Math.abs(size.h - state.flipH) >= 24)
+      ) {
+        const keep = state.index;
+        const keepMode = state.mode;
+        if (state.cleanup) {
+          state.cleanup();
+          state.cleanup = null;
+        }
+        try {
+          state.pageFlip.destroy();
+        } catch (_) {
+          /* ignore */
+        }
+        state.pageFlip = null;
+        els.stage.innerHTML = '';
+        els.stage.classList.remove('is-flip', 'is-hidden');
+        els.stage.style.width = '';
+        els.stage.style.height = '';
+        // Re-init at same sequence index (preserves moment vs image).
+        state.index = keep;
+        state.mode = keepMode;
+        initFlip(keep);
+        return;
+      }
+      try {
+        const ui = pf.getUI?.();
+        if (ui && typeof ui.update === 'function') ui.update();
+        bookEl.style.width = `${state.flipW}px`;
+        bookEl.style.height = `${state.flipH}px`;
+      } catch (_) {
+        /* ignore */
+      }
     };
 
     bookEl.querySelectorAll('.page__img').forEach((img) => {
-      img.addEventListener('load', () => scheduleReflow(), { passive: true });
+      img.addEventListener(
+        'load',
+        () => {
+          if (img.naturalWidth > 0 && img.naturalHeight > 0) {
+            const next = img.naturalWidth / img.naturalHeight;
+            if (Math.abs(next - state.aspect) > 0.01) {
+              state.aspect = next;
+              // Soft reflow; full recreate on next open if needed.
+              scheduleReflow();
+            }
+          }
+          scheduleReflow();
+        },
+        { passive: true },
+      );
     });
 
     let resizeT = 0;
@@ -379,7 +567,7 @@ function initFlip(startIndex) {
     let ro;
     if (typeof ResizeObserver !== 'undefined') {
       ro = new ResizeObserver(() => scheduleReflow());
-      ro.observe(bookEl);
+      ro.observe(els.frame || bookEl.parentElement || bookEl);
     }
 
     state.cleanup = () => {
@@ -391,42 +579,23 @@ function initFlip(startIndex) {
         vv.removeEventListener('scroll', onResize);
       }
       if (ro) ro.disconnect();
+      bookEl.style.width = '';
+      bookEl.style.height = '';
     };
 
     scheduleReflow();
+    applyView(startSeqIndex, false);
   });
 }
 
 function renderFallback() {
+  destroyFlip();
+  state.mode = 'fallback';
   els.stage.classList.add('is-fallback');
+  els.stage.hidden = false;
   const item = state.book.sequence[state.index];
-  els.stage.innerHTML = '';
   if (item.type === 'video') {
-    const wrap = document.createElement('div');
-    wrap.className = 'video-card';
-    if (item.caption) {
-      const h = document.createElement('h3');
-      h.textContent = item.caption;
-      wrap.append(h);
-    }
-    const v = document.createElement('video');
-    v.src = item.src;
-    v.controls = true;
-    v.playsInline = true;
-    v.preload = 'metadata';
-    if (item.poster) v.poster = item.poster;
-    if (item.autoplay) {
-      v.autoplay = true;
-      v.muted = Boolean(item.muted ?? true);
-    }
-    if (item.advanceOnEnd) v.addEventListener('ended', () => goTo(state.index + 1));
-    wrap.append(v);
-    if (item.note) {
-      const p = document.createElement('p');
-      p.textContent = item.note;
-      wrap.append(p);
-    }
-    els.stage.append(wrap);
+    els.stage.append(buildMomentCard(item, state.index));
   } else {
     const img = document.createElement('img');
     img.src = item.src;
@@ -443,6 +612,13 @@ async function showReader() {
   els.title.textContent = state.book.title;
   renderThumbs();
   destroyFlip();
+
+  const firstImage = state.book.sequence.find((x) => x.type !== 'video');
+  if (firstImage) {
+    state.aspect = await loadImageAspect(firstImage.src);
+  } else {
+    state.aspect = FLIP.defaultAspect;
+  }
 
   try {
     await ensurePageFlip();
@@ -473,27 +649,9 @@ function openBook(id, index = 0) {
 
 function goTo(i) {
   if (!state.book || i < 0 || i >= state.book.sequence.length) return;
-
-  if (state.pageFlip) {
-    const cur = state.pageFlip.getCurrentPageIndex();
-    if (i === cur) return;
-    if (i === cur + 1) {
-      state.pageFlip.flipNext('top');
-      return;
-    }
-    if (i === cur - 1) {
-      state.pageFlip.flipPrev('top');
-      return;
-    }
-    state.pageFlip.turnToPage(i);
-    state.index = state.pageFlip.getCurrentPageIndex();
-    pauseOffscreenVideos(state.index);
-    syncChrome();
-    return;
-  }
-
-  state.index = i;
-  renderFallback();
+  const from = state.index;
+  const animate = Math.abs(i - from) === 1;
+  applyView(i, animate);
 }
 
 function route() {
@@ -505,7 +663,7 @@ function route() {
       const sameBook = state.book?.id === b.id && !els.reader.hidden;
       state.book = b;
       state.index = nextIndex;
-      if (sameBook && state.pageFlip) {
+      if (sameBook && (state.pageFlip || state.mode === 'moment')) {
         goTo(nextIndex);
       } else {
         showReader();
@@ -529,6 +687,8 @@ els.search.addEventListener('input', (e) => renderLibrary(e.target.value));
 window.addEventListener('hashchange', route);
 window.addEventListener('keydown', (e) => {
   if (els.reader.hidden) return;
+  const tag = (e.target && e.target.tagName) || '';
+  if (tag === 'VIDEO' || tag === 'INPUT' || tag === 'TEXTAREA') return;
   if (e.key === 'ArrowRight' || e.key === 'PageDown') goTo(state.index + 1);
   if (e.key === 'ArrowLeft' || e.key === 'PageUp') goTo(state.index - 1);
   if (e.key === 'Escape' && !document.fullscreenElement) closeReader();
