@@ -1,24 +1,21 @@
-# Page-flip reader
+# Page-flip reader (paused)
 
-The Rack shelf UI stays the same. The in-page comic reader uses **StPageFlip** (`page-flip@2.0.7`) for magazine-style page turns, with mobile viewport sizing adapted from `../template/magazine.html`.
+StPageFlip magazine-style page turns were prototyped for The Rack and then **removed from the live reader** (Aug 2026) because image pages were not reliably visible in production.
 
-## Behavior
+## Current reader
 
-- **Images** load into StPageFlip. The flip book is sized to the comic page aspect ratio and centered in `#stageFrame`, so turn hit-targets match the art (not the letterbox).
-- **Videos** ("motion moments") render in `#momentStage` outside the flip widget so native controls work. Leaving a moment pauses the video.
-- Drag a corner, swipe, arrows, or keyboard to move through the full `rack.json` sequence.
-- Thumbnails / deep links jump by sequence index; adjacent image→image nav animates with `flipNext` / `flipPrev`.
-- If the library fails to load, the reader falls back to the previous flat image/video stage.
+The Rack uses the original **flat sequential stage**:
 
-## Files
+- Images and videos from `rack.json` render one at a time in `#readerStage`
+- Arrows, keyboard, swipe, thumbnails, fullscreen
+- Motion moments keep poster + **MOTION** badges in the thumbnail rail
+
+## Kept on disk (not wired)
 
 | Path | Role |
 |------|------|
-| `assets/js/app.js` | Shelf + flip reader |
-| `assets/css/styles.css` | Flip stage / `.page` / mobile safe-area |
-| `vendor/page-flip.browser.min.js` | Local StPageFlip bundle |
+| `vendor/page-flip.browser.min.js` | StPageFlip bundle (unused by `app.js` for now) |
 | `scripts/pull-page-flip.ps1` | Refresh vendor from jsDelivr |
+| `../template/magazine.html` | Reference magazine flip + mobile sizing |
 
-## Deploy note
-
-Include `vendor/` when syncing to GitHub Pages so air-gapped / Tracking Prevention browsers can still flip after CDN failure.
+Re-enable only after a dedicated integration that keeps `#readerStage` sizing stable on mobile and does not hide/collapse the image layer.

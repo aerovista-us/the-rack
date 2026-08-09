@@ -1,6 +1,6 @@
 # Vespera Publishing - The Rack
 
-A static, JSON-powered comic library and reader. It displays PNG/JPG/WebP pages and can insert short MP4/WebM videos anywhere in the reading sequence. The reader uses **StPageFlip** for magazine-style page turns (with a flat fallback if the library cannot load).
+A static, JSON-powered comic library and reader. It displays PNG/JPG/WebP pages and can insert short MP4/WebM videos anywhere in the reading sequence.
 
 ## Run it
 
@@ -15,8 +15,6 @@ Then open `http://localhost:8080`.
 
 **Production:** [https://therack.aerovista.us/](https://therack.aerovista.us/)  
 Same pattern as [thesignal.aerovista.us](https://thesignal.aerovista.us) - GitHub Pages (`aerovista-us/the-rack`) + Cloudflare DNS CNAME. See [docs/github-pages-deploy.md](./docs/github-pages-deploy.md).
-
-Page-flip details: [docs/page-flip-reader.md](./docs/page-flip-reader.md).
 
 Remodel SOS deep link: `https://therack.aerovista.us/#/read/remodel-sos-volume-1/1`
 
@@ -65,17 +63,13 @@ For mobile compatibility, use H.264 video with AAC audio in an MP4 container. Ke
 
 ## Reader controls
 
-- Drag a page corner or swipe to turn
 - Left/right arrow or Page Up/Page Down
-- Thumbnail rail
+- Swipe on mobile
+- Thumbnail rail (motion moments show poster + MOTION badge)
 - Fullscreen
 - Deep links such as `#/read/remodel-sos-volume-1/4`
 - Optional automatic advance after a video ends
 
-## Page-flip vendor
+## Page-flip
 
-CDN first, then `vendor/page-flip.browser.min.js`. Refresh the local bundle with:
-
-```powershell
-.\scripts\pull-page-flip.ps1
-```
+Magazine-style StPageFlip was prototyped and then paused — see [docs/page-flip-reader.md](./docs/page-flip-reader.md). The live reader is the flat sequential stage again.

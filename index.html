@@ -7,7 +7,7 @@
   <title>Vespera Publishing — The Rack</title>
   <meta name="description" content="Read Vespera comics with short motion moments woven between the pages — no app, no download, just open and read." />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-  <link rel="stylesheet" href="assets/css/styles.css?v=20260809c" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=20260809d" />
 </head>
 <body>
   <header class="site-header">
@@ -71,16 +71,13 @@
       <aside id="thumbnailRail" class="thumbnail-rail"></aside>
       <section class="stage-wrap">
         <button id="prevItem" class="nav-arrow left" aria-label="Previous page">‹</button>
-        <div id="stageFrame" class="stage-frame">
-          <div id="readerStage" class="reader-stage"></div>
-          <div id="momentStage" class="moment-stage" hidden></div>
-        </div>
+        <div id="readerStage" class="reader-stage"></div>
         <button id="nextItem" class="nav-arrow right" aria-label="Next page">›</button>
       </section>
     </div>
     <footer class="reader-footer">
       <div class="progress-track"><span id="progressBar"></span></div>
-      <p>Drag a page corner to turn. Motion moments play full-screen in the sequence with normal video controls.</p>
+      <p>Use arrow keys or swipe to move through the story. Motion moments play right in the sequence.</p>
     </footer>
   </div>
 
@@ -91,8 +88,8 @@
       <h2>How to read</h2>
       <ol>
         <li>Browse the shelf and tap a cover to open a comic.</li>
-        <li>Turn pages by dragging a corner, swiping, or using the arrows / keyboard.</li>
-        <li>When a motion moment appears, play it — then keep turning.</li>
+        <li>Move forward and back with the arrows, keyboard, or a swipe.</li>
+        <li>When a motion moment appears, play it — then keep reading.</li>
         <li>Use the thumbnail rail or fullscreen control anytime for a clearer view.</li>
       </ol>
       <p style="color:#d4ccbf;line-height:1.5;margin:18px 0 22px">The Rack is a Vespera Publishing reading room for illustrated stories with cinematic beats between the pages.</p>
@@ -109,6 +106,6 @@
     </article>
   </template>
 
-  <script src="assets/js/app.js?v=20260809c" defer></script>
+  <script src="assets/js/app.js?v=20260809d" defer></script>
 </body>
 </html>
