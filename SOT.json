@@ -313,10 +313,10 @@
     "warn_on_master_outside_allowed_locations": true
   },
   "notes": [
-    "Current book: remodel-sos-volume-1 (SOS: A Remodeler's Story — Volume One: Jobsite Survival).",
-    "Videos under content/remodel-sos/video/ are on disk but not yet wired into rack.json sequence.",
+    "Books on the rack: remodel-sos-volume-1 and omotl-issue-1 (Old Man of the Lake).",
+    "OMOTL assets under content/OMOTL/pages and content/OMOTL/video; story numbering skips p02.",
     "Production: https://therack.aerovista.us/ — NXCore /the-rack Traefik route dismantled 2026-08-08.",
-    "Deep link example: https://therack.aerovista.us/#/read/remodel-sos-volume-1/1",
+    "Deep links: #/read/remodel-sos-volume-1/1 and #/read/omotl-issue-1/1",
     "Do not open via file:// — fetch(rack.json) requires HTTP."
   ]
 }

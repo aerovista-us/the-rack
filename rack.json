@@ -13,22 +13,89 @@
       "cover": "content/remodel-sos/pages/001.png",
       "tags": ["comedy", "construction", "remodeling"],
       "sequence": [
-        { "type": "video", "src": "content/remodel-sos/video/00_sos.mp4", "poster": "content/remodel-sos/video/posters/00-poster.jpg", "caption": "Short video", "autoplay": false, "muted": false, "advanceOnEnd": true },
-        { "type": "image", "src": "content/remodel-sos/pages/000.png", "alt": "SOS series" },
-        { "type": "image", "src": "content/remodel-sos/pages/001.png", "alt": "SOS series introduction" },
-        { "type": "image", "src": "content/remodel-sos/pages/002.png", "alt": "Episode 2: Where is the tile?" },
-        { "type": "image", "src": "content/remodel-sos/pages/003.png", "alt": "Episode 3: The wrong tile" },
-        { "type": "image", "src": "content/remodel-sos/pages/004.png", "alt": "Episode 4: The plan change" },
-        { "type": "video", "src": "content/remodel-sos/video/01_sos.mp4", "poster": "content/remodel-sos/video/posters/01-poster.jpg", "caption": "Short video", "autoplay": false, "muted": false, "advanceOnEnd": true },
-        { "type": "image", "src": "content/remodel-sos/pages/005.png", "alt": "Episode 5: The quick fix" },
-        { "type": "image", "src": "content/remodel-sos/pages/006.png", "alt": "Episode 6: The day it all happens" },
-        { "type": "image", "src": "content/remodel-sos/pages/007.png", "alt": "Episode 7: The dry run" },
-        { "type": "image", "src": "content/remodel-sos/pages/008.png", "alt": "Episode 8: The grout debacle" },
-        { "type": "video", "src": "content/remodel-sos/video/02_sos.mp4", "poster": "content/remodel-sos/video/posters/02-poster.jpg", "caption": "Story moment", "autoplay": false, "muted": false, "advanceOnEnd": true },
-        { "type": "image", "src": "content/remodel-sos/pages/009.png", "alt": "Episode 9: The water test" },
-        { "type": "image", "src": "content/remodel-sos/pages/010.png", "alt": "Episode 10: The permit pileup" },
-        { "type": "image", "src": "content/remodel-sos/pages/011.png", "alt": "Episode 11: The supply chain" },
-        { "type": "image", "src": "content/remodel-sos/pages/012.png", "alt": "Episode 12: Unexpected deliveries" }
+        {
+          "type": "video",
+          "src": "content/remodel-sos/video/00_sos.mp4",
+          "poster": "content/remodel-sos/video/posters/00-poster.jpg",
+          "caption": "Cold open",
+          "autoplay": false,
+          "muted": false,
+          "advanceOnEnd": true
+        },
+        { "type": "image", "src": "content/remodel-sos/pages/000.png", "alt": "SOS series title" },
+        { "type": "image", "src": "content/remodel-sos/pages/001.png", "alt": "Series introduction" },
+        { "type": "image", "src": "content/remodel-sos/pages/002.png", "alt": "Where is the tile?" },
+        { "type": "image", "src": "content/remodel-sos/pages/003.png", "alt": "The wrong tile" },
+        { "type": "image", "src": "content/remodel-sos/pages/004.png", "alt": "The plan change" },
+        {
+          "type": "video",
+          "src": "content/remodel-sos/video/01_sos.mp4",
+          "poster": "content/remodel-sos/video/posters/01-poster.jpg",
+          "caption": "Jobsite pressure",
+          "autoplay": false,
+          "muted": false,
+          "advanceOnEnd": true
+        },
+        { "type": "image", "src": "content/remodel-sos/pages/005.png", "alt": "The quick fix" },
+        { "type": "image", "src": "content/remodel-sos/pages/006.png", "alt": "The day it all happens" },
+        { "type": "image", "src": "content/remodel-sos/pages/007.png", "alt": "The dry run" },
+        { "type": "image", "src": "content/remodel-sos/pages/008.png", "alt": "The grout debacle" },
+        {
+          "type": "video",
+          "src": "content/remodel-sos/video/02_sos.mp4",
+          "poster": "content/remodel-sos/video/posters/02-poster.jpg",
+          "caption": "When water finds a way",
+          "autoplay": false,
+          "muted": false,
+          "advanceOnEnd": true
+        },
+        { "type": "image", "src": "content/remodel-sos/pages/009.png", "alt": "The water test" },
+        { "type": "image", "src": "content/remodel-sos/pages/010.png", "alt": "The permit pileup" },
+        { "type": "image", "src": "content/remodel-sos/pages/011.png", "alt": "The supply chain" },
+        { "type": "image", "src": "content/remodel-sos/pages/012.png", "alt": "Unexpected deliveries" }
+      ]
+    },
+    {
+      "id": "omotl-issue-1",
+      "series": "Old Man of the Lake",
+      "title": "Issue No. 1 — The Lake's Talking",
+      "creator": "Vespera Publishing",
+      "description": "Something in the water is speaking. A quiet lakeside tale of rumor, reflection, and the old man who listens.",
+      "cover": "content/OMOTL/pages/00-cover-front.png",
+      "tags": ["mystery", "folklore", "lake", "drama"],
+      "sequence": [
+        {
+          "type": "video",
+          "src": "content/OMOTL/video/omotl_ep01_intro_15s_v01.mp4",
+          "poster": "content/OMOTL/video/posters/intro-poster.jpg",
+          "caption": "The lake stirs",
+          "autoplay": false,
+          "muted": false,
+          "advanceOnEnd": true
+        },
+        { "type": "image", "src": "content/OMOTL/pages/00-cover-front.png", "alt": "Old Man of the Lake — front cover" },
+        { "type": "image", "src": "content/OMOTL/pages/01-inside-front.png", "alt": "Inside front" },
+        { "type": "image", "src": "content/OMOTL/pages/02-p01.png", "alt": "Page 1" },
+        { "type": "image", "src": "content/OMOTL/pages/03-p03.png", "alt": "Page 3" },
+        { "type": "image", "src": "content/OMOTL/pages/04-p04.png", "alt": "Page 4" },
+        { "type": "image", "src": "content/OMOTL/pages/05-p05.png", "alt": "Page 5" },
+        {
+          "type": "video",
+          "src": "content/OMOTL/video/omotl_ep01_VID1_v01.mp4",
+          "poster": "content/OMOTL/video/posters/vid1-poster.jpg",
+          "caption": "Listen closer",
+          "autoplay": false,
+          "muted": false,
+          "advanceOnEnd": true
+        },
+        { "type": "image", "src": "content/OMOTL/pages/06-p06.png", "alt": "Page 6" },
+        { "type": "image", "src": "content/OMOTL/pages/07-p07.png", "alt": "Page 7" },
+        { "type": "image", "src": "content/OMOTL/pages/08-p08.png", "alt": "Page 8" },
+        { "type": "image", "src": "content/OMOTL/pages/09-p09.png", "alt": "Page 9" },
+        { "type": "image", "src": "content/OMOTL/pages/10-p10.png", "alt": "Page 10" },
+        { "type": "image", "src": "content/OMOTL/pages/11-p11.png", "alt": "Page 11" },
+        { "type": "image", "src": "content/OMOTL/pages/12-p12.png", "alt": "Page 12" },
+        { "type": "image", "src": "content/OMOTL/pages/13-cover-back.png", "alt": "Old Man of the Lake — back cover" }
       ]
     }
   ]

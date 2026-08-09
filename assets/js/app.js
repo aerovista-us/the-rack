@@ -38,7 +38,9 @@ async function loadRack() {
 
 function renderLibrary(filter = '') {
   const books = state.data.books.filter((b) =>
-    `${b.title} ${b.creator} ${b.description}`.toLowerCase().includes(filter.toLowerCase()),
+    `${b.title} ${b.series || ''} ${b.creator} ${b.description} ${(b.tags || []).join(' ')}`
+      .toLowerCase()
+      .includes(filter.toLowerCase()),
   );
   els.grid.innerHTML = '';
   els.hero.innerHTML = '';
@@ -52,7 +54,13 @@ function renderLibrary(filter = '') {
     node.querySelector('h3').textContent = book.title;
     node.querySelector('.book-author').textContent = `By ${book.creator}`;
     node.querySelector('.book-description').textContent = book.description || '';
-    node.querySelector('.item-count').textContent = `${book.sequence.length} pages`;
+    const pageCount = book.sequence.filter((x) => x.type !== 'video').length;
+    const motionCount = book.sequence.filter((x) => x.type === 'video').length;
+    const countLabel =
+      motionCount > 0
+        ? `${pageCount} pages · ${motionCount} motion`
+        : `${pageCount} pages`;
+    node.querySelector('.item-count').textContent = countLabel;
     node.querySelectorAll('button').forEach((btn) =>
       btn.addEventListener('click', () => openBook(book.id, 0)),
     );
