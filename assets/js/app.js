@@ -339,20 +339,41 @@ function renderThumbs() {
   els.rail.innerHTML = '';
   state.book.sequence.forEach((item, i) => {
     const b = document.createElement('button');
-    b.className = 'thumb' + (i === state.index ? ' active' : '');
-    b.setAttribute('aria-label', `Go to item ${i + 1}`);
-    if (item.type === 'image') {
+    const isVideo = item.type === 'video';
+    b.className = 'thumb' + (i === state.index ? ' active' : '') + (isVideo ? ' thumb--motion' : '');
+    b.setAttribute(
+      'aria-label',
+      isVideo
+        ? `Motion moment ${i + 1}${item.caption ? `: ${item.caption}` : ''}`
+        : `Go to page ${i + 1}`,
+    );
+    if (isVideo) {
+      const v = document.createElement('div');
+      v.className = 'video-thumb';
+      if (item.poster) {
+        const img = document.createElement('img');
+        img.src = item.poster;
+        img.alt = '';
+        img.className = 'video-thumb__poster';
+        v.append(img);
+      }
+      const badge = document.createElement('span');
+      badge.className = 'video-thumb__badge';
+      badge.textContent = 'MOTION';
+      v.append(badge);
+      const play = document.createElement('span');
+      play.className = 'video-thumb__play';
+      play.textContent = '▶';
+      v.append(play);
+      b.append(v);
+    } else {
       const img = document.createElement('img');
       img.src = item.src;
       img.alt = '';
       b.append(img);
-    } else {
-      const v = document.createElement('div');
-      v.className = 'video-thumb';
-      v.textContent = '▶';
-      b.append(v);
     }
     const n = document.createElement('span');
+    n.className = 'thumb__num';
     n.textContent = i + 1;
     b.append(n);
     b.onclick = () => goTo(i);
@@ -495,13 +516,13 @@ function initFlip(startSeqIndex) {
     });
 
     const scheduleReflow = () => {
+      // Don't measure/rebuild while the flip stage is visually hidden for a motion moment —
+      // absolute/hidden layout collapses the frame and would wipe the book.
+      if (state.mode === 'moment' || !state.pageFlip) return;
       const size = measureFlipSize(state.aspect);
-      if (
-        state.pageFlip &&
-        (Math.abs(size.w - state.flipW) >= 24 || Math.abs(size.h - state.flipH) >= 24)
-      ) {
+      if (size.w < 200 || size.h < 220) return;
+      if (Math.abs(size.w - state.flipW) >= 24 || Math.abs(size.h - state.flipH) >= 24) {
         const keep = state.index;
-        const keepMode = state.mode;
         if (state.cleanup) {
           state.cleanup();
           state.cleanup = null;
@@ -516,9 +537,6 @@ function initFlip(startSeqIndex) {
         els.stage.classList.remove('is-flip', 'is-hidden');
         els.stage.style.width = '';
         els.stage.style.height = '';
-        // Re-init at same sequence index (preserves moment vs image).
-        state.index = keep;
-        state.mode = keepMode;
         initFlip(keep);
         return;
       }
