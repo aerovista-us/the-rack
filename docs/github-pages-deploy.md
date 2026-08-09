@@ -2,7 +2,7 @@
 
 Production target: **[therack.aerovista.us](https://therack.aerovista.us)** — same pattern as [thesignal.aerovista.us](https://thesignal.aerovista.us) / [aerovista-us/signal](https://github.com/aerovista-us/signal).
 
-Serves from the **`main`** branch of **`aerovista-us/the-rack`** (static root: `index.html`, `rack.json`, `assets/`, `content/`). No build step.
+Serves from the **`main`** branch of **`aerovista-us/the-rack`** (static root: `index.html`, `rack.json`, `assets/`, `content/`, `vendor/`). No build step.
 
 ## DNS (Cloudflare · aerovista.us)
 
@@ -28,7 +28,7 @@ Working copy: `\\100.115.9.61\Collab\mini.shops\the_rack\vespera-the-rack`
 rsync -av --exclude .git --exclude '*.yml' --exclude 'nginx-the-rack.conf' \
   /path/to/vespera-the-rack/ ./
 # or copy changed files manually, then:
-git add index.html rack.json rack.example.json assets/ content/ CNAME README.md SOT.json docs/
+git add index.html rack.json rack.example.json assets/ content/ vendor/ scripts/ CNAME README.md SOT.json docs/
 git status
 git commit -m "Sync The Rack comic library from Collab."
 git push origin main
