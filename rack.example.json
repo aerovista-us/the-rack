@@ -1,0 +1,29 @@
+{
+  "site": { "title": "The Rack", "publisher": "Vespera Publishing" },
+  "books": [
+    {
+      "id": "my-comic-volume-1",
+      "series": "My Comic",
+      "title": "Volume One",
+      "creator": "Creator Name",
+      "description": "A short description for the rack.",
+      "cover": "content/my-comic/pages/001.png",
+      "tags": ["genre", "topic"],
+      "sequence": [
+        { "type": "image", "src": "content/my-comic/pages/001.png", "alt": "Page 1" },
+        { "type": "image", "src": "content/my-comic/pages/002.png", "alt": "Page 2" },
+        {
+          "type": "video",
+          "src": "content/my-comic/video/moment-01.mp4",
+          "poster": "content/my-comic/video/moment-01-poster.jpg",
+          "caption": "A moment between pages",
+          "note": "Optional caption below the player.",
+          "autoplay": false,
+          "muted": false,
+          "advanceOnEnd": true
+        },
+        { "type": "image", "src": "content/my-comic/pages/003.png", "alt": "Page 3" }
+      ]
+    }
+  ]
+}

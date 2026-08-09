@@ -1,0 +1,35 @@
+{
+  "site": {
+    "title": "The Rack",
+    "publisher": "Vespera Publishing"
+  },
+  "books": [
+    {
+      "id": "remodel-sos-volume-1",
+      "series": "SOS: A Remodeler's Story",
+      "title": "Volume One: Jobsite Survival",
+      "creator": "Vespera Publishing",
+      "description": "A remodeler, one bathroom, and an unreasonable number of ways for a normal workday to go sideways.",
+      "cover": "content/remodel-sos/pages/001.png",
+      "tags": ["comedy", "construction", "remodeling"],
+      "sequence": [
+        { "type": "video", "src": "content/remodel-sos/video/00_sos.mp4", "poster": "content/remodel-sos/video/posters/00-poster.jpg", "caption": "Short video", "autoplay": false, "muted": false, "advanceOnEnd": true },
+        { "type": "image", "src": "content/remodel-sos/pages/000.png", "alt": "SOS series" },
+        { "type": "image", "src": "content/remodel-sos/pages/001.png", "alt": "SOS series introduction" },
+        { "type": "image", "src": "content/remodel-sos/pages/002.png", "alt": "Episode 2: Where is the tile?" },
+        { "type": "image", "src": "content/remodel-sos/pages/003.png", "alt": "Episode 3: The wrong tile" },
+        { "type": "image", "src": "content/remodel-sos/pages/004.png", "alt": "Episode 4: The plan change" },
+        { "type": "video", "src": "content/remodel-sos/video/01_sos.mp4", "poster": "content/remodel-sos/video/posters/01-poster.jpg", "caption": "Short video", "autoplay": false, "muted": false, "advanceOnEnd": true },
+        { "type": "image", "src": "content/remodel-sos/pages/005.png", "alt": "Episode 5: The quick fix" },
+        { "type": "image", "src": "content/remodel-sos/pages/006.png", "alt": "Episode 6: The day it all happens" },
+        { "type": "image", "src": "content/remodel-sos/pages/007.png", "alt": "Episode 7: The dry run" },
+        { "type": "image", "src": "content/remodel-sos/pages/008.png", "alt": "Episode 8: The grout debacle" },
+        { "type": "video", "src": "content/remodel-sos/video/02_sos.mp4", "poster": "content/remodel-sos/video/posters/02-poster.jpg", "caption": "Story moment", "autoplay": false, "muted": false, "advanceOnEnd": true },
+        { "type": "image", "src": "content/remodel-sos/pages/009.png", "alt": "Episode 9: The water test" },
+        { "type": "image", "src": "content/remodel-sos/pages/010.png", "alt": "Episode 10: The permit pileup" },
+        { "type": "image", "src": "content/remodel-sos/pages/011.png", "alt": "Episode 11: The supply chain" },
+        { "type": "image", "src": "content/remodel-sos/pages/012.png", "alt": "Episode 12: Unexpected deliveries" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,322 @@
+{
+  "sot_version": "2.0-aerovista",
+  "project": {
+    "name": "Vespera Publishing — The Rack",
+    "slug": "vespera-the-rack",
+    "brand": "Vespera Publishing",
+    "division": "Echo Experiences",
+    "owner": "AeroVista LLC",
+    "status": "active",
+    "lifecycle": "production",
+    "type": "app",
+    "category": "mini-shop",
+    "root": "./",
+    "primary_language": "javascript",
+    "repo_visibility": "private",
+    "created": "2026-08-05",
+    "updated": "2026-08-08",
+    "timezone": "America/Los_Angeles"
+  },
+  "purpose": {
+    "summary": "Static JSON-powered comic library and reader for Vespera Publishing. Serves PNG/JPG/WebP pages with optional short MP4/WebM inserts; catalog driven by rack.json.",
+    "source_of_truth_policy": "Only files listed in canon_files / canon_folders are masters. rack.json is the catalog master; content/ holds page and video assets. No build step.",
+    "business_role": "Public-facing comic rack for series such as SOS: A Remodeler's Story — published like The SIGNAL via GitHub Pages + Cloudflare DNS on therack.aerovista.us."
+  },
+  "technical_profile": {
+    "stack": {
+      "frontend": ["Static HTML", "CSS", "Vanilla JavaScript"],
+      "backend": [],
+      "database": [],
+      "infra": ["GitHub Pages", "Cloudflare DNS"],
+      "analytics": [],
+      "ai": []
+    },
+    "runtime": {
+      "local_ports": [8080],
+      "service_urls": [
+        "https://therack.aerovista.us/"
+      ],
+      "health_endpoint": "/",
+      "entry_command": "python -m http.server 8080",
+      "build_command": "",
+      "start_command": "git push origin main"
+    },
+    "deployment": {
+      "primary_host": "GitHub Pages",
+      "deploy_path": "Collab/mini.shops/the_rack/vespera-the-rack → aerovista-us/the-rack",
+      "public_url": "https://therack.aerovista.us/",
+      "internal_url": "",
+      "containerized": false,
+      "compose_file": "",
+      "reverse_proxy": "",
+      "networking_notes": "Mirror thesignal.aerovista.us: root CNAME file + Cloudflare CNAME therack → aerovista-us.github.io (DNS-only / gray cloud). Not hosted on nxcore.tail*."
+    },
+    "data_model": {
+      "core_db_dependency": false,
+      "domain_db": "",
+      "canonical_event_ledger": "",
+      "shared_storage": [
+        "rack.json catalog",
+        "content/ comic page and video assets"
+      ]
+    }
+  },
+  "canon": {
+    "canon_root": "./",
+    "allowed_master_locations": [
+      "./",
+      "./assets",
+      "./content"
+    ],
+    "forbidden_master_locations": [
+      "./archive",
+      "./intake",
+      "./tmp",
+      "./build",
+      "./dist",
+      "./node_modules"
+    ]
+  },
+  "entrypoints": [
+    {
+      "id": "readme",
+      "label": "Project README",
+      "path": "README.md",
+      "required": true,
+      "notes": "Local serve instructions and how to add comics."
+    },
+    {
+      "id": "library",
+      "label": "Library / reader UI",
+      "path": "index.html",
+      "required": true,
+      "notes": "Static shell; loads rack.json via fetch."
+    },
+    {
+      "id": "catalog",
+      "label": "Rack catalog",
+      "path": "rack.json",
+      "required": true,
+      "notes": "Books, covers, and reading sequence."
+    }
+  ],
+  "canon_files": [
+    {
+      "id": "readme",
+      "path": "README.md",
+      "type": "md",
+      "role": "project overview and authoring guide",
+      "required": true,
+      "owner": "project-owner",
+      "status": "active"
+    },
+    {
+      "id": "sot_self",
+      "path": "SOT.json",
+      "type": "json",
+      "role": "source of truth manifest",
+      "required": true,
+      "owner": "project-owner",
+      "status": "active"
+    },
+    {
+      "id": "index_html",
+      "path": "index.html",
+      "type": "html",
+      "role": "library and reader shell",
+      "required": true,
+      "owner": "tech-owner",
+      "status": "active"
+    },
+    {
+      "id": "rack_json",
+      "path": "rack.json",
+      "type": "json",
+      "role": "comic catalog master",
+      "required": true,
+      "owner": "project-owner",
+      "status": "active"
+    },
+    {
+      "id": "rack_example",
+      "path": "rack.example.json",
+      "type": "json",
+      "role": "catalog template for new books",
+      "required": false,
+      "owner": "project-owner",
+      "status": "active"
+    },
+    {
+      "id": "app_js",
+      "path": "assets/js/app.js",
+      "type": "js",
+      "role": "library + reader logic",
+      "required": true,
+      "owner": "tech-owner",
+      "status": "active"
+    },
+    {
+      "id": "styles",
+      "path": "assets/css/styles.css",
+      "type": "css",
+      "role": "reader styling",
+      "required": true,
+      "owner": "tech-owner",
+      "status": "active"
+    },
+    {
+      "id": "cname",
+      "path": "CNAME",
+      "type": "txt",
+      "role": "GitHub Pages custom domain",
+      "required": true,
+      "owner": "ops-owner",
+      "status": "active"
+    },
+    {
+      "id": "pages_deploy_doc",
+      "path": "docs/github-pages-deploy.md",
+      "type": "md",
+      "role": "GitHub Pages + Cloudflare DNS deploy guide",
+      "required": true,
+      "owner": "ops-owner",
+      "status": "active"
+    }
+  ],
+  "canon_folders": [
+    {
+      "id": "assets",
+      "path": "assets/",
+      "role": "CSS and JS for the reader"
+    },
+    {
+      "id": "content",
+      "path": "content/",
+      "role": "comic page images and optional video clips"
+    },
+    {
+      "id": "docs",
+      "path": "docs/",
+      "role": "deploy and ops documentation"
+    }
+  ],
+  "systems": {
+    "linked_projects": [
+      "aerovista-us/signal (thesignal.aerovista.us pattern)",
+      "comic-rack (older mini.shop scaffold)",
+      "mini.shops/comics"
+    ],
+    "depends_on": [
+      "GitHub Pages",
+      "Cloudflare DNS (aerovista.us)"
+    ],
+    "feeds": [],
+    "consumes": [],
+    "shares_with": [],
+    "related_domains": [
+      "therack.aerovista.us",
+      "aerovista.us"
+    ],
+    "tailscale_hosts": [],
+    "cloudflare_tunnels": []
+  },
+  "portfolio": {
+    "division_slug": "echo",
+    "portfolio_lane": "fund",
+    "maturity_stage": 3,
+    "maturity_label": "internal-usable",
+    "system_role": "public-experience",
+    "exposure": "public-edge",
+    "strategic_tier": "supporting",
+    "owner_team": "Echo Experiences / Vespera",
+    "owner_person": "glyph",
+    "commercial_status": "non-revenue",
+    "scorecard": {
+      "security": 2,
+      "reliability": 2,
+      "data_safety": 2,
+      "documentation": 2,
+      "repeatability": 3,
+      "owner_clarity": 2
+    },
+    "decision_notes": "provisional — pending human portfolio review. Static comic rack; public via therack.aerovista.us (GitHub Pages + Cloudflare), Signal-style subdomain."
+  },
+  "ops": {
+    "service_name": "the-rack",
+    "health_check_paths": [
+      "/"
+    ],
+    "backup_targets": [
+      "Collab mini.shops/the_rack/vespera-the-rack",
+      "GitHub aerovista-us/the-rack"
+    ],
+    "log_locations": [
+      "GitHub Pages deploy status"
+    ],
+    "secrets_locations": [],
+    "monitoring": {
+      "enabled": false,
+      "providers": []
+    }
+  },
+  "governance": {
+    "review_cycle": "when comics or deploy path change",
+    "update_rule": "Update SOT when rack.json schema, public domain, or content root changes.",
+    "promotion_rule": "New books enter canon via rack.json + content/ folders after review; sync to GitHub main for Pages.",
+    "archive_rule": "Retired books move under archive/ and are removed from rack.json.",
+    "owner_roles": [
+      "project-owner",
+      "ops-owner",
+      "tech-owner"
+    ]
+  },
+  "duplicates": [
+    {
+      "pattern": "comic rack mini.shop",
+      "known_locations": [
+        "Collab/mini.shops/the_rack/vespera-the-rack",
+        "Collab/mini.shops/comic-rack"
+      ],
+      "winner": "Collab/mini.shops/the_rack/vespera-the-rack",
+      "note": "vespera-the-rack is the live reader + Remodel SOS content. comic-rack is an older SOT scaffold."
+    }
+  ],
+  "checks": {
+    "required_paths_exist": [
+      "SOT.json",
+      "README.md",
+      "index.html",
+      "rack.json",
+      "CNAME",
+      "assets/js/app.js",
+      "assets/css/styles.css",
+      "content/remodel-sos/",
+      "docs/github-pages-deploy.md"
+    ],
+    "marker": {
+      "enabled": true,
+      "marker_key": "SOT:",
+      "accepted_ext": [
+        ".md",
+        ".html",
+        ".json",
+        ".txt",
+        ".yml",
+        ".yaml",
+        ".js",
+        ".css"
+      ]
+    },
+    "hash_canon_files": false,
+    "warn_on_duplicate_ids": true,
+    "warn_on_missing_required": true,
+    "warn_on_master_outside_allowed_locations": true
+  },
+  "notes": [
+    "Current book: remodel-sos-volume-1 (SOS: A Remodeler's Story — Volume One: Jobsite Survival).",
+    "Videos under content/remodel-sos/video/ are on disk but not yet wired into rack.json sequence.",
+    "Production: https://therack.aerovista.us/ — NXCore /the-rack Traefik route dismantled 2026-08-08.",
+    "Deep link example: https://therack.aerovista.us/#/read/remodel-sos-volume-1/1",
+    "Do not open via file:// — fetch(rack.json) requires HTTP."
+  ]
+}

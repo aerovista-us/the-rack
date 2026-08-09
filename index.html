@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0b0b0b" />
+  <title>Vespera Publishing — The Rack</title>
+  <meta name="description" content="A comic reader with real video moments woven between the pages — no app, no download, just open and read." />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#/" aria-label="The Rack home">
+      <span class="brand-mark">V</span>
+      <span><strong>VESPERA</strong><small>PUBLISHING</small></span>
+      <i></i><b>THE RACK</b>
+    </a>
+    <nav>
+      <a href="#library">The Rack</a>
+      <a href="#how-it-works">How it works</a>
+      <button id="openHelp" class="ghost-button" type="button">Creator guide</button>
+    </nav>
+  </header>
+
+  <main id="app" tabindex="-1">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">PNG COMICS • VIDEO MOMENTS • READ INSTANTLY</p>
+        <h1>Still pages.<br><span>Motion between them.</span></h1>
+        <p>Drop comic pages and short MP4 clips into a folder, list them in one JSON file, and publish. The Rack turns the manifest into a responsive comic library and immersive reader.</p>
+        <div class="hero-actions">
+          <a class="primary-button" href="#library">Explore the rack</a>
+          <button class="secondary-button" id="openQuickStart" type="button">See quick start</button>
+        </div>
+      </div>
+      <div class="hero-rack" id="heroRack" aria-label="Featured comic covers"></div>
+    </section>
+
+    <section class="library-section" id="library">
+      <div class="section-heading">
+        <div><p class="eyebrow">FEATURED ON THE RACK</p><h2>Comic books</h2></div>
+        <label class="search"><span>⌕</span><input id="searchInput" type="search" placeholder="Search titles or creators" /></label>
+      </div>
+      <div id="bookGrid" class="book-grid" aria-live="polite"></div>
+    </section>
+
+    <section class="flow-section" id="how-it-works">
+      <p class="eyebrow">BUILT FOR COMICS. ENHANCED BY MOTION.</p>
+      <h2>One continuous reading sequence</h2>
+      <div class="flow-diagram">
+        <div><strong>PNG</strong><span>Pages 1–4</span></div><i>→</i>
+        <div class="video-node"><strong>▶ 0:15</strong><span>Short video</span></div><i>→</i>
+        <div><strong>PNG</strong><span>Pages 5–8</span></div><i>→</i>
+        <div class="video-node"><strong>▶ 0:20</strong><span>Story moment</span></div><i>→</i>
+        <div><strong>PNG</strong><span>Keep reading</span></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="reader" class="reader" hidden>
+    <header class="reader-header">
+      <button id="closeReader" class="icon-button" aria-label="Close reader">←</button>
+      <div class="reader-title"><strong id="readerBookTitle">Comic title</strong><span id="readerPosition">1 / 1</span></div>
+      <div class="reader-tools">
+        <button id="toggleThumbs" class="icon-button" aria-label="Toggle page thumbnails">▦</button>
+        <button id="toggleFullscreen" class="icon-button" aria-label="Fullscreen">⛶</button>
+      </div>
+    </header>
+    <div class="reader-shell">
+      <aside id="thumbnailRail" class="thumbnail-rail"></aside>
+      <section class="stage-wrap">
+        <button id="prevItem" class="nav-arrow left" aria-label="Previous page">‹</button>
+        <div id="readerStage" class="reader-stage"></div>
+        <button id="nextItem" class="nav-arrow right" aria-label="Next page">›</button>
+      </section>
+    </div>
+    <footer class="reader-footer">
+      <div class="progress-track"><span id="progressBar"></span></div>
+      <p>Use ← → keys, swipe, or the page controls. Videos appear directly in the sequence.</p>
+    </footer>
+  </div>
+
+  <dialog id="helpDialog">
+    <form method="dialog">
+      <button class="dialog-close" aria-label="Close">×</button>
+      <p class="eyebrow">CREATOR QUICK START</p>
+      <h2>Publish by editing one JSON file</h2>
+      <ol>
+        <li>Put PNG pages in <code>content/your-book/pages/</code>.</li>
+        <li>Put optional MP4/WebM clips in <code>content/your-book/video/</code>.</li>
+        <li>Add the book and reading sequence to <code>rack.json</code>.</li>
+        <li>Serve the folder over HTTP. A tiny local server command is included in the README.</li>
+      </ol>
+      <pre><code>{
+  "type": "video",
+  "src": "content/book/video/moment-01.mp4",
+  "poster": "content/book/pages/004.png",
+  "caption": "A moment between pages",
+  "autoplay": false
+}</code></pre>
+      <button class="primary-button" value="close">Got it</button>
+    </form>
+  </dialog>
+
+  <template id="bookCardTemplate">
+    <article class="book-card">
+      <button class="cover-button" type="button"><img class="book-cover" alt="" loading="lazy" /></button>
+      <div class="book-meta"><p class="book-kicker"></p><h3></h3><p class="book-author"></p><p class="book-description"></p>
+        <div class="book-actions"><button class="read-button primary-button" type="button">Read</button><span class="item-count"></span></div>
+      </div>
+    </article>
+  </template>
+
+  <script src="assets/js/app.js" defer></script>
+</body>
+</html>
