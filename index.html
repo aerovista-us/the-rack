@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#0b0b0b" />
   <title>Vespera Publishing — The Rack</title>
-  <meta name="description" content="A comic reader with real video moments woven between the pages — no app, no download, just open and read." />
+  <meta name="description" content="Read Vespera comics with short motion moments woven between the pages — no app, no download, just open and read." />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="stylesheet" href="assets/css/styles.css" />
 </head>
@@ -17,21 +17,21 @@
       <i></i><b>THE RACK</b>
     </a>
     <nav>
-      <a href="#library">The Rack</a>
-      <a href="#how-it-works">How it works</a>
-      <button id="openHelp" class="ghost-button" type="button">Creator guide</button>
+      <a href="#library">Browse</a>
+      <a href="#how-it-works">The experience</a>
+      <button id="openHelp" class="ghost-button" type="button">About</button>
     </nav>
   </header>
 
   <main id="app" tabindex="-1">
     <section class="hero">
       <div class="hero-copy">
-        <p class="eyebrow">PNG COMICS • VIDEO MOMENTS • READ INSTANTLY</p>
+        <p class="eyebrow">COMICS • MOTION MOMENTS • READ INSTANTLY</p>
         <h1>Still pages.<br><span>Motion between them.</span></h1>
-        <p>Drop comic pages and short MP4 clips into a folder, list them in one JSON file, and publish. The Rack turns the manifest into a responsive comic library and immersive reader.</p>
+        <p>The Rack is Vespera’s comic shelf — illustrated stories with short cinematic beats woven into the reading flow. No app. No download. Pick a title and start reading.</p>
         <div class="hero-actions">
-          <a class="primary-button" href="#library">Explore the rack</a>
-          <button class="secondary-button" id="openQuickStart" type="button">See quick start</button>
+          <a class="primary-button" href="#library">Browse the rack</a>
+          <button class="secondary-button" id="openQuickStart" type="button">How to read</button>
         </div>
       </div>
       <div class="hero-rack" id="heroRack" aria-label="Featured comic covers"></div>
@@ -47,13 +47,13 @@
 
     <section class="flow-section" id="how-it-works">
       <p class="eyebrow">BUILT FOR COMICS. ENHANCED BY MOTION.</p>
-      <h2>One continuous reading sequence</h2>
+      <h2>One continuous story flow</h2>
       <div class="flow-diagram">
-        <div><strong>PNG</strong><span>Pages 1–4</span></div><i>→</i>
-        <div class="video-node"><strong>▶ 0:15</strong><span>Short video</span></div><i>→</i>
-        <div><strong>PNG</strong><span>Pages 5–8</span></div><i>→</i>
-        <div class="video-node"><strong>▶ 0:20</strong><span>Story moment</span></div><i>→</i>
-        <div><strong>PNG</strong><span>Keep reading</span></div>
+        <div><strong>Pages</strong><span>Settle into the scene</span></div><i>→</i>
+        <div class="video-node"><strong>▶ Motion</strong><span>A short beat</span></div><i>→</i>
+        <div><strong>Pages</strong><span>The story continues</span></div><i>→</i>
+        <div class="video-node"><strong>▶ Moment</strong><span>Feel the turn</span></div><i>→</i>
+        <div><strong>Pages</strong><span>Keep reading</span></div>
       </div>
     </section>
   </main>
@@ -77,29 +77,23 @@
     </div>
     <footer class="reader-footer">
       <div class="progress-track"><span id="progressBar"></span></div>
-      <p>Use ← → keys, swipe, or the page controls. Videos appear directly in the sequence.</p>
+      <p>Use arrow keys or swipe to move through the story. Motion moments play right in the sequence.</p>
     </footer>
   </div>
 
   <dialog id="helpDialog">
     <form method="dialog">
       <button class="dialog-close" aria-label="Close">×</button>
-      <p class="eyebrow">CREATOR QUICK START</p>
-      <h2>Publish by editing one JSON file</h2>
+      <p class="eyebrow">ABOUT THE RACK</p>
+      <h2>How to read</h2>
       <ol>
-        <li>Put PNG pages in <code>content/your-book/pages/</code>.</li>
-        <li>Put optional MP4/WebM clips in <code>content/your-book/video/</code>.</li>
-        <li>Add the book and reading sequence to <code>rack.json</code>.</li>
-        <li>Serve the folder over HTTP. A tiny local server command is included in the README.</li>
+        <li>Browse the shelf and tap a cover to open a comic.</li>
+        <li>Move forward and back with the arrows, keyboard, or a swipe.</li>
+        <li>When a motion moment appears, play it — then keep reading.</li>
+        <li>Use the thumbnail rail or fullscreen control anytime for a clearer view.</li>
       </ol>
-      <pre><code>{
-  "type": "video",
-  "src": "content/book/video/moment-01.mp4",
-  "poster": "content/book/pages/004.png",
-  "caption": "A moment between pages",
-  "autoplay": false
-}</code></pre>
-      <button class="primary-button" value="close">Got it</button>
+      <p style="color:#d4ccbf;line-height:1.5;margin:18px 0 22px">The Rack is a Vespera Publishing reading room for illustrated stories with cinematic beats between the pages.</p>
+      <button class="primary-button" value="close">Start reading</button>
     </form>
   </dialog>
 

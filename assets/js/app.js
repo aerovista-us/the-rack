@@ -5,7 +5,7 @@ const els={grid:$('#bookGrid'),hero:$('#heroRack'),reader:$('#reader'),stage:$('
 
 async function loadRack(){
   try{const r=await fetch('rack.json',{cache:'no-store'});if(!r.ok)throw new Error(`HTTP ${r.status}`);state.data=await r.json();renderLibrary();route();}
-  catch(err){els.grid.innerHTML=`<div class="load-error"><h3>Could not load rack.json</h3><p>${escapeHtml(err.message)}</p><p>Open this folder through a local web server instead of double-clicking index.html. See README.md.</p></div>`;}
+  catch(err){els.grid.innerHTML=`<div class="load-error"><h3>The shelf couldn’t load</h3><p>Please refresh the page. If it still doesn’t appear, try again in a moment.</p></div>`;}
 }
 function renderLibrary(filter=''){
  const books=state.data.books.filter(b=>`${b.title} ${b.creator} ${b.description}`.toLowerCase().includes(filter.toLowerCase()));
