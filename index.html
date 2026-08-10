@@ -12,7 +12,8 @@
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-  <link rel="stylesheet" href="assets/css/styles.css?v=20260809f" />
+  <meta property="og:image" content="https://therack.aerovista.us/content/OMOTL/pages/00-cover-front.png" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=20260809g" />
 </head>
 <body>
   <a class="skip-link" href="#library">Skip to comics</a>
@@ -83,6 +84,7 @@
     <header class="reader-header">
       <button id="closeReader" class="icon-button" type="button" aria-label="Close reader">←</button>
       <div class="reader-title">
+        <em id="readerBookSeries" class="reader-series"></em>
         <strong id="readerBookTitle">Comic title</strong>
         <span id="readerPosition">1 / 1</span>
       </div>
@@ -101,7 +103,7 @@
     </div>
     <footer class="reader-footer">
       <div class="progress-track" aria-hidden="true"><span id="progressBar"></span></div>
-      <p class="reader-hint">Arrow keys or swipe · motion moments play in sequence</p>
+      <p class="reader-hint">Tap edges, arrows, or swipe · motion moments play in sequence</p>
     </footer>
   </div>
 
@@ -112,7 +114,7 @@
       <h2 id="helpTitle">How to read</h2>
       <ol>
         <li>Browse the shelf and tap a cover to open a comic.</li>
-        <li>Move forward and back with the arrows, keyboard, or a swipe.</li>
+        <li>Move with the side arrows, tap the left/right edges, keyboard, or a swipe.</li>
         <li>When a motion moment appears, play it — then keep reading.</li>
         <li>Use the thumbnail rail or fullscreen control anytime for a clearer view.</li>
       </ol>
@@ -139,6 +141,6 @@
     </article>
   </template>
 
-  <script src="assets/js/app.js?v=20260809f" defer></script>
+  <script src="assets/js/app.js?v=20260809g" defer></script>
 </body>
 </html>

@@ -18,6 +18,7 @@ const els = {
   reader: $('#reader'),
   stage: $('#readerStage'),
   rail: $('#thumbnailRail'),
+  series: $('#readerBookSeries'),
   title: $('#readerBookTitle'),
   position: $('#readerPosition'),
   progress: $('#progressBar'),
@@ -28,6 +29,7 @@ const els = {
   thumbsBtn: $('#toggleThumbs'),
   fullscreenBtn: $('#toggleFullscreen'),
   closeBtn: $('#closeReader'),
+  brand: document.querySelector('.brand'),
 };
 
 const isCoarse = () =>
@@ -138,6 +140,11 @@ function clampIndex(i) {
 function showReader() {
   document.body.classList.add('reader-open');
   els.reader.hidden = false;
+  if (els.series) {
+    const series = state.book.series || '';
+    els.series.textContent = series;
+    els.series.hidden = !series;
+  }
   els.title.textContent = state.book.title;
 
   if (els.fullscreenBtn) {
@@ -197,7 +204,8 @@ function renderThumbs() {
         ? `Motion moment ${i + 1}${item.caption ? `: ${item.caption}` : ''}`
         : `Go to page ${i + 1}`,
     );
-    b.setAttribute('aria-current', i === state.index ? 'true' : 'false');
+    if (i === state.index) b.setAttribute('aria-current', 'true');
+    else b.removeAttribute('aria-current');
 
     if (isVideo) {
       const v = document.createElement('div');
@@ -232,7 +240,13 @@ function renderThumbs() {
     n.className = 'thumb__num';
     n.textContent = String(i + 1);
     b.append(n);
-    b.addEventListener('click', () => goTo(i));
+    b.addEventListener('click', () => {
+      goTo(i);
+      if (isCoarse()) {
+        els.rail.classList.add('collapsed');
+        els.thumbsBtn?.setAttribute('aria-pressed', 'false');
+      }
+    });
     els.rail.append(b);
   });
 }
@@ -290,30 +304,48 @@ function renderItem() {
     }
     els.stage.append(wrap);
   } else {
+    const shell = document.createElement('div');
+    shell.className = 'page-shell is-loading';
     const img = document.createElement('img');
     img.src = item.src;
     img.alt = item.alt || `${state.book.title}, page ${state.index + 1}`;
     img.draggable = false;
     img.decoding = 'async';
+    img.addEventListener('load', () => shell.classList.remove('is-loading'));
     img.addEventListener('error', () => {
-      img.replaceWith(
+      shell.classList.remove('is-loading');
+      shell.replaceChildren(
         Object.assign(document.createElement('p'), {
+          className: 'stage-error',
           textContent: 'This page couldn’t load. Try the next arrow.',
-          style: 'color:#aaa;text-align:center;padding:24px',
         }),
       );
     });
-    els.stage.append(img);
+    shell.append(img);
+    els.stage.append(shell);
+
+    if (state.index === state.book.sequence.length - 1) {
+      const end = document.createElement('button');
+      end.type = 'button';
+      end.className = 'end-shelf-btn';
+      end.textContent = 'Back to the rack';
+      end.addEventListener('click', closeReader);
+      els.stage.append(end);
+    }
   }
 
-  els.position.textContent = `${state.index + 1} / ${state.book.sequence.length}`;
-  els.progress.style.width = `${((state.index + 1) / state.book.sequence.length) * 100}%`;
+  const n = state.book.sequence.length;
+  const kind = item.type === 'video' ? 'Motion' : 'Page';
+  els.position.textContent = `${kind} · ${state.index + 1} / ${n}`;
+  els.progress.style.width = `${((state.index + 1) / n) * 100}%`;
   els.prev.disabled = state.index === 0;
-  els.next.disabled = state.index === state.book.sequence.length - 1;
+  els.next.disabled = state.index === n - 1;
 
   [...els.rail.children].forEach((x, i) => {
-    x.classList.toggle('active', i === state.index);
-    x.setAttribute('aria-current', i === state.index ? 'true' : 'false');
+    const on = i === state.index;
+    x.classList.toggle('active', on);
+    if (on) x.setAttribute('aria-current', 'true');
+    else x.removeAttribute('aria-current');
   });
   els.rail.children[state.index]?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
 
@@ -323,11 +355,13 @@ function renderItem() {
     `#/read/${encodeURIComponent(state.book.id)}/${state.index + 1}`,
   );
 
-  // Warm the next image (ignore videos).
-  const next = state.book.sequence[state.index + 1];
-  if (next?.type === 'image' && next.src) {
-    const warm = new Image();
-    warm.src = next.src;
+  // Warm the next couple of images.
+  for (let ahead = 1; ahead <= 2; ahead++) {
+    const next = state.book.sequence[state.index + ahead];
+    if (next?.type === 'image' && next.src) {
+      const warm = new Image();
+      warm.src = next.src;
+    }
   }
 }
 
@@ -389,12 +423,20 @@ els.dialog?.addEventListener('close', () => {
 
 window.addEventListener('hashchange', route);
 
+els.brand?.addEventListener('click', (e) => {
+  if (!els.reader.hidden) {
+    e.preventDefault();
+    closeReader();
+  }
+});
+
 window.addEventListener('keydown', (e) => {
   if (els.dialog?.open) return;
   if (els.reader.hidden) return;
   const tag = (e.target && e.target.tagName) || '';
   if (tag === 'VIDEO' || tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
-  if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
+
+  if (e.key === 'ArrowRight' || e.key === 'PageDown') {
     e.preventDefault();
     goTo(state.index + 1);
   }
@@ -402,7 +444,37 @@ window.addEventListener('keydown', (e) => {
     e.preventDefault();
     goTo(state.index - 1);
   }
-  if (e.key === 'Escape' && !document.fullscreenElement) closeReader();
+  if (e.key === 'Home') {
+    e.preventDefault();
+    goTo(0);
+  }
+  if (e.key === 'End') {
+    e.preventDefault();
+    goTo(state.book.sequence.length - 1);
+  }
+  if (e.key === ' ') {
+    const video = els.stage.querySelector('video');
+    if (video && !video.paused) return;
+    e.preventDefault();
+    goTo(state.index + 1);
+  }
+  if (e.key === 'Escape' && !document.fullscreenElement) {
+    if (isCoarse() && !els.rail.classList.contains('collapsed')) {
+      els.rail.classList.add('collapsed');
+      els.thumbsBtn?.setAttribute('aria-pressed', 'false');
+      return;
+    }
+    closeReader();
+  }
+});
+
+els.stage.addEventListener('click', (e) => {
+  if (e.target.closest('video, button, a, .video-card')) return;
+  const rect = els.stage.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const third = rect.width / 3;
+  if (x < third) goTo(state.index - 1);
+  else if (x > third * 2) goTo(state.index + 1);
 });
 
 let touchX = 0;
