@@ -8,7 +8,7 @@
   "creator": "Vespera Publishing",
   "format": {
     "width": 1200,
-    "height": 1800,
+    "height": 1600,
     "readingDirection": "ltr"
   },
   "physical": {
@@ -28,23 +28,27 @@
       "hard": true,
       "src": "../content/OMOTL/pages/00-cover-front.png",
       "alt": "Old Man of the Lake front cover",
+      "fit": "contain",
       "hideLabel": true
     },
     {
       "type": "image",
       "role": "inside-front",
       "src": "../content/OMOTL/pages/01-inside-front.png",
-      "alt": "Inside front cover"
+      "alt": "Inside front cover",
+      "fit": "cover"
     },
     {
       "type": "image",
       "src": "../content/OMOTL/pages/02-p01.png",
-      "alt": "Old Man of the Lake page 1"
+      "alt": "Old Man of the Lake page 1",
+      "fit": "cover"
     },
     {
       "type": "image",
       "src": "../content/OMOTL/pages/03-p03.png",
-      "alt": "Old Man of the Lake page 3"
+      "alt": "Old Man of the Lake page 3",
+      "fit": "cover"
     },
     {
       "type": "html",
@@ -54,12 +58,14 @@
     {
       "type": "image",
       "src": "../content/OMOTL/pages/04-p04.png",
-      "alt": "Old Man of the Lake page 4"
+      "alt": "Old Man of the Lake page 4",
+      "fit": "cover"
     },
     {
       "type": "image",
       "src": "../content/OMOTL/pages/05-p05.png",
-      "alt": "Old Man of the Lake page 5"
+      "alt": "Old Man of the Lake page 5",
+      "fit": "cover"
     },
     {
       "type": "image",
@@ -67,6 +73,7 @@
       "hard": true,
       "src": "../content/OMOTL/pages/13-cover-back.png",
       "alt": "Old Man of the Lake back cover",
+      "fit": "contain",
       "hideLabel": true
     }
   ]
