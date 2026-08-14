@@ -3,12 +3,12 @@
   "schemaVersion": "0.1",
   "id": "omotl-reader-engine-proof",
   "series": "Old Man of the Lake",
-  "title": "Issue No. 1 — Reader Engine Proof",
+  "title": "Issue No. 1 — The Lake's Talking",
   "publisher": "Vespera Publishing",
   "creator": "Vespera Publishing",
   "format": {
     "width": 1200,
-    "height": 1600,
+    "height": 1800,
     "readingDirection": "ltr"
   },
   "physical": {
