@@ -107,7 +107,9 @@ button { font: inherit; }
   display: grid;
   place-items: center;
   transform-style: preserve-3d;
+  transition: opacity 120ms ease;
 }
+.reader-app.is-reflowing .book-stage { opacity: .78; }
 #book { width: 100%; height: 100%; }
 
 .page-stack {
@@ -178,7 +180,8 @@ button { font: inherit; }
 }
 .vp-page__media {
   display: block;
-  object-fit: contain;
+  object-fit: cover;
+  object-position: 50% 50%;
   background: var(--paper);
   user-select: none;
   -webkit-user-drag: none;
