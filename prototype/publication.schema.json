@@ -3,35 +3,80 @@
   "$id": "https://therack.aerovista.us/prototype/publication.schema.json",
   "title": "Vespera Publication Manifest",
   "type": "object",
-  "required": ["schemaVersion", "id", "title", "pages"],
+  "required": [
+    "schemaVersion",
+    "id",
+    "title",
+    "pages"
+  ],
   "properties": {
-    "schemaVersion": { "type": "string", "const": "0.1" },
-    "id": { "type": "string", "minLength": 1 },
-    "series": { "type": "string" },
-    "title": { "type": "string", "minLength": 1 },
-    "publisher": { "type": "string" },
-    "creator": { "type": "string" },
+    "schemaVersion": {
+      "type": "string",
+      "const": "0.1"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "series": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "publisher": {
+      "type": "string"
+    },
+    "creator": {
+      "type": "string"
+    },
     "format": {
       "type": "object",
       "properties": {
-        "width": { "type": "number", "exclusiveMinimum": 0 },
-        "height": { "type": "number", "exclusiveMinimum": 0 },
-        "readingDirection": { "enum": ["ltr", "rtl"] }
+        "width": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "height": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "readingDirection": {
+          "enum": [
+            "ltr",
+            "rtl"
+          ]
+        }
       },
       "additionalProperties": true
     },
     "physical": {
       "type": "object",
       "properties": {
-        "binding": { "type": "string" },
-        "cover": { "type": "string" },
+        "binding": {
+          "type": "string"
+        },
+        "cover": {
+          "type": "string"
+        },
         "paper": {
           "type": "object",
           "properties": {
-            "profile": { "type": "string" },
-            "color": { "type": "string" },
-            "edgeColor": { "type": "string" },
-            "textureOpacity": { "type": "number", "minimum": 0, "maximum": 0.5 }
+            "profile": {
+              "type": "string"
+            },
+            "color": {
+              "type": "string"
+            },
+            "edgeColor": {
+              "type": "string"
+            },
+            "textureOpacity": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 0.5
+            }
           },
           "additionalProperties": true
         }
@@ -45,28 +90,72 @@
         "oneOf": [
           {
             "type": "object",
-            "required": ["type", "src"],
+            "required": [
+              "type",
+              "src"
+            ],
             "properties": {
-              "type": { "const": "image" },
-              "src": { "type": "string", "minLength": 1 },
-              "alt": { "type": "string" },
-              "role": { "type": "string" },
-              "label": { "type": "string" },
-              "hard": { "type": "boolean" },
-              "hideLabel": { "type": "boolean" }
+              "type": {
+                "const": "image"
+              },
+              "src": {
+                "type": "string",
+                "minLength": 1
+              },
+              "alt": {
+                "type": "string"
+              },
+              "role": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              },
+              "hard": {
+                "type": "boolean"
+              },
+              "hideLabel": {
+                "type": "boolean"
+              },
+              "fit": {
+                "enum": [
+                  "cover",
+                  "contain"
+                ]
+              },
+              "position": {
+                "type": "string",
+                "minLength": 1
+              }
             },
             "additionalProperties": true
           },
           {
             "type": "object",
-            "required": ["type", "html"],
+            "required": [
+              "type",
+              "html"
+            ],
             "properties": {
-              "type": { "const": "html" },
-              "html": { "type": "string", "minLength": 1 },
-              "role": { "type": "string" },
-              "label": { "type": "string" },
-              "hard": { "type": "boolean" },
-              "hideLabel": { "type": "boolean" }
+              "type": {
+                "const": "html"
+              },
+              "html": {
+                "type": "string",
+                "minLength": 1
+              },
+              "role": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              },
+              "hard": {
+                "type": "boolean"
+              },
+              "hideLabel": {
+                "type": "boolean"
+              }
             },
             "additionalProperties": true
           }

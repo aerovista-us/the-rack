@@ -6,6 +6,7 @@ const state = {
   paperEnabled: true,
   resizeTimer: null,
   viewport: null,
+  reflowToken: 0,
 };
 
 const els = {
@@ -56,6 +57,9 @@ function validateManifest(manifest) {
     if (!['image', 'html'].includes(page?.type)) errors.push(`pages[${index}].type must be image or html in v0`);
     if (page?.type === 'image' && !page.src) errors.push(`pages[${index}].src is required for image pages`);
     if (page?.type === 'html' && !page.html) errors.push(`pages[${index}].html is required for html pages`);
+    if (page?.fit && !['cover', 'contain'].includes(page.fit)) {
+      errors.push(`pages[${index}].fit must be cover or contain`);
+    }
   });
 
   if (errors.length) throw new Error(errors.join('; '));
@@ -94,6 +98,8 @@ function createPage(page, index) {
     img.alt = page.alt || `${state.manifest.title}, page ${index + 1}`;
     img.draggable = false;
     img.decoding = 'async';
+    img.style.objectFit = page.fit || 'cover';
+    img.style.objectPosition = page.position || '50% 50%';
     node.append(img);
   } else if (page.type === 'html') {
     const content = document.createElement('article');
@@ -122,7 +128,7 @@ function buildPages(manifest) {
 
 function pageRatio(manifest) {
   const width = Number(manifest.format?.width) || 900;
-  const height = Number(manifest.format?.height) || 1350;
+  const height = Number(manifest.format?.height) || 1200;
   return height / width;
 }
 
@@ -132,19 +138,29 @@ function calculatePageBounds(manifest) {
   const stageWidth = Math.max(1, rect.width || window.innerWidth * 0.9);
   const stageHeight = Math.max(1, rect.height || window.innerHeight * 0.75);
 
-  // A wide viewport should show a spread, but the whole spread must fit vertically.
-  // This is the key difference from v0, which could honor width while clipping height.
-  const spread = stageWidth > stageHeight * 1.22;
+  // Reader policy: portrait viewport = one page. A spread is only allowed
+  // when the viewport itself is landscape and the stage has useful horizontal room.
+  const viewportLandscape = window.innerWidth > window.innerHeight;
+  const spread = viewportLandscape && stageWidth > stageHeight * 1.08 && stageWidth >= 620;
   const columns = spread ? 2 : 1;
-  const gutterAllowance = spread ? 14 : 4;
+  const gutterAllowance = spread ? 12 : 4;
   const maxByWidth = (stageWidth - gutterAllowance) / columns;
   const maxByHeight = (stageHeight - 6) / ratio;
   const fittedWidth = Math.max(80, Math.floor(Math.min(maxByWidth, maxByHeight) * 0.985));
-  const fittedHeight = Math.max(120, Math.floor(fittedWidth * ratio));
+  const fittedHeight = Math.max(100, Math.floor(fittedWidth * ratio));
+
+  // StPageFlip switches to portrait only when blockWidth < minWidth * 2.
+  // For single-page mode, keep minWidth near the fitted page width so the
+  // library deterministically chooses portrait instead of guessing landscape.
+  const minWidth = spread
+    ? Math.min(90, fittedWidth)
+    : Math.max(80, Math.min(fittedWidth, Math.floor(fittedWidth * 0.92)));
+  const minHeight = Math.max(100, Math.min(fittedHeight, Math.floor(minWidth * ratio)));
 
   return {
-    minWidth: Math.min(90, fittedWidth),
-    minHeight: Math.min(Math.round(90 * ratio), fittedHeight),
+    spread,
+    minWidth,
+    minHeight,
     maxWidth: fittedWidth,
     maxHeight: fittedHeight,
   };
@@ -157,10 +173,10 @@ function initPageFlip(manifest, initialIndex = 0) {
 
   const format = manifest.format || {};
   const pageWidth = Number(format.width) || 900;
-  const pageHeight = Number(format.height) || 1350;
+  const pageHeight = Number(format.height) || 1200;
   const bounds = calculatePageBounds(manifest);
 
-  state.pageFlip = new St.PageFlip(els.book, {
+  const pageFlip = new St.PageFlip(els.book, {
     width: pageWidth,
     height: pageHeight,
     size: 'stretch',
@@ -175,19 +191,21 @@ function initPageFlip(manifest, initialIndex = 0) {
     autoSize: true,
     drawShadow: true,
     flippingTime: 650,
+    startPage: Math.max(0, Math.min(initialIndex, manifest.pages.length - 1)),
   });
 
-  state.pageFlip.loadFromHTML(document.querySelectorAll('.vp-page'));
-  state.pageFlip.on('flip', updateReaderState);
-  state.pageFlip.on('changeOrientation', updateReaderState);
-  state.pageFlip.on('changeState', () => requestAnimationFrame(updateReaderState));
+  state.pageFlip = pageFlip;
 
-  if (initialIndex > 0) {
-    requestAnimationFrame(() => {
-      state.pageFlip?.turnToPage?.(initialIndex);
-      updateReaderState();
-    });
-  }
+  pageFlip.on('init', () => {
+    if (state.pageFlip !== pageFlip) return;
+    els.app.classList.remove('is-reflowing');
+    updateReaderState();
+  });
+  pageFlip.on('flip', updateReaderState);
+  pageFlip.on('changeOrientation', updateReaderState);
+  pageFlip.on('changeState', () => requestAnimationFrame(updateReaderState));
+
+  pageFlip.loadFromHTML(document.querySelectorAll('.vp-page'));
 }
 
 function currentIndex() {
@@ -242,19 +260,50 @@ async function toggleFullscreen() {
   }
 }
 
+function replaceBookHost() {
+  const replacement = document.createElement('div');
+  replacement.id = 'book';
+
+  if (els.book?.isConnected) {
+    els.book.replaceWith(replacement);
+  } else {
+    els.stage.append(replacement);
+  }
+
+  els.book = replacement;
+}
+
 function reflowReader() {
   if (!state.manifest) return;
+
   const index = currentIndex();
+  const token = ++state.reflowToken;
+  els.app.classList.add('is-reflowing');
+  els.previous.disabled = true;
+  els.next.disabled = true;
+
   try {
     state.pageFlip?.destroy?.();
   } catch (error) {
     console.warn('PageFlip destroy during reflow failed', error);
   }
+
   state.pageFlip = null;
+
+  // PageFlip mutates its host with wrappers, classes and inline sizing.
+  // Always replace the host so a new orientation starts from clean geometry.
+  replaceBookHost();
   buildPages(state.manifest);
-  initPageFlip(state.manifest, index);
-  state.viewport = { width: window.innerWidth, height: window.innerHeight };
-  requestAnimationFrame(updateReaderState);
+
+  // Android browser chrome/orientation changes can report an intermediate
+  // viewport for a frame or two. Wait two frames before measuring the stage.
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      if (token !== state.reflowToken) return;
+      initPageFlip(state.manifest, index);
+      state.viewport = { width: window.innerWidth, height: window.innerHeight };
+    });
+  });
 }
 
 function scheduleReflow(force = false) {
@@ -264,8 +313,11 @@ function scheduleReflow(force = false) {
     const next = { width: window.innerWidth, height: window.innerHeight };
     const orientationChanged = (previous.width > previous.height) !== (next.width > next.height);
     const widthChanged = Math.abs(previous.width - next.width) > 72;
-    if (force || orientationChanged || widthChanged) reflowReader();
-  }, 140);
+
+    if (force || orientationChanged || widthChanged) {
+      reflowReader();
+    }
+  }, 260);
 }
 
 function bindControls() {
@@ -301,7 +353,6 @@ async function start() {
     state.viewport = { width: window.innerWidth, height: window.innerHeight };
     initPageFlip(state.manifest);
     bindControls();
-    requestAnimationFrame(updateReaderState);
   } catch (error) {
     fail('The publication could not be opened.', error.message || String(error));
   }
