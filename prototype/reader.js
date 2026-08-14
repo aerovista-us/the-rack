@@ -4,11 +4,14 @@ const state = {
   manifest: null,
   pageFlip: null,
   paperEnabled: true,
+  resizeTimer: null,
+  viewport: null,
 };
 
 const els = {
   app: document.querySelector('#readerApp'),
   book: document.querySelector('#book'),
+  stage: document.querySelector('#bookStage'),
   title: document.querySelector('#publicationTitle'),
   meta: document.querySelector('#publicationMeta'),
   status: document.querySelector('#pageStatus'),
@@ -82,6 +85,7 @@ function createPage(page, index) {
   node.dataset.side = index % 2 === 0 ? 'right' : 'left';
   if (page.hard || /cover/i.test(page.role || '')) node.dataset.density = 'hard';
   if (page.role) node.dataset.role = page.role;
+  if (!state.paperEnabled) node.classList.add('paper-off');
 
   if (page.type === 'image') {
     const img = document.createElement('img');
@@ -98,7 +102,10 @@ function createPage(page, index) {
     node.append(content);
   }
 
-  if (!page.hideLabel) {
+  // Image publications often already print page numbers into the artwork.
+  // Keep engine labels for HTML pages or when a publication explicitly asks for one.
+  const showEngineLabel = page.hideLabel !== true && (page.type === 'html' || Boolean(page.label));
+  if (showEngineLabel) {
     const label = document.createElement('span');
     label.className = 'vp-page__label';
     label.textContent = page.label || String(index + 1).padStart(2, '0');
@@ -113,24 +120,54 @@ function buildPages(manifest) {
   els.book.replaceChildren(fragment);
 }
 
-function initPageFlip(manifest) {
+function pageRatio(manifest) {
+  const width = Number(manifest.format?.width) || 900;
+  const height = Number(manifest.format?.height) || 1350;
+  return height / width;
+}
+
+function calculatePageBounds(manifest) {
+  const ratio = pageRatio(manifest);
+  const rect = els.stage.getBoundingClientRect();
+  const stageWidth = Math.max(1, rect.width || window.innerWidth * 0.9);
+  const stageHeight = Math.max(1, rect.height || window.innerHeight * 0.75);
+
+  // A wide viewport should show a spread, but the whole spread must fit vertically.
+  // This is the key difference from v0, which could honor width while clipping height.
+  const spread = stageWidth > stageHeight * 1.22;
+  const columns = spread ? 2 : 1;
+  const gutterAllowance = spread ? 14 : 4;
+  const maxByWidth = (stageWidth - gutterAllowance) / columns;
+  const maxByHeight = (stageHeight - 6) / ratio;
+  const fittedWidth = Math.max(80, Math.floor(Math.min(maxByWidth, maxByHeight) * 0.985));
+  const fittedHeight = Math.max(120, Math.floor(fittedWidth * ratio));
+
+  return {
+    minWidth: Math.min(90, fittedWidth),
+    minHeight: Math.min(Math.round(90 * ratio), fittedHeight),
+    maxWidth: fittedWidth,
+    maxHeight: fittedHeight,
+  };
+}
+
+function initPageFlip(manifest, initialIndex = 0) {
   if (!window.St?.PageFlip) {
     throw new Error('StPageFlip did not load from ../vendor/page-flip.browser.min.js');
   }
 
   const format = manifest.format || {};
   const pageWidth = Number(format.width) || 900;
-  const pageHeight = Number(format.height) || 1200;
-  const ratio = pageHeight / pageWidth;
+  const pageHeight = Number(format.height) || 1350;
+  const bounds = calculatePageBounds(manifest);
 
   state.pageFlip = new St.PageFlip(els.book, {
     width: pageWidth,
     height: pageHeight,
     size: 'stretch',
-    minWidth: 280,
-    maxWidth: 900,
-    minHeight: Math.round(280 * ratio),
-    maxHeight: 1200,
+    minWidth: bounds.minWidth,
+    maxWidth: bounds.maxWidth,
+    minHeight: bounds.minHeight,
+    maxHeight: bounds.maxHeight,
     maxShadowOpacity: 0.42,
     showCover: true,
     mobileScrollSupport: false,
@@ -144,6 +181,13 @@ function initPageFlip(manifest) {
   state.pageFlip.on('flip', updateReaderState);
   state.pageFlip.on('changeOrientation', updateReaderState);
   state.pageFlip.on('changeState', () => requestAnimationFrame(updateReaderState));
+
+  if (initialIndex > 0) {
+    requestAnimationFrame(() => {
+      state.pageFlip?.turnToPage?.(initialIndex);
+      updateReaderState();
+    });
+  }
 }
 
 function currentIndex() {
@@ -151,25 +195,34 @@ function currentIndex() {
   return Math.max(0, state.pageFlip.getCurrentPageIndex?.() || 0);
 }
 
+function currentOrientation() {
+  return state.pageFlip?.getOrientation?.() || 'portrait';
+}
+
 function updateReaderState() {
   if (!state.manifest || !state.pageFlip) return;
   const total = state.manifest.pages.length;
   const index = Math.min(currentIndex(), total - 1);
   const progress = total <= 1 ? 1 : index / (total - 1);
+  const orientation = currentOrientation();
+  const canShowSpread = orientation === 'landscape' && index > 0 && index < total - 1;
+  const endIndex = Math.min(total - 1, index + 1);
 
-  els.status.textContent = `Page ${index + 1} of ${total}`;
+  els.status.textContent = canShowSpread && endIndex > index
+    ? `Pages ${index + 1}–${endIndex + 1} of ${total}`
+    : `Page ${index + 1} of ${total}`;
   els.progress.style.width = `${Math.max(2, ((index + 1) / total) * 100)}%`;
   els.previous.disabled = index <= 0;
   els.next.disabled = index >= total - 1;
 
-  const maxDepth = 13;
-  const minDepth = 2;
+  const maxDepth = 11;
+  const minDepth = 1.5;
   const leftDepth = minDepth + maxDepth * progress;
   const rightDepth = minDepth + maxDepth * (1 - progress);
   els.leftStack.style.setProperty('--stack-depth', `${leftDepth.toFixed(1)}px`);
   els.rightStack.style.setProperty('--stack-depth', `${rightDepth.toFixed(1)}px`);
-  els.leftStack.style.setProperty('--stack-opacity', String(0.28 + 0.7 * progress));
-  els.rightStack.style.setProperty('--stack-opacity', String(0.28 + 0.7 * (1 - progress)));
+  els.leftStack.style.setProperty('--stack-opacity', String(0.24 + 0.62 * progress));
+  els.rightStack.style.setProperty('--stack-opacity', String(0.24 + 0.62 * (1 - progress)));
 }
 
 function togglePaper() {
@@ -189,6 +242,32 @@ async function toggleFullscreen() {
   }
 }
 
+function reflowReader() {
+  if (!state.manifest) return;
+  const index = currentIndex();
+  try {
+    state.pageFlip?.destroy?.();
+  } catch (error) {
+    console.warn('PageFlip destroy during reflow failed', error);
+  }
+  state.pageFlip = null;
+  buildPages(state.manifest);
+  initPageFlip(state.manifest, index);
+  state.viewport = { width: window.innerWidth, height: window.innerHeight };
+  requestAnimationFrame(updateReaderState);
+}
+
+function scheduleReflow(force = false) {
+  window.clearTimeout(state.resizeTimer);
+  state.resizeTimer = window.setTimeout(() => {
+    const previous = state.viewport || { width: window.innerWidth, height: window.innerHeight };
+    const next = { width: window.innerWidth, height: window.innerHeight };
+    const orientationChanged = (previous.width > previous.height) !== (next.width > next.height);
+    const widthChanged = Math.abs(previous.width - next.width) > 72;
+    if (force || orientationChanged || widthChanged) reflowReader();
+  }, 140);
+}
+
 function bindControls() {
   els.previous.addEventListener('click', () => state.pageFlip?.flipPrev('top'));
   els.next.addEventListener('click', () => state.pageFlip?.flipNext('top'));
@@ -205,6 +284,10 @@ function bindControls() {
       state.pageFlip?.flipNext('top');
     }
   });
+
+  window.addEventListener('resize', () => scheduleReflow(false));
+  window.addEventListener('orientationchange', () => scheduleReflow(true));
+  document.addEventListener('fullscreenchange', () => scheduleReflow(true));
 }
 
 async function start() {
@@ -215,6 +298,7 @@ async function start() {
     els.meta.textContent = [state.manifest.series, state.manifest.publisher].filter(Boolean).join(' · ') || 'Vespera Publication Engine · v0';
     document.title = `${state.manifest.title} — Vespera Publication Engine`;
     buildPages(state.manifest);
+    state.viewport = { width: window.innerWidth, height: window.innerHeight };
     initPageFlip(state.manifest);
     bindControls();
     requestAnimationFrame(updateReaderState);
