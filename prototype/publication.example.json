@@ -1,0 +1,73 @@
+{
+  "$schema": "./publication.schema.json",
+  "schemaVersion": "0.1",
+  "id": "omotl-reader-engine-proof",
+  "series": "Old Man of the Lake",
+  "title": "Issue No. 1 — Reader Engine Proof",
+  "publisher": "Vespera Publishing",
+  "creator": "Vespera Publishing",
+  "format": {
+    "width": 1200,
+    "height": 1600,
+    "readingDirection": "ltr"
+  },
+  "physical": {
+    "binding": "stapled-comic",
+    "cover": "soft",
+    "paper": {
+      "profile": "comic-matte",
+      "color": "#f2e9db",
+      "edgeColor": "#d5c4ac",
+      "textureOpacity": 0.15
+    }
+  },
+  "pages": [
+    {
+      "type": "image",
+      "role": "front-cover",
+      "hard": true,
+      "src": "../content/OMOTL/pages/00-cover-front.png",
+      "alt": "Old Man of the Lake front cover",
+      "hideLabel": true
+    },
+    {
+      "type": "image",
+      "role": "inside-front",
+      "src": "../content/OMOTL/pages/01-inside-front.png",
+      "alt": "Inside front cover"
+    },
+    {
+      "type": "image",
+      "src": "../content/OMOTL/pages/02-p01.png",
+      "alt": "Old Man of the Lake page 1"
+    },
+    {
+      "type": "image",
+      "src": "../content/OMOTL/pages/03-p03.png",
+      "alt": "Old Man of the Lake page 3"
+    },
+    {
+      "type": "html",
+      "label": "Engine proof",
+      "html": "<p style=\"letter-spacing:.14em;text-transform:uppercase;font-size:11px\">Vespera Publication Engine · v0</p><h1>HTML belongs in the book, too.</h1><p>This page is rendered from the publication manifest rather than from an image. The reader does not know or care which title it is displaying.</p><p>The same manifest contract can later describe editorial pages, field notes, interactive inserts, audio, video, animation, galleries, or governed embeds.</p>"
+    },
+    {
+      "type": "image",
+      "src": "../content/OMOTL/pages/04-p04.png",
+      "alt": "Old Man of the Lake page 4"
+    },
+    {
+      "type": "image",
+      "src": "../content/OMOTL/pages/05-p05.png",
+      "alt": "Old Man of the Lake page 5"
+    },
+    {
+      "type": "image",
+      "role": "back-cover",
+      "hard": true,
+      "src": "../content/OMOTL/pages/13-cover-back.png",
+      "alt": "Old Man of the Lake back cover",
+      "hideLabel": true
+    }
+  ]
+}
