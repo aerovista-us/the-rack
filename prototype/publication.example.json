@@ -25,7 +25,7 @@
     {
       "type": "image",
       "role": "front-cover",
-      "hard": true,
+      "turn": "flexible",
       "src": "../content/OMOTL/pages/00-cover-front.png",
       "alt": "Old Man of the Lake front cover",
       "fit": "contain",
@@ -35,7 +35,7 @@
     {
       "type": "image",
       "role": "inside-front",
-      "hard": true,
+      "turn": "flexible",
       "src": "../content/OMOTL/pages/01-inside-front.png",
       "alt": "Inside front cover",
       "fit": "contain",
@@ -77,7 +77,7 @@
     {
       "type": "image",
       "role": "back-cover",
-      "hard": true,
+      "turn": "flexible",
       "src": "../content/OMOTL/pages/13-cover-back.png",
       "alt": "Old Man of the Lake back cover",
       "fit": "contain",
