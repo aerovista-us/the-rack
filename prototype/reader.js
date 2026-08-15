@@ -26,6 +26,8 @@ const els = {
   error: document.querySelector('#errorPanel'),
 };
 
+const COVER_ROLES = new Set(['front-cover', 'inside-front', 'inside-back', 'back-cover']);
+
 function manifestUrl() {
   const params = new URLSearchParams(location.search);
   return params.get('manifest') || 'publication.example.json';
@@ -63,6 +65,9 @@ function validateManifest(manifest) {
     if (page?.edgeFill && !['none', 'soft'].includes(page.edgeFill)) {
       errors.push(`pages[${index}].edgeFill must be none or soft`);
     }
+    if (page?.turn && !['flexible', 'rigid'].includes(page.turn)) {
+      errors.push(`pages[${index}].turn must be flexible or rigid`);
+    }
   });
 
   if (errors.length) throw new Error(errors.join('; '));
@@ -86,10 +91,28 @@ function applyPhysicalProfile(manifest) {
   }
 }
 
-function usesCoverStock(page) {
-  if (page?.hard) return true;
-  const role = String(page?.role || '').toLowerCase();
-  return ['front-cover', 'inside-front', 'inside-back', 'back-cover'].includes(role);
+function isCoverStock(page) {
+  return COVER_ROLES.has(String(page?.role || '').toLowerCase());
+}
+
+function usesRigidPhysics(page) {
+  // `turn` controls deformation. The legacy `hard` flag remains supported,
+  // but visual cover stock no longer implies rigid StPageFlip physics.
+  if (page?.turn) return page.turn === 'rigid';
+  return page?.hard === true;
+}
+
+function installStockStyles() {
+  if (document.querySelector('#vesperaStockStyles')) return;
+  const style = document.createElement('style');
+  style.id = 'vesperaStockStyles';
+  style.textContent = `
+    .vp-page[data-stock="cover"] {
+      --texture-opacity: .11;
+      box-shadow: 0 11px 36px rgba(0,0,0,.28), inset 0 0 0 1px rgba(255,255,255,.18);
+    }
+  `;
+  document.head.append(style);
 }
 
 function createSoftEdgeFill(src, position) {
@@ -117,7 +140,8 @@ function createPage(page, index) {
   const node = document.createElement('div');
   node.className = 'vp-page';
   node.dataset.side = index % 2 === 0 ? 'right' : 'left';
-  if (usesCoverStock(page)) node.dataset.density = 'hard';
+  if (isCoverStock(page)) node.dataset.stock = 'cover';
+  if (usesRigidPhysics(page)) node.dataset.density = 'hard';
   if (page.role) node.dataset.role = page.role;
   if (!state.paperEnabled) node.classList.add('paper-off');
 
@@ -221,11 +245,8 @@ function initPageFlip(manifest, initialIndex = 0) {
   const pageWidth = Number(format.width) || 900;
   const pageHeight = Number(format.height) || 1200;
   const bounds = calculatePageBounds(manifest);
+  const rigidOuterCover = usesRigidPhysics(manifest.pages[0]);
 
-  // StPageFlip hard-page animation draws at top: 0 while settled pages use
-  // rect.top. If the render block is taller than the physical page, the cover
-  // visibly hops during the turn. Lock the library host to the exact physical
-  // page/spread box and let our outer stage handle centering instead.
   lockBookHost(bounds);
 
   const pageFlip = new St.PageFlip(els.book, {
@@ -237,11 +258,15 @@ function initPageFlip(manifest, initialIndex = 0) {
     minHeight: bounds.minHeight,
     maxHeight: bounds.maxHeight,
     maxShadowOpacity: 0.42,
-    showCover: true,
+    // StPageFlip's showCover mode forcibly converts the first/last sheet to
+    // rigid board physics. Only enable it when the publication explicitly asks
+    // for a rigid outer cover; soft comic covers should curl like paper.
+    showCover: rigidOuterCover,
     mobileScrollSupport: false,
     usePortrait: true,
     autoSize: false,
     drawShadow: true,
+    showPageCorners: true,
     flippingTime: 650,
     startPage: Math.max(0, Math.min(initialIndex, manifest.pages.length - 1)),
   });
@@ -275,7 +300,7 @@ function updateReaderState() {
   const index = Math.min(currentIndex(), total - 1);
   const progress = total <= 1 ? 1 : index / (total - 1);
   const orientation = currentOrientation();
-  const canShowSpread = orientation === 'landscape' && index > 0 && index < total - 1;
+  const canShowSpread = orientation === 'landscape' && index >= 0 && index < total - 1;
   const endIndex = Math.min(total - 1, index + 1);
 
   els.status.textContent = canShowSpread && endIndex > index
@@ -393,6 +418,7 @@ function bindControls() {
 async function start() {
   try {
     state.manifest = await loadManifest();
+    installStockStyles();
     applyPhysicalProfile(state.manifest);
     els.title.textContent = state.manifest.title;
     els.meta.textContent = [state.manifest.series, state.manifest.publisher].filter(Boolean).join(' · ') || 'Vespera Publication Engine · v0';
