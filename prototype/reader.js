@@ -147,8 +147,6 @@ function createPage(page, index) {
     node.append(content);
   }
 
-  // Image publications often already print page numbers into the artwork.
-  // Keep engine labels for HTML pages or when a publication explicitly asks for one.
   const showEngineLabel = page.hideLabel !== true && (page.type === 'html' || Boolean(page.label));
   if (showEngineLabel) {
     const label = document.createElement('span');
@@ -177,8 +175,6 @@ function calculatePageBounds(manifest) {
   const stageWidth = Math.max(1, rect.width || window.innerWidth * 0.9);
   const stageHeight = Math.max(1, rect.height || window.innerHeight * 0.75);
 
-  // Reader policy: portrait viewport = one page. A spread is only allowed
-  // when the viewport itself is landscape and the stage has useful horizontal room.
   const viewportLandscape = window.innerWidth > window.innerHeight;
   const spread = viewportLandscape && stageWidth > stageHeight * 1.08 && stageWidth >= 620;
   const columns = spread ? 2 : 1;
@@ -188,9 +184,6 @@ function calculatePageBounds(manifest) {
   const fittedWidth = Math.max(80, Math.floor(Math.min(maxByWidth, maxByHeight) * 0.985));
   const fittedHeight = Math.max(100, Math.floor(fittedWidth * ratio));
 
-  // StPageFlip switches to portrait only when blockWidth < minWidth * 2.
-  // For single-page mode, keep minWidth near the fitted page width so the
-  // library deterministically chooses portrait instead of guessing landscape.
   const minWidth = spread
     ? Math.min(90, fittedWidth)
     : Math.max(80, Math.min(fittedWidth, Math.floor(fittedWidth * 0.92)));
@@ -205,6 +198,20 @@ function calculatePageBounds(manifest) {
   };
 }
 
+function lockBookHost(bounds) {
+  const hostWidth = Math.max(1, Math.round(bounds.maxWidth * (bounds.spread ? 2 : 1)));
+  const hostHeight = Math.max(1, Math.round(bounds.maxHeight));
+
+  Object.assign(els.book.style, {
+    width: `${hostWidth}px`,
+    height: `${hostHeight}px`,
+    maxWidth: `${hostWidth}px`,
+    maxHeight: `${hostHeight}px`,
+    position: 'relative',
+    flex: '0 0 auto',
+  });
+}
+
 function initPageFlip(manifest, initialIndex = 0) {
   if (!window.St?.PageFlip) {
     throw new Error('StPageFlip did not load from ../vendor/page-flip.browser.min.js');
@@ -214,6 +221,12 @@ function initPageFlip(manifest, initialIndex = 0) {
   const pageWidth = Number(format.width) || 900;
   const pageHeight = Number(format.height) || 1200;
   const bounds = calculatePageBounds(manifest);
+
+  // StPageFlip hard-page animation draws at top: 0 while settled pages use
+  // rect.top. If the render block is taller than the physical page, the cover
+  // visibly hops during the turn. Lock the library host to the exact physical
+  // page/spread box and let our outer stage handle centering instead.
+  lockBookHost(bounds);
 
   const pageFlip = new St.PageFlip(els.book, {
     width: pageWidth,
@@ -227,7 +240,7 @@ function initPageFlip(manifest, initialIndex = 0) {
     showCover: true,
     mobileScrollSupport: false,
     usePortrait: true,
-    autoSize: true,
+    autoSize: false,
     drawShadow: true,
     flippingTime: 650,
     startPage: Math.max(0, Math.min(initialIndex, manifest.pages.length - 1)),
@@ -329,13 +342,9 @@ function reflowReader() {
 
   state.pageFlip = null;
 
-  // PageFlip mutates its host with wrappers, classes and inline sizing.
-  // Always replace the host so a new orientation starts from clean geometry.
   replaceBookHost();
   buildPages(state.manifest);
 
-  // Android browser chrome/orientation changes can report an intermediate
-  // viewport for a frame or two. Wait two frames before measuring the stage.
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
       if (token !== state.reflowToken) return;
