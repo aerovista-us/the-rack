@@ -126,6 +126,12 @@
               "position": {
                 "type": "string",
                 "minLength": 1
+              },
+              "edgeFill": {
+                "enum": [
+                  "none",
+                  "soft"
+                ]
               }
             },
             "additionalProperties": true
