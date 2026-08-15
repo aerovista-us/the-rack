@@ -60,6 +60,9 @@ function validateManifest(manifest) {
     if (page?.fit && !['cover', 'contain'].includes(page.fit)) {
       errors.push(`pages[${index}].fit must be cover or contain`);
     }
+    if (page?.edgeFill && !['none', 'soft'].includes(page.edgeFill)) {
+      errors.push(`pages[${index}].edgeFill must be none or soft`);
+    }
   });
 
   if (errors.length) throw new Error(errors.join('; '));
@@ -83,23 +86,59 @@ function applyPhysicalProfile(manifest) {
   }
 }
 
+function usesCoverStock(page) {
+  if (page?.hard) return true;
+  const role = String(page?.role || '').toLowerCase();
+  return ['front-cover', 'inside-front', 'inside-back', 'back-cover'].includes(role);
+}
+
+function createSoftEdgeFill(src, position) {
+  const bleed = document.createElement('div');
+  bleed.className = 'vp-page__edge-fill';
+  bleed.setAttribute('aria-hidden', 'true');
+  Object.assign(bleed.style, {
+    position: 'absolute',
+    zIndex: '1',
+    inset: '0',
+    pointerEvents: 'none',
+    backgroundImage: `url(${JSON.stringify(src)})`,
+    backgroundSize: 'cover',
+    backgroundPosition: position,
+    backgroundRepeat: 'no-repeat',
+    filter: 'blur(16px) saturate(.72) brightness(.84)',
+    transform: 'scale(1.055)',
+    transformOrigin: '50% 50%',
+    opacity: '.30',
+  });
+  return bleed;
+}
+
 function createPage(page, index) {
   const node = document.createElement('div');
   node.className = 'vp-page';
   node.dataset.side = index % 2 === 0 ? 'right' : 'left';
-  if (page.hard || /cover/i.test(page.role || '')) node.dataset.density = 'hard';
+  if (usesCoverStock(page)) node.dataset.density = 'hard';
   if (page.role) node.dataset.role = page.role;
   if (!state.paperEnabled) node.classList.add('paper-off');
 
   if (page.type === 'image') {
+    const fit = page.fit || 'cover';
+    const position = page.position || '50% 50%';
+    const edgeFill = page.edgeFill || (fit === 'contain' ? 'soft' : 'none');
+
+    if (fit === 'contain' && edgeFill === 'soft') {
+      node.append(createSoftEdgeFill(page.src, position));
+    }
+
     const img = document.createElement('img');
     img.className = 'vp-page__media';
     img.src = page.src;
     img.alt = page.alt || `${state.manifest.title}, page ${index + 1}`;
     img.draggable = false;
     img.decoding = 'async';
-    img.style.objectFit = page.fit || 'cover';
-    img.style.objectPosition = page.position || '50% 50%';
+    img.style.objectFit = fit;
+    img.style.objectPosition = position;
+    if (fit === 'contain' && edgeFill === 'soft') img.style.background = 'transparent';
     node.append(img);
   } else if (page.type === 'html') {
     const content = document.createElement('article');
