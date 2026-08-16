@@ -7,6 +7,7 @@ const state = {
   resizeTimer: null,
   viewport: null,
   reflowToken: 0,
+  bounds: null,
 };
 
 const els = {
@@ -24,6 +25,7 @@ const els = {
   leftStack: document.querySelector('#leftStack'),
   rightStack: document.querySelector('#rightStack'),
   error: document.querySelector('#errorPanel'),
+  spine: null,
 };
 
 const COVER_ROLES = new Set(['front-cover', 'inside-front', 'inside-back', 'back-cover']);
@@ -102,6 +104,17 @@ function usesRigidPhysics(page) {
   return page?.hard === true;
 }
 
+function ensureSpine() {
+  if (els.spine?.isConnected) return els.spine;
+  const spine = document.createElement('div');
+  spine.id = 'vesperaSpine';
+  spine.className = 'vespera-spine';
+  spine.setAttribute('aria-hidden', 'true');
+  els.stage.append(spine);
+  els.spine = spine;
+  return spine;
+}
+
 function installStockStyles() {
   if (document.querySelector('#vesperaStockStyles')) return;
   const style = document.createElement('style');
@@ -110,6 +123,39 @@ function installStockStyles() {
     .vp-page[data-stock="cover"] {
       --texture-opacity: .11;
       box-shadow: 0 11px 36px rgba(0,0,0,.28), inset 0 0 0 1px rgba(255,255,255,.18);
+    }
+
+    /* In portrait the engine always displays the current sheet as the right-hand
+       page. Keep the gutter on its left inner edge instead of alternating with
+       print parity, otherwise the binding appears to jump from side to side. */
+    .book-stage[data-reader-orientation="portrait"] .vp-page {
+      --gutter-x: 19px !important;
+      --gutter-gradient: linear-gradient(to left, transparent 80%, rgba(37,27,18,.045) 90%, rgba(30,20,12,.24) 100%) !important;
+    }
+
+    .vespera-spine {
+      position: absolute;
+      z-index: 3;
+      width: var(--vespera-spine-width, 8px);
+      height: var(--vespera-spine-height, 100px);
+      left: var(--vespera-spine-x, 50%);
+      top: var(--vespera-spine-y, 50%);
+      pointer-events: none;
+      opacity: 0;
+      transform: translate(-100%, 0);
+      border-radius: 3px 0 0 3px;
+      background:
+        linear-gradient(to right, rgba(55,38,22,.62), rgba(105,78,48,.24) 32%, rgba(232,218,197,.88) 74%, rgba(248,239,224,.96)),
+        repeating-linear-gradient(to bottom, rgba(75,55,34,.20) 0 1px, rgba(244,233,216,.90) 1px 3px);
+      box-shadow:
+        -4px 7px 18px rgba(0,0,0,.18),
+        inset -1px 0 rgba(255,255,255,.36),
+        5px 0 12px -8px rgba(20,13,7,.92);
+      transition: opacity 120ms ease, width 160ms ease;
+    }
+
+    .book-stage[data-reader-orientation="portrait"] .vespera-spine {
+      opacity: .94;
     }
   `;
   document.head.append(style);
@@ -222,9 +268,27 @@ function calculatePageBounds(manifest) {
   };
 }
 
+function positionSpine(bounds, orientation = bounds.spread ? 'landscape' : 'portrait') {
+  const spine = ensureSpine();
+  const stageRect = els.stage.getBoundingClientRect();
+  const hostWidth = Math.max(1, Math.round(bounds.maxWidth * (bounds.spread ? 2 : 1)));
+  const hostHeight = Math.max(1, Math.round(bounds.maxHeight));
+  const hostLeft = Math.max(0, (stageRect.width - hostWidth) / 2);
+  const hostTop = Math.max(0, (stageRect.height - hostHeight) / 2);
+  const portrait = orientation === 'portrait';
+  const spineX = portrait ? hostLeft : stageRect.width / 2;
+
+  els.stage.dataset.readerOrientation = orientation;
+  spine.style.setProperty('--vespera-spine-x', `${spineX}px`);
+  spine.style.setProperty('--vespera-spine-y', `${hostTop}px`);
+  spine.style.setProperty('--vespera-spine-height', `${hostHeight}px`);
+  spine.style.setProperty('--vespera-spine-width', portrait ? '8px' : '10px');
+}
+
 function lockBookHost(bounds) {
   const hostWidth = Math.max(1, Math.round(bounds.maxWidth * (bounds.spread ? 2 : 1)));
   const hostHeight = Math.max(1, Math.round(bounds.maxHeight));
+  state.bounds = bounds;
 
   Object.assign(els.book.style, {
     width: `${hostWidth}px`,
@@ -232,8 +296,11 @@ function lockBookHost(bounds) {
     maxWidth: `${hostWidth}px`,
     maxHeight: `${hostHeight}px`,
     position: 'relative',
+    zIndex: '4',
     flex: '0 0 auto',
   });
+
+  positionSpine(bounds);
 }
 
 function initPageFlip(manifest, initialIndex = 0) {
@@ -279,7 +346,10 @@ function initPageFlip(manifest, initialIndex = 0) {
     updateReaderState();
   });
   pageFlip.on('flip', updateReaderState);
-  pageFlip.on('changeOrientation', updateReaderState);
+  pageFlip.on('changeOrientation', () => {
+    if (state.pageFlip !== pageFlip) return;
+    updateReaderState();
+  });
   pageFlip.on('changeState', () => requestAnimationFrame(updateReaderState));
 
   pageFlip.loadFromHTML(document.querySelectorAll('.vp-page'));
@@ -303,6 +373,8 @@ function updateReaderState() {
   const canShowSpread = orientation === 'landscape' && index >= 0 && index < total - 1;
   const endIndex = Math.min(total - 1, index + 1);
 
+  if (state.bounds) positionSpine(state.bounds, orientation);
+
   els.status.textContent = canShowSpread && endIndex > index
     ? `Pages ${index + 1}–${endIndex + 1} of ${total}`
     : `Page ${index + 1} of ${total}`;
@@ -318,6 +390,11 @@ function updateReaderState() {
   els.rightStack.style.setProperty('--stack-depth', `${rightDepth.toFixed(1)}px`);
   els.leftStack.style.setProperty('--stack-opacity', String(0.24 + 0.62 * progress));
   els.rightStack.style.setProperty('--stack-opacity', String(0.24 + 0.62 * (1 - progress)));
+
+  if (els.spine) {
+    const portraitDepth = 5 + 5 * progress;
+    els.spine.style.setProperty('--vespera-spine-width', orientation === 'portrait' ? `${portraitDepth.toFixed(1)}px` : '10px');
+  }
 }
 
 function togglePaper() {
@@ -419,6 +496,7 @@ async function start() {
   try {
     state.manifest = await loadManifest();
     installStockStyles();
+    ensureSpine();
     applyPhysicalProfile(state.manifest);
     els.title.textContent = state.manifest.title;
     els.meta.textContent = [state.manifest.series, state.manifest.publisher].filter(Boolean).join(' · ') || 'Vespera Publication Engine · v0';
