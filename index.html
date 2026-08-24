@@ -6,14 +6,24 @@
   <meta name="theme-color" content="#0b0b0b" />
   <meta name="color-scheme" content="dark" />
   <title>Vespera Publishing — The Rack</title>
-  <meta name="description" content="Read Vespera comics with short motion moments woven between the pages — no app, no download, just open and read." />
+  <meta name="description" content="Read Vespera comics with short cinematic motion moments woven between the pages — no app, no download, just open and read." />
+  <link rel="canonical" href="https://therack.aerovista.us/" />
+
   <meta property="og:title" content="The Rack — Vespera Publishing" />
-  <meta property="og:description" content="Illustrated stories with cinematic beats between the pages." />
+  <meta property="og:description" content="Still pages. Motion between them. Read illustrated Vespera stories in a cinematic web comic reader." />
   <meta property="og:type" content="website" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <meta property="og:site_name" content="The Rack" />
+  <meta property="og:url" content="https://therack.aerovista.us/" />
   <meta property="og:image" content="https://therack.aerovista.us/content/OMOTL/pages/00-cover-front.png" />
+  <meta property="og:image:alt" content="The Rack — Vespera Publishing comic library" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="The Rack — Vespera Publishing" />
+  <meta name="twitter:description" content="Still pages. Motion between them." />
+  <meta name="twitter:image" content="https://therack.aerovista.us/content/OMOTL/pages/00-cover-front.png" />
+
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="stylesheet" href="assets/css/styles.css?v=20260809g" />
+  <link rel="stylesheet" href="assets/css/v2.css?v=20260823a" />
 </head>
 <body>
   <a class="skip-link" href="#library">Skip to comics</a>
@@ -26,7 +36,8 @@
     </a>
     <nav aria-label="Primary">
       <a href="#library">Browse</a>
-      <a href="#how-it-works">The experience</a>
+      <a href="#series">Series</a>
+      <a href="#how-it-works">Experience</a>
       <button id="openHelp" class="ghost-button" type="button">About</button>
     </nav>
   </header>
@@ -34,9 +45,9 @@
   <main id="app" tabindex="-1">
     <section class="hero">
       <div class="hero-copy">
-        <p class="eyebrow">TWO TITLES ON THE SHELF • MOTION BETWEEN THE PAGES</p>
+        <p class="eyebrow">VESPERA STORIES • CINEMATIC WEB COMICS</p>
         <h1>Still pages.<br><span>Motion between them.</span></h1>
-        <p>The Rack is Vespera’s comic shelf — from jobsite chaos to lakeside mystery, each title weaves short cinematic beats into the reading flow. No app. No download. Pick a cover and start reading.</p>
+        <p>The Rack is Vespera’s comic shelf: illustrated stories, readable anywhere, with short cinematic beats woven directly into the story flow. No app. No download.</p>
         <div class="hero-actions">
           <a class="primary-button" href="#library">Browse the rack</a>
           <button class="secondary-button" id="openQuickStart" type="button">How to read</button>
@@ -45,7 +56,31 @@
       <div class="hero-rack" id="heroRack" aria-label="Featured comic covers"></div>
     </section>
 
+    <section class="discovery-section" aria-label="Featured release">
+      <div class="featured-book" id="featuredBook" hidden></div>
+    </section>
+
+    <section class="series-section" id="series">
+      <div class="discovery-heading">
+        <div>
+          <p class="eyebrow">STORIES THAT KEEP GOING</p>
+          <h2>Series</h2>
+        </div>
+      </div>
+      <div class="series-grid" id="seriesGrid" aria-live="polite"></div>
+    </section>
+
     <section class="library-section" id="library">
+      <div class="continue-block" id="continueBlock" hidden>
+        <div class="subsection-heading">
+          <div>
+            <p class="eyebrow">PICK UP WHERE YOU LEFT OFF</p>
+            <h2>Continue reading</h2>
+          </div>
+        </div>
+        <div class="continue-grid" id="continueGrid"></div>
+      </div>
+
       <div class="section-heading">
         <div>
           <p class="eyebrow">NOW ON THE RACK</p>
@@ -53,9 +88,10 @@
         </div>
         <label class="search">
           <span aria-hidden="true">⌕</span>
-          <input id="searchInput" type="search" placeholder="Search titles, series, or creators" autocomplete="off" enterkeyhint="search" />
+          <input id="searchInput" type="search" placeholder="Search titles, series, creators, or tags" autocomplete="off" enterkeyhint="search" />
         </label>
       </div>
+      <div class="filter-row" id="filterChips" aria-label="Filter comics"></div>
       <div id="bookGrid" class="book-grid" aria-live="polite"></div>
     </section>
 
@@ -65,13 +101,11 @@
       <div class="flow-diagram" role="list">
         <div role="listitem"><strong>Pages</strong><span>Settle into the scene</span></div>
         <i aria-hidden="true">→</i>
-        <div class="video-node" role="listitem"><strong>▶ Motion</strong><span>A short beat</span></div>
+        <div class="video-node" role="listitem"><strong>▶ Motion</strong><span>A short cinematic beat</span></div>
         <i aria-hidden="true">→</i>
         <div role="listitem"><strong>Pages</strong><span>The story continues</span></div>
         <i aria-hidden="true">→</i>
-        <div class="video-node" role="listitem"><strong>▶ Moment</strong><span>Feel the turn</span></div>
-        <i aria-hidden="true">→</i>
-        <div role="listitem"><strong>Pages</strong><span>Keep reading</span></div>
+        <div role="listitem"><strong>Focus / Book</strong><span>Read your way</span></div>
       </div>
     </section>
   </main>
@@ -89,7 +123,9 @@
         <span id="readerPosition">1 / 1</span>
       </div>
       <div class="reader-tools">
+        <button id="toggleMode" class="icon-button" type="button" aria-label="Switch reading mode" aria-pressed="false" title="Switch reading mode">▥</button>
         <button id="toggleThumbs" class="icon-button" type="button" aria-label="Toggle page thumbnails" aria-pressed="true">▦</button>
+        <button id="shareBook" class="icon-button" type="button" aria-label="Share comic" title="Share">↗</button>
         <button id="toggleFullscreen" class="icon-button" type="button" aria-label="Fullscreen">⛶</button>
       </div>
     </header>
@@ -103,7 +139,8 @@
     </div>
     <footer class="reader-footer">
       <div class="progress-track" aria-hidden="true"><span id="progressBar"></span></div>
-      <p class="reader-hint">Tap edges, arrows, or swipe · motion moments play in sequence</p>
+      <p class="reader-hint">Tap edges, arrows, keyboard, or swipe · toggle Focus / Book mode anytime</p>
+      <nav class="reader-series-nav" id="readerSeriesNav" aria-label="Series navigation"></nav>
     </footer>
   </div>
 
@@ -113,34 +150,17 @@
       <p class="eyebrow">ABOUT THE RACK</p>
       <h2 id="helpTitle">How to read</h2>
       <ol>
-        <li>Browse the shelf and tap a cover to open a comic.</li>
-        <li>Move with the side arrows, tap the left/right edges, keyboard, or a swipe.</li>
+        <li>Browse the shelf, a series, or a featured release and open a comic.</li>
+        <li>Your reading position is saved locally on this device so you can continue later.</li>
+        <li>Use Focus mode for one large page or Book mode for two-page spreads on larger screens.</li>
+        <li>Move with the side arrows, page edges, keyboard, thumbnails, or a swipe.</li>
         <li>When a motion moment appears, play it — then keep reading.</li>
-        <li>Use the thumbnail rail or fullscreen control anytime for a clearer view.</li>
       </ol>
-      <p class="dialog-blurb">The Rack is a Vespera Publishing reading room for illustrated stories with cinematic beats between the pages.</p>
+      <p class="dialog-blurb">The Rack is Vespera Publishing’s web reading room for illustrated stories with cinematic beats between the pages.</p>
       <button class="primary-button" value="close">Start reading</button>
     </form>
   </dialog>
 
-  <template id="bookCardTemplate">
-    <article class="book-card">
-      <button class="cover-button" type="button">
-        <img class="book-cover" alt="" loading="lazy" decoding="async" />
-      </button>
-      <div class="book-meta">
-        <p class="book-kicker"></p>
-        <h3></h3>
-        <p class="book-author"></p>
-        <p class="book-description"></p>
-        <div class="book-actions">
-          <button class="read-button primary-button" type="button">Read</button>
-          <span class="item-count"></span>
-        </div>
-      </div>
-    </article>
-  </template>
-
-  <script src="assets/js/app.js?v=20260809g" defer></script>
+  <script src="assets/js/v2.js?v=20260823a" defer></script>
 </body>
 </html>
