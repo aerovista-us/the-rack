@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "site": {
     "title": "The Rack",
     "publisher": "Vespera Publishing",
@@ -19,7 +19,7 @@
       "cover": "content/remodel-sos/pages/001.png",
       "shareImage": "https://therack.aerovista.us/content/remodel-sos/pages/001.png",
       "shareUrl": "read/remodel-sos-volume-1/",
-      "readerMode": "focus",
+      "readerMode": "book",
       "spreadMode": "auto",
       "genres": ["comedy", "construction"],
       "tags": ["comedy", "construction", "remodeling", "jobsite"],
@@ -78,7 +78,7 @@
       "cover": "content/OMOTL/pages/00-cover-front.png",
       "shareImage": "https://therack.aerovista.us/content/OMOTL/pages/00-cover-front.png",
       "shareUrl": "read/omotl-issue-1/",
-      "readerMode": "focus",
+      "readerMode": "book",
       "spreadMode": "auto",
       "genres": ["comedy", "fishing", "outdoors", "folklore"],
       "tags": ["comedy", "fishing", "lake", "bass", "outdoors", "folklore", "the general"],

@@ -1,27 +1,27 @@
 # Vespera Publishing — The Rack
 
-A static, JSON-powered comic library and cinematic web reader. It displays PNG/JPG/WebP pages and can insert short MP4/WebM motion moments anywhere in a reading sequence.
+A static, JSON-powered comic library and cinematic web reader. It displays PNG/JPG/WebP pages, inserts short MP4/WebM motion moments in sequence, and now supports physical page turns plus guided panel-by-panel reading.
 
 **Production:** https://therack.aerovista.us/
 
 The canonical repository is **`aerovista-us/the-rack`**.
 
-## Rack v2
+## Rack reader v3
 
-Rack v2 keeps the original publishing contract — content folders plus `rack.json` — while adding a richer reader and discovery layer:
+The publishing contract is still intentionally simple — content folders plus `rack.json` — but the reader is now mobile-first:
 
-- Featured release
-- Series browsing
-- Search + filter chips
-- Local `Continue Reading` progress with no account required
-- Focus mode (one page)
-- Book mode (two-page spreads on larger screens)
-- Motion moments woven into the sequence
-- Series-aware previous/next navigation and end-of-book actions
-- Per-book share URLs and social metadata entry pages
-- Optional Umami-compatible analytics events (`book_open`, `motion_play`, `book_complete`, `book_share`, `reader_mode`, `series_open`, `shelf_filter`)
+- Full phone viewport is reserved for the comic page; reader chrome floats above it and fades away
+- Physical page mode uses the bundled StPageFlip engine for real curl/drag/page-turn behavior
+- Portrait phones show one fitted page; wide screens can naturally open into a spread
+- Panel Focus (`⌖`) zooms into story targets so dialogue remains readable on a phone
+- Tap or **Space** advances to the next Panel Focus target
+- Each page can define its own exact focus rectangles
+- Unmapped pages automatically get six overlapping readable focus zones
+- Motion moments remain in the same authored sequence
+- Local `Continue Reading` progress still requires no account
+- Existing search, series browsing, filters, sharing, and analytics remain intact
 
-The previous reader files remain in the repo for rollback/reference; `index.html` now loads `assets/js/v2.js` and `assets/css/v2.css`.
+The shelf/discovery layer still lives in `assets/js/v2.js` + `assets/css/v2.css`. The new reader is layered in `assets/js/reader-v3.js` + `assets/css/reader-v3.css`, and uses the local `vendor/page-flip.browser.min.js` dependency already committed to this repo.
 
 ## Run it
 
@@ -34,8 +34,6 @@ python -m http.server 8080
 Then open `http://localhost:8080`.
 
 ## Add a comic
-
-Create a content folder:
 
 ```text
 content/my-comic/
@@ -50,7 +48,7 @@ content/my-comic/
 
 Then add one book object to `rack.json`.
 
-### Recommended v2 book metadata
+### Recommended book metadata
 
 ```json
 {
@@ -65,30 +63,36 @@ Then add one book object to `rack.json`.
   "cover": "content/my-series/pages/cover.png",
   "shareImage": "https://therack.aerovista.us/content/my-series/pages/cover.png",
   "shareUrl": "read/my-series-issue-1/",
-  "readerMode": "focus",
-  "spreadMode": "auto",
+  "readerMode": "book",
   "genres": ["comedy", "mystery"],
   "tags": ["lake", "adventure"],
   "sequence": []
 }
 ```
 
-Most v2 fields are optional. Existing books using the original schema continue to render.
+## Image pages and Panel Focus
 
-## Supported sequence items
+A normal image page needs only `src` and `alt`. If no panel map exists, Panel Focus generates a safe 2×3 (or 3×2 landscape) sequence automatically.
 
-### Image
+For exact comic reading order, add normalized `focusRegions`. `x`, `y`, `w`, and `h` are fractions of the full page from `0` to `1`:
 
 ```json
 {
   "type": "image",
   "src": "content/my-comic/pages/001.png",
   "alt": "Page 1",
-  "title": "Page 1"
+  "focusRegions": [
+    { "x": 0.04, "y": 0.05, "w": 0.92, "h": 0.28, "label": "Opening panel" },
+    { "x": 0.04, "y": 0.36, "w": 0.44, "h": 0.27, "label": "Left middle" },
+    { "x": 0.52, "y": 0.36, "w": 0.44, "h": 0.27, "label": "Right middle" },
+    { "x": 0.04, "y": 0.66, "w": 0.92, "h": 0.29, "label": "Closing panel" }
+  ]
 }
 ```
 
-### Video
+This is deliberately page-specific: a splash page may have one focus region, a six-panel grid may have six, and irregular pages can use any rectangle sequence needed.
+
+## Video page
 
 ```json
 {
@@ -102,40 +106,43 @@ Most v2 fields are optional. Existing books using the original schema continue t
 }
 ```
 
-For mobile compatibility, use H.264 video with AAC audio in an MP4 container. Keep clips short and compress them for web delivery.
+For mobile compatibility, use H.264 video with AAC audio in an MP4 container.
 
 ## Reader controls
 
-- Left/right arrow or Page Up/Page Down
-- Swipe on mobile
-- Tap/click left and right page edges
-- Thumbnail rail
+### Physical page mode
+
+- Drag a page corner
+- Tap/click left or right edge
+- Swipe
+- Left/right arrows or Page Up/Page Down
 - Fullscreen
-- Focus / Book reading modes
-- Deep links such as `#/read/omotl-issue-1/4`
-- Optional automatic advance after a video ends
+
+### Panel Focus
+
+- Tap `⌖`
+- Tap artwork or press **Space** for next focus target
+- Swipe left/right for next/previous target
+- Tap `⌖` again to return to the physical page
 
 ## Progress
 
-Reading progress is stored locally under:
+Reading progress remains stored locally under:
 
 ```text
 rack.v2.progress
 ```
 
-No account is required. A future authenticated sync layer can reuse the same book IDs and sequence positions.
-
-## Sharing
-
-For reliable social previews, a book can define `shareUrl` and `shareImage`. The current titles have static entry pages under `read/<book-id>/` that provide Open Graph/Twitter metadata and redirect normal browsers into the hash-based reader.
+No account is required.
 
 ## Publishing rule
 
-Keep The Rack easy to publish to. A creator should still be able to:
+Keep The Rack easy to publish to:
 
 1. Drop pages/motion assets into a content folder.
-2. Add/update one `rack.json` entry.
-3. Commit.
-4. Read the finished release on The Rack.
+2. Add or update one `rack.json` entry.
+3. Optionally add exact `focusRegions` for important pages.
+4. Commit.
+5. Read the finished release on The Rack.
 
 No build step is required.

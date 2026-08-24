@@ -24,6 +24,7 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="stylesheet" href="assets/css/styles.css?v=20260809g" />
   <link rel="stylesheet" href="assets/css/v2.css?v=20260823a" />
+  <link rel="stylesheet" href="assets/css/reader-v3.css?v=20260823a" />
 </head>
 <body>
   <a class="skip-link" href="#library">Skip to comics</a>
@@ -62,30 +63,19 @@
 
     <section class="series-section" id="series">
       <div class="discovery-heading">
-        <div>
-          <p class="eyebrow">STORIES THAT KEEP GOING</p>
-          <h2>Series</h2>
-        </div>
+        <div><p class="eyebrow">STORIES THAT KEEP GOING</p><h2>Series</h2></div>
       </div>
       <div class="series-grid" id="seriesGrid" aria-live="polite"></div>
     </section>
 
     <section class="library-section" id="library">
       <div class="continue-block" id="continueBlock" hidden>
-        <div class="subsection-heading">
-          <div>
-            <p class="eyebrow">PICK UP WHERE YOU LEFT OFF</p>
-            <h2>Continue reading</h2>
-          </div>
-        </div>
+        <div class="subsection-heading"><div><p class="eyebrow">PICK UP WHERE YOU LEFT OFF</p><h2>Continue reading</h2></div></div>
         <div class="continue-grid" id="continueGrid"></div>
       </div>
 
       <div class="section-heading">
-        <div>
-          <p class="eyebrow">NOW ON THE RACK</p>
-          <h2>Comic books</h2>
-        </div>
+        <div><p class="eyebrow">NOW ON THE RACK</p><h2>Comic books</h2></div>
         <label class="search">
           <span aria-hidden="true">⌕</span>
           <input id="searchInput" type="search" placeholder="Search titles, series, creators, or tags" autocomplete="off" enterkeyhint="search" />
@@ -97,22 +87,20 @@
 
     <section class="flow-section" id="how-it-works">
       <p class="eyebrow">BUILT FOR COMICS. ENHANCED BY MOTION.</p>
-      <h2>One continuous story flow</h2>
+      <h2>Read the page. Then get closer.</h2>
       <div class="flow-diagram" role="list">
-        <div role="listitem"><strong>Pages</strong><span>Settle into the scene</span></div>
+        <div role="listitem"><strong>Page</strong><span>Physical curl + page turn</span></div>
         <i aria-hidden="true">→</i>
-        <div class="video-node" role="listitem"><strong>▶ Motion</strong><span>A short cinematic beat</span></div>
+        <div role="listitem"><strong>Panel</strong><span>Zoom into the story</span></div>
         <i aria-hidden="true">→</i>
-        <div role="listitem"><strong>Pages</strong><span>The story continues</span></div>
+        <div class="video-node" role="listitem"><strong>▶ Motion</strong><span>Cinematic beat</span></div>
         <i aria-hidden="true">→</i>
-        <div role="listitem"><strong>Focus / Book</strong><span>Read your way</span></div>
+        <div role="listitem"><strong>Continue</strong><span>Tap, swipe, or Space</span></div>
       </div>
     </section>
   </main>
 
-  <footer class="site-footer">
-    <p><strong>Vespera Publishing</strong> · The Rack</p>
-  </footer>
+  <footer class="site-footer"><p><strong>Vespera Publishing</strong> · The Rack</p></footer>
 
   <div id="reader" class="reader" hidden role="dialog" aria-modal="true" aria-label="Comic reader">
     <header class="reader-header">
@@ -123,14 +111,15 @@
         <span id="readerPosition">1 / 1</span>
       </div>
       <div class="reader-tools">
-        <button id="toggleMode" class="icon-button" type="button" aria-label="Switch reading mode" aria-pressed="false" title="Switch reading mode">▥</button>
-        <button id="toggleThumbs" class="icon-button" type="button" aria-label="Toggle page thumbnails" aria-pressed="true">▦</button>
+        <button id="toggleMode" class="icon-button" type="button" aria-label="Switch page mode" aria-pressed="true" title="Physical / flat page">◩</button>
+        <button id="panelFocus" class="icon-button" type="button" aria-label="Panel Focus" aria-pressed="false" title="Panel Focus">⌖</button>
+        <button id="toggleThumbs" class="icon-button" type="button" aria-label="Toggle page thumbnails" aria-pressed="false">▦</button>
         <button id="shareBook" class="icon-button" type="button" aria-label="Share comic" title="Share">↗</button>
         <button id="toggleFullscreen" class="icon-button" type="button" aria-label="Fullscreen">⛶</button>
       </div>
     </header>
     <div class="reader-shell">
-      <aside id="thumbnailRail" class="thumbnail-rail" aria-label="Pages"></aside>
+      <aside id="thumbnailRail" class="thumbnail-rail collapsed" aria-label="Pages"></aside>
       <section class="stage-wrap">
         <button id="prevItem" class="nav-arrow left" type="button" aria-label="Previous page">‹</button>
         <div id="readerStage" class="reader-stage"></div>
@@ -139,7 +128,7 @@
     </div>
     <footer class="reader-footer">
       <div class="progress-track" aria-hidden="true"><span id="progressBar"></span></div>
-      <p class="reader-hint">Tap edges, arrows, keyboard, or swipe · toggle Focus / Book mode anytime</p>
+      <p class="reader-hint">Drag a corner, tap an edge, swipe, or use ← → · Panel Focus: tap or Space advances panels</p>
       <nav class="reader-series-nav" id="readerSeriesNav" aria-label="Series navigation"></nav>
     </footer>
   </div>
@@ -150,17 +139,20 @@
       <p class="eyebrow">ABOUT THE RACK</p>
       <h2 id="helpTitle">How to read</h2>
       <ol>
-        <li>Browse the shelf, a series, or a featured release and open a comic.</li>
-        <li>Your reading position is saved locally on this device so you can continue later.</li>
-        <li>Use Focus mode for one large page or Book mode for two-page spreads on larger screens.</li>
-        <li>Move with the side arrows, page edges, keyboard, thumbnails, or a swipe.</li>
-        <li>When a motion moment appears, play it — then keep reading.</li>
+        <li>Pages fit the full phone viewport first; the controls float over the page and fade away while you read.</li>
+        <li>Physical mode gives the comic a real page with corner curl, drag, tap, swipe, and keyboard page turns.</li>
+        <li>Tap <strong>⌖ Panel Focus</strong> to zoom into readable story regions. Tap or press Space to advance.</li>
+        <li>Pages can define exact panel rectangles in <code>rack.json</code>; unmapped pages automatically get smart readable focus zones.</li>
+        <li>Motion moments stay in the authored sequence between comic pages.</li>
       </ol>
-      <p class="dialog-blurb">The Rack is Vespera Publishing’s web reading room for illustrated stories with cinematic beats between the pages.</p>
+      <p class="dialog-blurb">The Rack is Vespera Publishing’s mobile-first reading room for illustrated stories with physical page behavior, guided panel reading, and cinematic beats.</p>
       <button class="primary-button" value="close">Start reading</button>
     </form>
   </dialog>
 
+  <script src="vendor/page-flip.browser.min.js?v=2.0.7" defer></script>
   <script src="assets/js/v2.js?v=20260823a" defer></script>
+  <script src="assets/js/reader-v3.js?v=20260823a" defer></script>
+  <script src="assets/js/reader-v3-input.js?v=20260823a" defer></script>
 </body>
 </html>

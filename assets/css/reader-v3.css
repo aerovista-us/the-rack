@@ -1,0 +1,271 @@
+/* The Rack Reader v3 — mobile-first physical pages + Panel Focus. */
+
+.reader {
+  display: block;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 45%, rgba(91,72,42,.14), transparent 38%), #070808;
+}
+.reader-header {
+  position: absolute;
+  z-index: 130;
+  top: 0;
+  left: 0;
+  right: 0;
+  min-height: calc(58px + var(--safe-t));
+  padding-top: var(--safe-t);
+  background: linear-gradient(180deg, rgba(8,9,9,.96), rgba(8,9,9,.70) 72%, transparent);
+  border: 0;
+  transition: opacity .22s ease, transform .22s ease;
+}
+.reader-shell,
+.stage-wrap,
+.reader-stage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+.reader-shell { display: block; }
+.stage-wrap { display: block; overflow: hidden; background: transparent; }
+.reader-stage {
+  display: grid;
+  place-items: center;
+  padding: 0;
+  overflow: hidden;
+  touch-action: none;
+}
+.reader-footer {
+  position: absolute;
+  z-index: 130;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 14px max(12px,var(--safe-r)) calc(10px + var(--safe-b)) max(12px,var(--safe-l));
+  background: linear-gradient(0deg, rgba(8,9,9,.94), rgba(8,9,9,.58) 75%, transparent);
+  border: 0;
+  transition: opacity .22s ease, transform .22s ease;
+}
+.reader-footer .progress-track { height: 3px; opacity: .88; }
+.reader-chrome-hidden .reader-header { opacity: 0; transform: translateY(-75%); pointer-events: none; }
+.reader-chrome-hidden .reader-footer { opacity: 0; transform: translateY(70%); pointer-events: none; }
+
+.thumbnail-rail {
+  position: absolute;
+  z-index: 145;
+  top: calc(58px + var(--safe-t));
+  left: 0;
+  bottom: calc(70px + var(--safe-b));
+  width: 104px;
+  border: 1px solid #2d2b27;
+  border-left: 0;
+  background: rgba(12,12,11,.95);
+  backdrop-filter: blur(10px);
+  border-radius: 0 7px 7px 0;
+  transition: transform .2s ease, opacity .2s ease;
+}
+.thumbnail-rail.collapsed {
+  width: 104px;
+  padding: 8px;
+  transform: translateX(-104%);
+  opacity: 0;
+  pointer-events: none;
+}
+.reader-tools { gap: 5px; }
+.reader-tools .icon-button {
+  width: 40px;
+  height: 40px;
+  background: rgba(13,14,14,.74);
+  border-color: rgba(240,189,85,.26);
+  backdrop-filter: blur(8px);
+}
+#panelFocus.active,
+#panelFocus[aria-pressed="true"] {
+  color: #17120a;
+  background: var(--gold2);
+  border-color: var(--gold2);
+}
+.nav-arrow {
+  z-index: 125;
+  width: clamp(32px,9vw,54px);
+  height: clamp(68px,18vh,118px);
+  opacity: .58;
+  border-radius: 0 8px 8px 0;
+  background: linear-gradient(90deg,rgba(0,0,0,.42),transparent);
+}
+.nav-arrow.right {
+  border-radius: 8px 0 0 8px;
+  background: linear-gradient(-90deg,rgba(0,0,0,.42),transparent);
+}
+.nav-arrow:hover,
+.nav-arrow:focus-visible { opacity: 1; }
+
+/* Physical comic */
+.reader-stage--physical {
+  perspective: 1800px;
+  background: radial-gradient(ellipse at center,rgba(59,50,36,.22),transparent 58%),#070808;
+}
+.rack-physical-book {
+  position: relative;
+  z-index: 4;
+  flex: 0 0 auto;
+  filter: drop-shadow(0 24px 38px rgba(0,0,0,.56));
+}
+.rack-paper-page {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(90deg,rgba(101,78,45,.06),transparent 5%,transparent 95%,rgba(67,48,27,.06)),#f1eadc;
+  box-shadow: inset 0 0 0 1px rgba(42,30,17,.10), inset 0 0 26px rgba(73,53,31,.09);
+}
+.rack-paper-page::before {
+  content: "";
+  position: absolute;
+  z-index: 5;
+  inset: 0;
+  pointer-events: none;
+  opacity: .10;
+  mix-blend-mode: multiply;
+  background-image: repeating-linear-gradient(0deg,rgba(90,65,35,.025) 0 1px,transparent 1px 3px);
+}
+.rack-paper-media {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: contain;
+  object-position: center;
+  background: #111;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.rack-paper-page--motion { background: #080909; }
+.rack-paper-motion {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 9px;
+  padding: 5%;
+  text-align: center;
+  background: radial-gradient(circle at 50% 42%,#2d2519,#090a0a 65%);
+}
+.rack-paper-motion video {
+  width: 100%;
+  max-height: 76%;
+  background: #000;
+  box-shadow: 0 15px 44px #000b;
+}
+.rack-paper-motion h3 {
+  margin: 0;
+  color: var(--gold2);
+  font-family: Impact,Haettenschweiler,sans-serif;
+  text-transform: uppercase;
+}
+.reader-stage--physical::after {
+  content: "";
+  position: absolute;
+  z-index: 118;
+  right: max(2px,var(--safe-r));
+  bottom: max(3px,var(--safe-b));
+  width: clamp(38px,11vw,70px);
+  aspect-ratio: 1;
+  pointer-events: none;
+  clip-path: polygon(100% 0,100% 100%,0 100%);
+  background: linear-gradient(135deg,transparent 44%,rgba(247,239,222,.78) 47%,rgba(89,65,38,.32) 63%,rgba(0,0,0,.15));
+  filter: drop-shadow(-4px -4px 8px rgba(0,0,0,.25));
+  opacity: .78;
+}
+
+/* Flat fallback still fills the entire viewport. */
+.reader-stage--flat .page-shell {
+  width: 100%;
+  height: 100%;
+  padding: 2px;
+}
+.reader-stage--flat .page-shell img {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  box-shadow: none;
+}
+
+/* Guided Panel Focus */
+.panel-focus-open .reader-header,
+.panel-focus-open .reader-footer { background: rgba(5,6,6,.83); }
+.reader-stage--panel { background: #030404; }
+.panel-focus-stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #030404;
+  cursor: e-resize;
+  touch-action: none;
+}
+.panel-focus-image {
+  position: absolute;
+  left: 0;
+  top: 0;
+  max-width: none;
+  max-height: none;
+  transform-origin: 0 0;
+  transition: transform .36s cubic-bezier(.2,.72,.2,1);
+  will-change: transform;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.panel-focus-stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 80px rgba(0,0,0,.5);
+}
+.panel-focus-badge {
+  position: absolute;
+  z-index: 4;
+  right: max(10px,var(--safe-r));
+  bottom: max(82px,calc(72px + var(--safe-b)));
+  padding: 7px 9px;
+  border: 1px solid rgba(240,189,85,.38);
+  border-radius: 999px;
+  background: rgba(7,8,8,.78);
+  color: var(--gold2);
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .1em;
+  backdrop-filter: blur(8px);
+  pointer-events: none;
+}
+
+@media (max-width:760px) {
+  .reader-title { padding: 0 2px; }
+  .reader-title strong { font-size: 12px; }
+  .reader-series { font-size: 8px; }
+  .reader-tools .icon-button { width: 36px; height: 36px; font-size: 15px; }
+  #shareBook { display: none; }
+  .nav-arrow { opacity: .16; width: 28px; font-size: 38px; }
+  .reader-hint,
+  .reader-series-nav { display: none; }
+  .reader-footer { padding-bottom: calc(8px + var(--safe-b)); }
+  .reader-header { min-height: calc(52px + var(--safe-t)); }
+  .panel-focus-badge { bottom: max(42px,calc(36px + var(--safe-b))); }
+}
+@media (max-width:420px) {
+  .reader-title strong { max-width: 34vw; margin-inline: auto; }
+  .reader-tools { gap: 2px; }
+  .reader-tools .icon-button { width: 34px; height: 34px; }
+  #toggleThumbs { display: none; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .panel-focus-image,
+  .reader-header,
+  .reader-footer { transition: none; }
+}
