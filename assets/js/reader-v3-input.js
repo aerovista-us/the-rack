@@ -4,6 +4,18 @@
 let rackPointerStart = null;
 let rackDragged = false;
 
+// The Rack always presents one physical comic page at a time.
+pageBounds = function singlePageBounds(format) {
+  const viewport = viewportSize();
+  const rect = els.stage.getBoundingClientRect();
+  const width = Math.max(1, rect.width || viewport.width);
+  const height = Math.max(1, rect.height || viewport.height);
+  const ratio = Math.max(.2, Number(format.height) / Math.max(1, Number(format.width)));
+  const edge = width < 600 ? 3 : 12;
+  const fitW = Math.floor(Math.min(width - edge * 2, (height - edge * 2) / ratio));
+  return { spread: false, width: Math.max(80, fitW), height: Math.max(100, Math.floor(fitW * ratio)) };
+};
+
 els.stage?.addEventListener('pointerdown', (event) => {
   if (rackV3.panelMode || state.readerMode !== 'book' || !event.target.closest('.rack-physical-book')) return;
   rackPointerStart = { x: event.clientX, y: event.clientY };
@@ -26,11 +38,8 @@ els.stage?.addEventListener('click', (event) => {
   if (rackV3.panelMode || state.readerMode !== 'book') return;
   if (!event.target.closest('.rack-physical-book')) return;
   if (event.target.closest('video,button,a,input')) return;
-
-  // Stop the older v2 stage-click listener. If this was a drag, PageFlip already handled it.
   event.stopImmediatePropagation();
   if (rackDragged) return;
-
   const rect = els.stage.getBoundingClientRect();
   const x = event.clientX - rect.left;
   if (x < rect.width * .34) rackV3.pageFlip?.flipPrev('top');
@@ -38,5 +47,4 @@ els.stage?.addEventListener('click', (event) => {
   else document.body.classList.toggle('reader-chrome-hidden');
 }, true);
 
-// If rack.json returned unusually fast before the v3 patch loaded, immediately re-render the open reader with v3.
 if (state.data && state.book && !els.reader?.hidden) showReader();
