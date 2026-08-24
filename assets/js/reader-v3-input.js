@@ -35,7 +35,8 @@ els.stage?.addEventListener('click', (event) => {
   const x = event.clientX - rect.left;
   if (x < rect.width * .34) rackV3.pageFlip?.flipPrev('top');
   else if (x > rect.width * .66) rackV3.pageFlip?.flipNext('top');
-  else {
-    document.body.classList.toggle('reader-chrome-hidden');
-  }
+  else document.body.classList.toggle('reader-chrome-hidden');
 }, true);
+
+// If rack.json returned unusually fast before the v3 patch loaded, immediately re-render the open reader with v3.
+if (state.data && state.book && !els.reader?.hidden) showReader();
