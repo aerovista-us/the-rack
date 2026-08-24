@@ -1,5 +1,10 @@
 {
-  "site": { "title": "The Rack", "publisher": "Vespera Publishing" },
+  "schemaVersion": 3,
+  "site": {
+    "title": "The Rack",
+    "publisher": "Vespera Publishing",
+    "canonicalUrl": "https://therack.aerovista.us/"
+  },
   "books": [
     {
       "id": "my-comic-volume-1",
@@ -8,10 +13,25 @@
       "creator": "Creator Name",
       "description": "A short description for the rack.",
       "cover": "content/my-comic/pages/001.png",
+      "readerMode": "book",
       "tags": ["genre", "topic"],
       "sequence": [
-        { "type": "image", "src": "content/my-comic/pages/001.png", "alt": "Page 1" },
-        { "type": "image", "src": "content/my-comic/pages/002.png", "alt": "Page 2" },
+        {
+          "type": "image",
+          "src": "content/my-comic/pages/001.png",
+          "alt": "Page 1",
+          "focusRegions": [
+            { "x": 0.04, "y": 0.05, "w": 0.92, "h": 0.28, "label": "Opening panel" },
+            { "x": 0.04, "y": 0.36, "w": 0.44, "h": 0.27, "label": "Left middle panel" },
+            { "x": 0.52, "y": 0.36, "w": 0.44, "h": 0.27, "label": "Right middle panel" },
+            { "x": 0.04, "y": 0.66, "w": 0.92, "h": 0.29, "label": "Closing panel" }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "content/my-comic/pages/002.png",
+          "alt": "Page 2"
+        },
         {
           "type": "video",
           "src": "content/my-comic/video/moment-01.mp4",
