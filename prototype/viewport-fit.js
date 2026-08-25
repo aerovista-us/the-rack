@@ -34,10 +34,6 @@
     const fittedWidth = Math.max(80, Math.floor(Math.min(widthFromViewport, widthFromHeight)));
     const fittedHeight = Math.max(100, Math.floor(fittedWidth * ratio));
 
-    // min == max is deliberate. StPageFlip's stretch mode previously had room
-    // to choose a smaller internal sheet than the locked host, which manifested
-    // as a cream gap between the left and right pages. Exact bounds remove that
-    // second sizing decision.
     return {
       spread,
       minWidth: fittedWidth,
@@ -108,10 +104,9 @@
 
     lockBookHost(bounds);
 
-    // Use the *rendered physical sheet* dimensions as PageFlip's fixed page
-    // dimensions. Responsive behavior is handled by Vespera reflowing the book
-    // when the viewport changes. This guarantees left page + right page touch at
-    // one invariant spine with no unused internal host area.
+    // Use the rendered physical sheet dimensions as PageFlip's fixed page
+    // dimensions. Vespera itself reflows the book when the viewport changes.
+    // This removes the old second sizing decision that created center slack.
     const pageFlip = new St.PageFlip(els.book, {
       width: bounds.maxWidth,
       height: bounds.maxHeight,
@@ -143,4 +138,23 @@
 
     pageFlip.loadFromHTML(document.querySelectorAll('.vp-page'));
   };
+
+  // Height is now as important as width. Browser chrome opening/closing can
+  // materially change the available book area even without an orientation turn.
+  scheduleReflow = function viewportScheduleReflow(force = false) {
+    window.clearTimeout(state.resizeTimer);
+    state.resizeTimer = window.setTimeout(() => {
+      const previous = state.viewport || { width: window.innerWidth, height: window.innerHeight };
+      const next = { width: window.innerWidth, height: window.innerHeight };
+      const orientationChanged = (previous.width > previous.height) !== (next.width > next.height);
+      const widthChanged = Math.abs(previous.width - next.width) > 24;
+      const heightChanged = Math.abs(previous.height - next.height) > 24;
+
+      if (force || orientationChanged || widthChanged || heightChanged) {
+        reflowReader();
+      }
+    }, 180);
+  };
+
+  window.visualViewport?.addEventListener('resize', () => scheduleReflow(false));
 })();
