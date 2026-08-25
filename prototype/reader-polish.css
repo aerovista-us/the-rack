@@ -1,0 +1,366 @@
+/* Vespera Publication Engine v0.5 — cohesive polish layer.
+   This intentionally leaves page geometry and flip physics alone. */
+
+:root {
+  --chrome-bg: rgba(16, 12, 8, .78);
+  --chrome-line: rgba(238, 221, 197, .085);
+  --chrome-highlight: rgba(255, 248, 236, .055);
+  --book-shadow-alpha: .44;
+}
+
+html,
+body {
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background:
+    radial-gradient(ellipse at 50% 42%, rgba(125, 91, 55, .10), transparent 38%),
+    radial-gradient(ellipse at 50% 100%, rgba(0, 0, 0, .24), transparent 54%),
+    linear-gradient(142deg, #211810 0%, #17110c 52%, #110d09 100%);
+}
+
+.reader-app {
+  grid-template-rows: 56px minmax(0, 1fr) 42px;
+}
+
+.reader-toolbar,
+.reader-status {
+  background: var(--chrome-bg);
+  border-color: var(--chrome-line);
+  box-shadow: inset 0 1px var(--chrome-highlight);
+  -webkit-backdrop-filter: blur(18px) saturate(.85);
+  backdrop-filter: blur(18px) saturate(.85);
+  transition: opacity 220ms ease, background 220ms ease;
+}
+
+.reader-toolbar {
+  padding-block: 7px;
+}
+
+.reader-brand {
+  gap: 10px;
+}
+
+.reader-brand__mark {
+  width: 33px;
+  height: 33px;
+  border-color: rgba(201, 166, 107, .46);
+  color: #d2ae72;
+  background: radial-gradient(circle at 36% 28%, rgba(255,255,255,.045), transparent 48%);
+  box-shadow: inset 0 0 18px rgba(201, 166, 107, .035);
+}
+
+.reader-brand strong {
+  font-weight: 650;
+  letter-spacing: .012em;
+  text-shadow: 0 1px 8px rgba(0,0,0,.28);
+}
+
+.reader-brand div > span {
+  color: color-mix(in srgb, var(--muted) 88%, #fff 12%);
+  letter-spacing: .01em;
+}
+
+.reader-actions button {
+  min-height: 34px;
+  border-color: rgba(255,255,255,.09);
+  background: rgba(255,255,255,.045);
+  box-shadow: inset 0 1px rgba(255,255,255,.035);
+  transition: background 140ms ease, border-color 140ms ease, color 140ms ease, transform 110ms ease;
+}
+
+.reader-actions button:hover {
+  background: rgba(255,255,255,.085);
+  border-color: rgba(255,255,255,.14);
+}
+
+.reader-actions button:active {
+  transform: translateY(1px);
+}
+
+.reader-actions button[aria-pressed="true"] {
+  border-color: rgba(201,166,107,.22);
+}
+
+.reader-actions button:focus-visible,
+.edge-nav:focus-visible {
+  outline: 2px solid rgba(215, 182, 122, .72);
+  outline-offset: 2px;
+}
+
+.book-workspace {
+  isolation: isolate;
+}
+
+.book-workspace::before {
+  opacity: .12;
+  mask-image: radial-gradient(ellipse at center, #000 30%, transparent 94%);
+}
+
+.book-workspace::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 48%, transparent 46%, rgba(0,0,0,.11) 82%, rgba(0,0,0,.22) 100%);
+}
+
+.book-stage {
+  filter: drop-shadow(0 1px 0 rgba(255,255,255,.025));
+}
+
+.reader-app.is-reflowing .book-stage {
+  opacity: .90;
+}
+
+.book-shadow {
+  height: min(7vh, 54px);
+  bottom: 3.7%;
+  background: rgba(0,0,0,var(--book-shadow-alpha));
+  filter: blur(24px);
+  opacity: .82;
+}
+
+.vp-page {
+  border-color: color-mix(in srgb, var(--paper-edge) 60%, transparent);
+  border-radius: 2px;
+  box-shadow:
+    0 5px 18px rgba(0,0,0,.17),
+    0 14px 38px rgba(0,0,0,.085),
+    inset 0 0 0 1px rgba(255,255,255,.16);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.vp-page::before {
+  opacity: calc(var(--texture-opacity) * .82);
+}
+
+.vp-page::after {
+  box-shadow:
+    inset 0 0 12px rgba(88,62,33,.052),
+    inset var(--gutter-x, 0) 0 25px -17px rgba(20,14,8,.50);
+}
+
+.book-stage[data-reader-orientation="landscape"] .vp-page[data-side="left"] {
+  border-radius: 2px 0 0 2px;
+}
+
+.book-stage[data-reader-orientation="landscape"] .vp-page[data-side="right"] {
+  border-radius: 0 2px 2px 0;
+}
+
+.book-stage[data-reader-orientation="portrait"] .vp-page {
+  border-radius: 1px 2px 2px 1px;
+}
+
+.vp-page[data-stock="cover"] {
+  box-shadow:
+    0 6px 20px rgba(0,0,0,.19),
+    0 15px 42px rgba(0,0,0,.10),
+    inset 0 0 0 1px rgba(255,255,255,.14) !important;
+}
+
+.vp-page__media {
+  image-rendering: auto;
+}
+
+/* Refine the simulated binding without inserting visible empty space. */
+.book-stage[data-reader-orientation="portrait"] .vespera-spine {
+  opacity: .84;
+  border-radius: 2px 0 0 2px;
+  background:
+    linear-gradient(to right,
+      rgba(39, 25, 14, .58),
+      rgba(86, 59, 33, .26) 35%,
+      rgba(213, 195, 169, .72) 78%,
+      rgba(246, 235, 218, .90));
+  box-shadow:
+    -4px 4px 15px rgba(0,0,0,.13),
+    inset -1px 0 rgba(255,255,255,.28),
+    4px 0 10px -8px rgba(15,9,5,.84);
+}
+
+.book-stage[data-reader-orientation="landscape"] .vespera-spine {
+  --vespera-spine-width: 3px !important;
+  opacity: .50;
+  transform: translate(-50%, 0);
+  border-radius: 0;
+  background: linear-gradient(to right,
+    rgba(18, 11, 6, .40),
+    rgba(244, 233, 216, .28) 48%,
+    rgba(18, 11, 6, .40));
+  box-shadow: 0 0 12px rgba(0,0,0,.14);
+}
+
+/* The clipped left leaf should feel subordinate, but like the same book. */
+.vespera-companion-leaf.is-visible {
+  opacity: .92;
+}
+
+.vespera-companion-leaf__sheet {
+  transform: perspective(1500px) rotateY(2.2deg) translateX(.5px) !important;
+  border-color: color-mix(in srgb, var(--paper-edge) 55%, transparent) !important;
+  box-shadow:
+    -6px 8px 20px rgba(0,0,0,.13),
+    inset -20px 0 28px -23px rgba(25,16,8,.72),
+    inset 0 0 0 1px rgba(255,255,255,.12) !important;
+}
+
+.vespera-companion-leaf__media {
+  filter: saturate(.96) brightness(.985);
+}
+
+.page-stack {
+  border-color: rgba(82,63,42,.15);
+  box-shadow: 0 5px 16px rgba(0,0,0,.16);
+  filter: saturate(.86);
+}
+
+.edge-nav {
+  width: 40px;
+  height: 58px;
+  color: rgba(244,237,226,.92);
+  border-color: rgba(255,255,255,.075);
+  background: rgba(16,12,8,.26);
+  box-shadow: inset 0 1px rgba(255,255,255,.025), 0 5px 20px rgba(0,0,0,.08);
+  opacity: .54;
+  -webkit-backdrop-filter: blur(9px);
+  backdrop-filter: blur(9px);
+  transition: opacity 150ms ease, background 150ms ease, border-color 150ms ease, transform 130ms ease;
+}
+
+.edge-nav:hover,
+.edge-nav:focus-visible {
+  opacity: .96;
+  background: rgba(16,12,8,.58);
+  border-color: rgba(255,255,255,.12);
+}
+
+.edge-nav:active:not(:disabled) {
+  transform: translateY(-50%) scale(.96);
+}
+
+.edge-nav:disabled {
+  opacity: .10;
+}
+
+.reader-status {
+  padding-top: 6px;
+  padding-bottom: 5px;
+}
+
+.reader-progress {
+  height: 2px;
+  background: rgba(255,255,255,.055);
+}
+
+.reader-progress span {
+  background: linear-gradient(90deg, rgba(156,122,78,.88), rgba(215,182,122,.94));
+  box-shadow: 0 0 8px rgba(201,166,107,.11);
+}
+
+.reader-status__line {
+  margin-top: 5px;
+  color: color-mix(in srgb, var(--muted) 88%, #fff 12%);
+}
+
+.reader-app.is-ui-idle .edge-nav:not(:focus-visible) {
+  opacity: .24;
+}
+
+.reader-app.is-ui-idle .reader-status,
+.reader-app.is-ui-idle .reader-toolbar {
+  background: rgba(16,12,8,.69);
+}
+
+#book,
+.book-stage,
+.vp-page,
+.vp-page__media {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+@media (max-width: 900px) {
+  .reader-status__line span:last-child { display: none; }
+}
+
+@media (max-width: 720px), (pointer: coarse) {
+  .reader-app {
+    grid-template-rows: 52px minmax(0, 1fr) 38px;
+  }
+
+  .reader-toolbar {
+    padding: 5px 7px;
+  }
+
+  .reader-brand__mark {
+    width: 30px;
+    height: 30px;
+  }
+
+  .reader-actions button {
+    min-height: 32px;
+  }
+
+  .edge-nav {
+    width: 34px;
+    height: 52px;
+    font-size: 27px;
+    opacity: .60;
+  }
+
+  .reader-app.is-ui-idle .edge-nav:not(:focus-visible) {
+    opacity: .33;
+  }
+
+  .reader-status {
+    padding: 5px 7px;
+  }
+
+  .reader-status__line {
+    margin-top: 4px;
+  }
+}
+
+@media (pointer: coarse) and (orientation: landscape) {
+  .reader-app {
+    grid-template-rows: 42px minmax(0, 1fr) 29px;
+  }
+
+  .reader-toolbar {
+    padding-block: 3px;
+  }
+
+  .reader-brand__mark {
+    width: 27px;
+    height: 27px;
+  }
+
+  .reader-status {
+    padding-top: 4px;
+    padding-bottom: 3px;
+  }
+
+  .edge-nav {
+    width: 34px;
+    height: 50px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: .001ms !important;
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
