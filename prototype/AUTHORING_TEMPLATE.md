@@ -27,6 +27,29 @@ For a 1600 × 2400 canvas:
 - outer/top/bottom safe inset: about **80 px**
 - inner/spine safe inset: about **112 px**
 
+## Lumina authoring workflow
+
+Lumina Image Studio now provides a Rack-specific authoring path under **File → The Rack**.
+
+1. **New Page** — creates a **1600 × 2400** canvas with full-bleed fill, placeholder type and safe-area guides.
+2. Design the page and keep important lettering/content inside the guides.
+3. **Add Current Page** — classify the page as `front-cover`, `interior` or `back-cover`.
+4. Repeat until the publication contains at least two pages.
+5. **Export Package** — produces `{slug}.rack.zip`.
+
+The exported package contains:
+
+- `pages/*.png`
+- `publication.json` using Vespera publication schema **0.1** and **1600 × 2400** format
+- `rack-entry.json` for merging into The Rack `rack.json`
+
+Current handoff:
+
+- copy `pages/` to `the-rack/content/{slug}/pages/`
+- merge the generated `rack-entry.json` shelf entry into The Rack `rack.json`
+
+The Lumina runbook is `lumina-image-studio/docs/RACK_PUBLICATION.md`.
+
 ## Reader contract
 
 The publication manifest defines the physical sheet ratio. New OMOTL pages should target the same 2:3 ratio so `fit: contain` fills the authored page without letterboxing or cropping.
