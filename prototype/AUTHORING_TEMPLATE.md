@@ -10,6 +10,8 @@ Recommended Lumina working canvas:
 - lower-resolution draft/export: **1024 × 1536 px**
 - aspect ratio: **2:3 / 0.6667**
 
+In **Lumina Image Studio**, use **File → The Rack → New Page** (not a blank New File). That template sets the 1600×2400 canvas, full-bleed working fill, and the safe-area guides below. Stack pages with **Add Current Page**, then **Export Package** for a `.rack.zip` (`publication.json` + `rack-entry.json` + `pages/*.png`). See `lumina-image-studio/docs/RACK_PUBLICATION.md`.
+
 The reader scales the physical sheet uniformly to the largest size the active viewport can contain. Pixel resolution can be higher or lower as long as the page ratio matches the publication manifest.
 
 ## Full bleed
