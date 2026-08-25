@@ -7,9 +7,10 @@
   "publisher": "Vespera Publishing",
   "creator": "Vespera Publishing",
   "format": {
-    "width": 1200,
-    "height": 1600,
-    "readingDirection": "ltr"
+    "width": 1024,
+    "height": 1536,
+    "readingDirection": "ltr",
+    "template": "comic-2x3"
   },
   "physical": {
     "binding": "stapled-comic",
