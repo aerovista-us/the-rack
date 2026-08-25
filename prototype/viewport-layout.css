@@ -1,0 +1,54 @@
+/* Vespera viewport-first layout
+   The publication should consume the largest physical sheet/spread that the
+   available reader workspace can support. Reader chrome owns the space above
+   and below; the book itself should not keep decorative side padding. */
+
+.book-workspace {
+  padding: 0 !important;
+}
+
+.book-stage {
+  --stage-w: 100%;
+  --stage-h: 100%;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+}
+
+/* Navigation floats over the workspace rather than reserving layout width. */
+.edge-nav--left {
+  left: max(2px, env(safe-area-inset-left));
+}
+
+.edge-nav--right {
+  right: max(2px, env(safe-area-inset-right));
+}
+
+/* Keep only a tiny optical breathing allowance around the rendered paper.
+   PageFlip itself decides the largest size that respects the publication ratio. */
+#book {
+  margin: 0;
+}
+
+@media (max-width: 720px), (pointer: coarse) {
+  .book-workspace {
+    padding: 0 !important;
+  }
+
+  .book-stage {
+    --stage-w: 100%;
+    --stage-h: 100%;
+  }
+}
+
+@media (pointer: coarse) and (orientation: landscape) {
+  .book-workspace {
+    padding: 0 !important;
+  }
+
+  .book-stage {
+    --stage-w: 100%;
+    --stage-h: 100%;
+  }
+}
