@@ -26,14 +26,13 @@
       pointer-events: none;
       overflow: hidden;
       opacity: 0;
+      background: var(--paper);
       transform-style: preserve-3d;
-      perspective: 1200px;
+      perspective: 1600px;
       transition: opacity 130ms ease;
     }
 
-    .vespera-companion-leaf.is-visible {
-      opacity: .96;
-    }
+    .vespera-companion-leaf.is-visible { opacity: .96; }
 
     .vespera-companion-leaf__sheet {
       position: absolute;
@@ -43,24 +42,25 @@
       width: var(--companion-sheet-width, 300px);
       overflow: hidden;
       transform-origin: 100% 50%;
-      transform: perspective(1200px) rotateY(5deg) translateX(1px);
+      transform: perspective(1600px) rotateY(1.25deg);
       border: 1px solid color-mix(in srgb, var(--paper-edge) 72%, transparent);
       border-right: 0;
-      border-radius: 3px 0 0 3px;
+      border-radius: 2px 0 0 2px;
       background: var(--paper);
       box-shadow:
-        -10px 11px 26px rgba(0,0,0,.18),
-        inset -22px 0 26px -22px rgba(25,16,8,.78),
+        -10px 11px 26px rgba(0,0,0,.16),
+        inset -24px 0 28px -23px rgba(25,16,8,.82),
         inset 0 0 0 1px rgba(255,255,255,.16);
     }
 
+    .vespera-companion-leaf::before,
     .vespera-companion-leaf__sheet::before {
       content: "";
       position: absolute;
       z-index: 5;
       inset: 0;
       pointer-events: none;
-      opacity: calc(var(--texture-opacity, .15) * .72);
+      opacity: calc(var(--texture-opacity, .15) * .68);
       mix-blend-mode: multiply;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.62' numOctaves='5' seed='11' stitchTiles='stitch' result='noise'/%3E%3CfeDiffuseLighting in='noise' lighting-color='%23f5ead7' surfaceScale='2.1' result='light'%3E%3CfeDistantLight azimuth='135' elevation='52'/%3E%3C/feDiffuseLighting%3E%3CfeBlend in='noise' in2='light' mode='multiply'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paper)'/%3E%3C/svg%3E");
       background-size: 260px 260px;
@@ -72,8 +72,8 @@
       z-index: 6;
       inset: 0;
       pointer-events: none;
-      background: linear-gradient(to left, transparent 72%, rgba(255,255,255,.025) 88%, rgba(255,255,255,.07));
-      box-shadow: inset -28px 0 30px -23px rgba(18,11,6,.62);
+      background: linear-gradient(to left, transparent 71%, rgba(255,255,255,.025) 88%, rgba(255,255,255,.07));
+      box-shadow: inset -30px 0 32px -23px rgba(18,11,6,.66);
     }
 
     .vespera-companion-leaf__media,
@@ -106,15 +106,13 @@
       z-index: 2;
       inset: 0;
       background:
-        linear-gradient(to left, rgba(63,43,25,.13), transparent 20%),
+        linear-gradient(to left, rgba(63,43,25,.14), transparent 20%),
         linear-gradient(145deg, color-mix(in srgb, var(--paper) 88%, #b89d78), var(--paper));
     }
   `;
   document.head.append(style);
 
   function getReaderState() {
-    // reader.js is a classic script, so its top-level lexical bindings are
-    // available to subsequent classic scripts without becoming window globals.
     try {
       return { readerState: state, readerEls: els };
     } catch {
@@ -122,16 +120,9 @@
     }
   }
 
-  function clearSheet() {
-    sheet.replaceChildren();
-  }
-
   function renderCompanionPage(page, index) {
-    clearSheet();
+    sheet.replaceChildren();
 
-    // Immediately after opening the front cover, avoid showing the exterior
-    // cover art face-up on the left. A muted reverse-cover surface reads more
-    // naturally until the first true interior spread is established.
     if (!page || index === 0 || String(page.role || '').toLowerCase() === 'front-cover') {
       const reverse = document.createElement('div');
       reverse.className = 'vespera-companion-leaf__cover-reverse';
@@ -183,24 +174,29 @@
     const hostHeight = Math.max(1, Math.round(bounds.maxHeight));
     const hostLeft = Math.max(0, (stageRect.width - hostWidth) / 2);
     const hostTop = Math.max(0, (stageRect.height - hostHeight) / 2);
-    const availableLeft = Math.max(0, hostLeft - 2);
 
-    if (availableLeft < 18) {
+    /* Fill every available pixel from the viewport/stage edge to the spine.
+       The old .62 cap was visually moving the unused gap into the book center. */
+    const visibleWidth = Math.max(0, Math.min(stageRect.width, hostLeft + 1));
+    if (visibleWidth < 12) {
       leaf.classList.remove('is-visible');
       return;
     }
 
-    const visibleWidth = Math.min(availableLeft, hostWidth * .62);
     Object.assign(leaf.style, {
-      left: `${Math.max(0, hostLeft - visibleWidth)}px`,
+      left: '0px',
       top: `${hostTop}px`,
-      width: `${visibleWidth + 2}px`,
+      width: `${visibleWidth}px`,
       height: `${hostHeight}px`,
     });
+
+    /* Keep a true full-size companion sheet anchored to the spine. If the
+       viewport is unusually wide, the leaf's paper substrate still continues
+       to the window edge instead of exposing desk/background. */
     sheet.style.setProperty('--companion-sheet-width', `${hostWidth}px`);
 
     const previousIndex = Math.max(0, index - 1);
-    const key = `${previousIndex}:${hostWidth}:${hostHeight}`;
+    const key = `${previousIndex}:${hostWidth}:${hostHeight}:${Math.round(visibleWidth)}`;
     if (key !== lastKey) {
       renderCompanionPage(readerState.manifest.pages[previousIndex], previousIndex);
       lastKey = key;
@@ -226,8 +222,6 @@
   window.addEventListener('orientationchange', () => requestAnimationFrame(update));
   document.addEventListener('fullscreenchange', () => requestAnimationFrame(update));
 
-  // Reflow replaces the PageFlip instance, so periodically reattach to the new
-  // instance. This is intentionally presentation-only and never drives paging.
   window.setInterval(() => {
     ensureAttached();
     update();
