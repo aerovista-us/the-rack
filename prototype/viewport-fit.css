@@ -1,0 +1,53 @@
+/* v0.4.6 — viewport-first physical page sizing.
+   The reader chrome owns only the toolbar/status rows. The book workspace gives
+   the physical sheet every remaining pixel and navigation floats over it. */
+
+.book-workspace {
+  padding: 0 !important;
+}
+
+.book-stage {
+  --stage-w: 100%;
+  --stage-h: 100%;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+}
+
+/* Page stacks track the exact rendered book edge rather than a viewport guess. */
+.page-stack--left {
+  right: calc(50% + var(--vespera-book-half-width, 280px));
+}
+.page-stack--right {
+  left: calc(50% + var(--vespera-book-half-width, 280px));
+}
+
+/* In portrait, let the companion leaf consume every available pixel from the
+   viewport/workspace edge to the spine. The full-size sheet remains clipped;
+   the active reading page is never shrunk to make room for it. */
+.book-stage[data-reader-orientation="portrait"] .vespera-companion-leaf.is-visible {
+  left: 0 !important;
+  width: calc(var(--vespera-host-left, 0px) + 2px) !important;
+}
+
+/* The shadow should follow the book rather than retain the old capped stage. */
+.book-shadow {
+  width: min(94vw, max(280px, var(--vespera-host-width, 900px)));
+}
+
+@media (max-width: 720px), (pointer: coarse) {
+  .book-workspace { padding: 0 !important; }
+  .book-stage {
+    --stage-w: 100%;
+    --stage-h: 100%;
+  }
+}
+
+@media (pointer: coarse) and (orientation: landscape) {
+  .book-workspace { padding: 0 !important; }
+  .book-stage {
+    --stage-w: 100%;
+    --stage-h: 100%;
+  }
+}
