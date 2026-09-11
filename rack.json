@@ -16,9 +16,12 @@
       "featured": true,
       "creator": "EchoStory / Vespera Publishing",
       "description": "One ordinary late night in Coeur d'Alene starts slipping out of alignment. Familiar streets, a recurring white sedan, frozen clocks, and a voice on Frequency Three push one man toward a choice the night seems to have already made for him.",
-      "cover": "content/EchoStory/the-last-normal-night/issue-1/pages/00-cover-front.png",
-      "shareImage": "https://therack.aerovista.us/content/EchoStory/the-last-normal-night/issue-1/pages/00-cover-front.png",
+      "cover": "content/EchoStory/the-last-normal-night/issue-1/pages/00-cover-front.png?v=20260911b",
+      "shareImage": "https://therack.aerovista.us/content/EchoStory/the-last-normal-night/issue-1/pages/00-cover-front.png?v=20260911b",
       "shareUrl": "read/last-normal-night-issue-1/",
+      "companionUrl": "https://lastnormalnight.aerovista.us/",
+      "companionLabel": "Listen to The Last Normal Night",
+      "companionShortLabel": "Listen",
       "readerMode": "book",
       "spreadMode": "auto",
       "format": {
@@ -37,12 +40,13 @@
         "reality fracture",
         "11:59",
         "frequency three",
-        "lake"
+        "lake",
+        "music companion"
       ],
       "sequence": [
         {
           "type": "image",
-          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/00-cover-front.png",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/00-cover-front.png?v=20260911b",
           "alt": "The Last Normal Night — Issue 1 front cover",
           "title": "Front cover"
         },
