@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-import shutil
 import urllib.request
 from pathlib import Path
 
@@ -10,6 +9,8 @@ RACK_JSON = ROOT / "rack.json"
 DEST = ROOT / "content" / "EchoStory" / "the-last-normal-night" / "issue-1" / "pages"
 SOURCE_RAW = "https://raw.githubusercontent.com/aerovista-us/The-Last-Normal-Night/main/comic/issues/01-the-last-normal-night"
 BOOK_ID = "last-normal-night-issue-1"
+PLAYER_URL = "https://lastnormalnight.aerovista.us/"
+COVER_VERSION = "20260911b"
 
 ASSETS = [
     "00-cover-front.png",
@@ -20,7 +21,7 @@ ASSETS = [
 
 
 def fetch_bytes(url: str) -> bytes:
-    req = urllib.request.Request(url, headers={"User-Agent": "the-rack-importer/1.0"})
+    req = urllib.request.Request(url, headers={"User-Agent": "the-rack-importer/1.1"})
     with urllib.request.urlopen(req, timeout=120) as response:
         return response.read()
 
@@ -55,9 +56,10 @@ def main() -> None:
     expected_format = focus.get("format") or {"width": 2063, "height": 3150}
 
     prefix = "content/EchoStory/the-last-normal-night/issue-1/pages"
+    cover_src = f"{prefix}/00-cover-front.png?v={COVER_VERSION}"
     sequence = [
         image_item(
-            f"{prefix}/00-cover-front.png",
+            cover_src,
             "The Last Normal Night — Issue 1 front cover",
             "Front cover",
         ),
@@ -101,9 +103,12 @@ def main() -> None:
             "Familiar streets, a recurring white sedan, frozen clocks, and a voice on Frequency Three "
             "push one man toward a choice the night seems to have already made for him."
         ),
-        "cover": f"{prefix}/00-cover-front.png",
-        "shareImage": "https://therack.aerovista.us/content/EchoStory/the-last-normal-night/issue-1/pages/00-cover-front.png",
+        "cover": cover_src,
+        "shareImage": f"https://therack.aerovista.us/{prefix}/00-cover-front.png?v={COVER_VERSION}",
         "shareUrl": "read/last-normal-night-issue-1/",
+        "companionUrl": PLAYER_URL,
+        "companionLabel": "Listen to The Last Normal Night",
+        "companionShortLabel": "Listen",
         "readerMode": "book",
         "spreadMode": "auto",
         "format": expected_format,
@@ -116,6 +121,7 @@ def main() -> None:
             "11:59",
             "frequency three",
             "lake",
+            "music companion",
         ],
         "sequence": sequence,
     }
@@ -128,6 +134,7 @@ def main() -> None:
 
     print(f"Imported {len(ASSETS)} publishing images and upserted {BOOK_ID}")
     print(f"Sequence items: {len(sequence)}")
+    print(f"Companion player: {PLAYER_URL}")
 
 
 if __name__ == "__main__":
