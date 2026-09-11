@@ -8,6 +8,881 @@
   },
   "books": [
     {
+      "id": "last-normal-night-issue-1",
+      "series": "EchoStory — The Last Normal Night",
+      "title": "Issue No. 1 — The Crossing",
+      "issue": 1,
+      "status": "complete",
+      "featured": true,
+      "creator": "EchoStory / Vespera Publishing",
+      "description": "One ordinary late night in Coeur d'Alene starts slipping out of alignment. Familiar streets, a recurring white sedan, frozen clocks, and a voice on Frequency Three push one man toward a choice the night seems to have already made for him.",
+      "cover": "content/EchoStory/the-last-normal-night/issue-1/pages/00-cover-front.png",
+      "shareImage": "https://therack.aerovista.us/content/EchoStory/the-last-normal-night/issue-1/pages/00-cover-front.png",
+      "shareUrl": "read/last-normal-night-issue-1/",
+      "readerMode": "book",
+      "spreadMode": "auto",
+      "format": {
+        "width": 2063,
+        "height": 3150
+      },
+      "genres": [
+        "mystery",
+        "science fiction",
+        "psychological thriller"
+      ],
+      "tags": [
+        "echostory",
+        "coeur d'alene",
+        "north idaho",
+        "reality fracture",
+        "11:59",
+        "frequency three",
+        "lake"
+      ],
+      "sequence": [
+        {
+          "type": "image",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/00-cover-front.png",
+          "alt": "The Last Normal Night — Issue 1 front cover",
+          "title": "Front cover"
+        },
+        {
+          "type": "image",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/01-inside-front.png",
+          "alt": "The Last Normal Night — inside front",
+          "title": "Inside front"
+        },
+        {
+          "type": "image",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p01.png",
+          "alt": "The Last Normal Night, page 1",
+          "title": "Page 1",
+          "focusRegions": [
+            {
+              "x": 0.03,
+              "y": 0.03,
+              "w": 0.94,
+              "h": 0.94,
+              "label": "Opening lake and CDA splash"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p02.png",
+          "alt": "The Last Normal Night, page 2",
+          "title": "Page 2",
+          "focusRegions": [
+            {
+              "x": 0.04,
+              "y": 0.04,
+              "w": 0.92,
+              "h": 0.24,
+              "label": "Bar establishing panel"
+            },
+            {
+              "x": 0.04,
+              "y": 0.32,
+              "w": 0.44,
+              "h": 0.27,
+              "label": "Beer and protagonist"
+            },
+            {
+              "x": 0.52,
+              "y": 0.32,
+              "w": 0.44,
+              "h": 0.27,
+              "label": "Friend relationship story"
+            },
+            {
+              "x": 0.04,
+              "y": 0.63,
+              "w": 0.92,
+              "h": 0.33,
+              "label": "Warm room closing panel"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p03.png",
+          "alt": "The Last Normal Night, page 3",
+          "title": "Page 3",
+          "focusRegions": [
+            {
+              "x": 0.04,
+              "y": 0.04,
+              "w": 0.92,
+              "h": 0.2,
+              "label": "Exit bar"
+            },
+            {
+              "x": 0.04,
+              "y": 0.28,
+              "w": 0.44,
+              "h": 0.25,
+              "label": "Phone twelve percent"
+            },
+            {
+              "x": 0.52,
+              "y": 0.28,
+              "w": 0.44,
+              "h": 0.25,
+              "label": "Passing bass truck"
+            },
+            {
+              "x": 0.04,
+              "y": 0.57,
+              "w": 0.44,
+              "h": 0.39,
+              "label": "His truck and lake wind"
+            },
+            {
+              "x": 0.52,
+              "y": 0.57,
+              "w": 0.44,
+              "h": 0.39,
+              "label": "White sedan first appearance"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p04.png",
+          "alt": "The Last Normal Night, page 4",
+          "title": "Page 4",
+          "focusRegions": [
+            {
+              "x": 0.04,
+              "y": 0.04,
+              "w": 0.92,
+              "h": 0.23,
+              "label": "Dog barking"
+            },
+            {
+              "x": 0.04,
+              "y": 0.31,
+              "w": 0.92,
+              "h": 0.2,
+              "label": "Same street goes silent"
+            },
+            {
+              "x": 0.04,
+              "y": 0.55,
+              "w": 0.4,
+              "h": 0.22,
+              "label": "Protagonist notices"
+            },
+            {
+              "x": 0.04,
+              "y": 0.8,
+              "w": 0.92,
+              "h": 0.16,
+              "label": "Empty street behind him"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p05.png",
+          "alt": "The Last Normal Night, page 5",
+          "title": "Page 5",
+          "focusRegions": [
+            {
+              "x": 0.04,
+              "y": 0.04,
+              "w": 0.92,
+              "h": 0.23,
+              "label": "Streetlight ahead"
+            },
+            {
+              "x": 0.04,
+              "y": 0.31,
+              "w": 0.92,
+              "h": 0.2,
+              "label": "Light shuts off"
+            },
+            {
+              "x": 0.04,
+              "y": 0.55,
+              "w": 0.92,
+              "h": 0.2,
+              "label": "Light returns and signal changes"
+            },
+            {
+              "x": 0.04,
+              "y": 0.79,
+              "w": 0.92,
+              "h": 0.17,
+              "label": "Whisper from empty sidewalk"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p06.png",
+          "alt": "The Last Normal Night, page 6",
+          "title": "Page 6",
+          "focusRegions": [
+            {
+              "x": 0.04,
+              "y": 0.04,
+              "w": 0.92,
+              "h": 0.2,
+              "label": "Sherman feels stretched"
+            },
+            {
+              "x": 0.04,
+              "y": 0.28,
+              "w": 0.44,
+              "h": 0.24,
+              "label": "White sedan passes"
+            },
+            {
+              "x": 0.52,
+              "y": 0.28,
+              "w": 0.44,
+              "h": 0.24,
+              "label": "Same sedan repeats"
+            },
+            {
+              "x": 0.04,
+              "y": 0.56,
+              "w": 0.44,
+              "h": 0.4,
+              "label": "Digital sign 11:58"
+            },
+            {
+              "x": 0.52,
+              "y": 0.56,
+              "w": 0.44,
+              "h": 0.4,
+              "label": "Digital sign reverses to 11:57"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p07.png",
+          "alt": "The Last Normal Night, page 7",
+          "title": "Page 7",
+          "focusRegions": [
+            {
+              "x": 0.04,
+              "y": 0.04,
+              "w": 0.92,
+              "h": 0.24,
+              "label": "Convenience store establishing"
+            },
+            {
+              "x": 0.04,
+              "y": 0.32,
+              "w": 0.44,
+              "h": 0.27,
+              "label": "Clerk recognizes him"
+            },
+            {
+              "x": 0.52,
+              "y": 0.32,
+              "w": 0.44,
+              "h": 0.27,
+              "label": "Good what"
+            },
+            {
+              "x": 0.04,
+              "y": 0.63,
+              "w": 0.92,
+              "h": 0.33,
+              "label": "Clerk smiles"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p08.png",
+          "alt": "The Last Normal Night, page 8",
+          "title": "Page 8",
+          "focusRegions": [
+            {
+              "x": 0.04,
+              "y": 0.04,
+              "w": 0.92,
+              "h": 0.22,
+              "label": "Empty Sherman"
+            },
+            {
+              "x": 0.04,
+              "y": 0.3,
+              "w": 0.92,
+              "h": 0.22,
+              "label": "Frozen lake"
+            },
+            {
+              "x": 0.04,
+              "y": 0.56,
+              "w": 0.44,
+              "h": 0.4,
+              "label": "Phone no service"
+            },
+            {
+              "x": 0.52,
+              "y": 0.56,
+              "w": 0.44,
+              "h": 0.4,
+              "label": "WELCOME BACK flash"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p09.png",
+          "alt": "The Last Normal Night, page 9",
+          "title": "Page 9",
+          "focusRegions": [
+            {
+              "x": 0.04,
+              "y": 0.04,
+              "w": 0.92,
+              "h": 0.18,
+              "label": "White sedan idling"
+            },
+            {
+              "x": 0.04,
+              "y": 0.26,
+              "w": 0.44,
+              "h": 0.25,
+              "label": "Dent and dim tail light"
+            },
+            {
+              "x": 0.52,
+              "y": 0.26,
+              "w": 0.44,
+              "h": 0.25,
+              "label": "First signal clicks red"
+            },
+            {
+              "x": 0.04,
+              "y": 0.55,
+              "w": 0.92,
+              "h": 0.2,
+              "label": "Sherman signals cascade red"
+            },
+            {
+              "x": 0.04,
+              "y": 0.79,
+              "w": 0.92,
+              "h": 0.17,
+              "label": "Car vanished"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p10.png",
+          "alt": "The Last Normal Night, page 10",
+          "title": "Page 10",
+          "focusRegions": [
+            {
+              "x": 0.04,
+              "y": 0.04,
+              "w": 0.44,
+              "h": 0.25,
+              "label": "Dashboard 11:59"
+            },
+            {
+              "x": 0.52,
+              "y": 0.04,
+              "w": 0.44,
+              "h": 0.25,
+              "label": "Phone 11:59"
+            },
+            {
+              "x": 0.04,
+              "y": 0.33,
+              "w": 0.44,
+              "h": 0.25,
+              "label": "Store clock 11:59"
+            },
+            {
+              "x": 0.52,
+              "y": 0.33,
+              "w": 0.44,
+              "h": 0.25,
+              "label": "Street sign 11:59"
+            },
+            {
+              "x": 0.04,
+              "y": 0.62,
+              "w": 0.92,
+              "h": 0.34,
+              "label": "Protagonist realizes convergence"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p11.png",
+          "alt": "The Last Normal Night, page 11",
+          "title": "Page 11",
+          "focusRegions": [
+            {
+              "x": 0.04,
+              "y": 0.04,
+              "w": 0.44,
+              "h": 0.27,
+              "label": "Dashboard stuck"
+            },
+            {
+              "x": 0.52,
+              "y": 0.04,
+              "w": 0.44,
+              "h": 0.27,
+              "label": "Phone stuck"
+            },
+            {
+              "x": 0.04,
+              "y": 0.35,
+              "w": 0.44,
+              "h": 0.27,
+              "label": "Engine starts"
+            },
+            {
+              "x": 0.52,
+              "y": 0.35,
+              "w": 0.44,
+              "h": 0.27,
+              "label": "Rearview misalignment"
+            },
+            {
+              "x": 0.04,
+              "y": 0.66,
+              "w": 0.44,
+              "h": 0.3,
+              "label": "Glass creak"
+            },
+            {
+              "x": 0.52,
+              "y": 0.66,
+              "w": 0.44,
+              "h": 0.3,
+              "label": "Pressure fills cab"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p12.png",
+          "alt": "The Last Normal Night, page 12",
+          "title": "Page 12",
+          "focusRegions": [
+            {
+              "x": 0.03,
+              "y": 0.03,
+              "w": 0.94,
+              "h": 0.38,
+              "label": "Truck in compressed intersection"
+            },
+            {
+              "x": 0.04,
+              "y": 0.45,
+              "w": 0.92,
+              "h": 0.16,
+              "label": "Wrong shadow"
+            },
+            {
+              "x": 0.03,
+              "y": 0.65,
+              "w": 0.94,
+              "h": 0.32,
+              "label": "Wooden-flute pressure signal"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p13.png",
+          "alt": "The Last Normal Night, page 13",
+          "title": "Page 13",
+          "focusRegions": [
+            {
+              "x": 0.04,
+              "y": 0.03,
+              "w": 0.92,
+              "h": 0.14,
+              "label": "Ten"
+            },
+            {
+              "x": 0.04,
+              "y": 0.19,
+              "w": 0.92,
+              "h": 0.14,
+              "label": "Nine and eight"
+            },
+            {
+              "x": 0.04,
+              "y": 0.35,
+              "w": 0.92,
+              "h": 0.14,
+              "label": "Seven and six"
+            },
+            {
+              "x": 0.04,
+              "y": 0.51,
+              "w": 0.92,
+              "h": 0.14,
+              "label": "Five"
+            },
+            {
+              "x": 0.04,
+              "y": 0.67,
+              "w": 0.92,
+              "h": 0.14,
+              "label": "Four and three"
+            },
+            {
+              "x": 0.04,
+              "y": 0.83,
+              "w": 0.92,
+              "h": 0.14,
+              "label": "Two and one"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p14.png",
+          "alt": "The Last Normal Night, page 14",
+          "title": "Page 14",
+          "focusRegions": [
+            {
+              "x": 0.02,
+              "y": 0.03,
+              "w": 0.96,
+              "h": 0.94,
+              "label": "Rupture spread left half"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p15.png",
+          "alt": "The Last Normal Night, page 15",
+          "title": "Page 15",
+          "focusRegions": [
+            {
+              "x": 0.02,
+              "y": 0.03,
+              "w": 0.96,
+              "h": 0.94,
+              "label": "Rupture spread right half"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p16.png",
+          "alt": "The Last Normal Night, page 16",
+          "title": "Page 16",
+          "focusRegions": [
+            {
+              "x": 0.03,
+              "y": 0.03,
+              "w": 0.94,
+              "h": 0.44,
+              "label": "Wakes beside truck"
+            },
+            {
+              "x": 0.03,
+              "y": 0.52,
+              "w": 0.94,
+              "h": 0.45,
+              "label": "Same street almost"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p17.png",
+          "alt": "The Last Normal Night, page 17",
+          "title": "Page 17",
+          "focusRegions": [
+            {
+              "x": 0.04,
+              "y": 0.04,
+              "w": 0.92,
+              "h": 0.22,
+              "label": "Watching windows"
+            },
+            {
+              "x": 0.04,
+              "y": 0.3,
+              "w": 0.44,
+              "h": 0.28,
+              "label": "Truck starts without key"
+            },
+            {
+              "x": 0.52,
+              "y": 0.3,
+              "w": 0.44,
+              "h": 0.28,
+              "label": "Key still in hand"
+            },
+            {
+              "x": 0.04,
+              "y": 0.62,
+              "w": 0.92,
+              "h": 0.34,
+              "label": "Radio display 03"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p18.png",
+          "alt": "The Last Normal Night, page 18",
+          "title": "Page 18",
+          "focusRegions": [
+            {
+              "x": 0.04,
+              "y": 0.04,
+              "w": 0.92,
+              "h": 0.18,
+              "label": "Static in cab"
+            },
+            {
+              "x": 0.04,
+              "y": 0.26,
+              "w": 0.44,
+              "h": 0.25,
+              "label": "Waveform breathes"
+            },
+            {
+              "x": 0.52,
+              "y": 0.26,
+              "w": 0.44,
+              "h": 0.25,
+              "label": "You finally made it"
+            },
+            {
+              "x": 0.04,
+              "y": 0.55,
+              "w": 0.44,
+              "h": 0.41,
+              "label": "Who is this"
+            },
+            {
+              "x": 0.52,
+              "y": 0.55,
+              "w": 0.44,
+              "h": 0.41,
+              "label": "Radio dies"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p19.png",
+          "alt": "The Last Normal Night, page 19",
+          "title": "Page 19",
+          "focusRegions": [
+            {
+              "x": 0.04,
+              "y": 0.04,
+              "w": 0.92,
+              "h": 0.23,
+              "label": "Altered buildings"
+            },
+            {
+              "x": 0.04,
+              "y": 0.31,
+              "w": 0.92,
+              "h": 0.2,
+              "label": "Wrong billboard date"
+            },
+            {
+              "x": 0.04,
+              "y": 0.55,
+              "w": 0.44,
+              "h": 0.41,
+              "label": "Stops breathing hard"
+            },
+            {
+              "x": 0.52,
+              "y": 0.55,
+              "w": 0.44,
+              "h": 0.41,
+              "label": "He laughs"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p20.png",
+          "alt": "The Last Normal Night, page 20",
+          "title": "Page 20",
+          "focusRegions": [
+            {
+              "x": 0.03,
+              "y": 0.03,
+              "w": 0.94,
+              "h": 0.27,
+              "label": "Electrical tear begins"
+            },
+            {
+              "x": 0.03,
+              "y": 0.34,
+              "w": 0.94,
+              "h": 0.24,
+              "label": "Doorway forms"
+            },
+            {
+              "x": 0.03,
+              "y": 0.62,
+              "w": 0.94,
+              "h": 0.35,
+              "label": "Old world inside doorway"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p21.png",
+          "alt": "The Last Normal Night, page 21",
+          "title": "Page 21",
+          "focusRegions": [
+            {
+              "x": 0.04,
+              "y": 0.04,
+              "w": 0.92,
+              "h": 0.22,
+              "label": "Approaches threshold"
+            },
+            {
+              "x": 0.04,
+              "y": 0.3,
+              "w": 0.44,
+              "h": 0.27,
+              "label": "Friend laughing inside old world"
+            },
+            {
+              "x": 0.52,
+              "y": 0.3,
+              "w": 0.44,
+              "h": 0.27,
+              "label": "Old truck and familiar street"
+            },
+            {
+              "x": 0.04,
+              "y": 0.61,
+              "w": 0.92,
+              "h": 0.35,
+              "label": "Inches from crossing"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p22.png",
+          "alt": "The Last Normal Night, page 22",
+          "title": "Page 22",
+          "focusRegions": [
+            {
+              "x": 0.04,
+              "y": 0.04,
+              "w": 0.44,
+              "h": 0.22,
+              "label": "One step"
+            },
+            {
+              "x": 0.52,
+              "y": 0.04,
+              "w": 0.44,
+              "h": 0.22,
+              "label": "Two steps"
+            },
+            {
+              "x": 0.04,
+              "y": 0.3,
+              "w": 0.92,
+              "h": 0.18,
+              "label": "He stops"
+            },
+            {
+              "x": 0.04,
+              "y": 0.52,
+              "w": 0.92,
+              "h": 0.18,
+              "label": "Looks at altered CDA"
+            },
+            {
+              "x": 0.04,
+              "y": 0.74,
+              "w": 0.92,
+              "h": 0.22,
+              "label": "Nah / sideways choice"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p23.png",
+          "alt": "The Last Normal Night, page 23",
+          "title": "Page 23",
+          "focusRegions": [
+            {
+              "x": 0.03,
+              "y": 0.03,
+              "w": 0.94,
+              "h": 0.27,
+              "label": "Doorway shivers"
+            },
+            {
+              "x": 0.03,
+              "y": 0.34,
+              "w": 0.94,
+              "h": 0.24,
+              "label": "Doorway collapses"
+            },
+            {
+              "x": 0.03,
+              "y": 0.62,
+              "w": 0.94,
+              "h": 0.35,
+              "label": "He remains / wrong dawn begins"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p24.png",
+          "alt": "The Last Normal Night, page 24",
+          "title": "Page 24",
+          "focusRegions": [
+            {
+              "x": 0.02,
+              "y": 0.02,
+              "w": 0.96,
+              "h": 0.96,
+              "label": "Wrong-side morning end splash"
+            },
+            {
+              "x": 0.5,
+              "y": 0.62,
+              "w": 0.42,
+              "h": 0.3,
+              "label": "Phone WELCOME HOME detail"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/26-cover-back.png",
+          "alt": "The Last Normal Night — Issue 1 back cover",
+          "title": "Back cover"
+        }
+      ]
+    },
+    {
       "id": "remodel-sos-volume-1",
       "series": "SOS: A Remodeler's Story",
       "title": "Volume One: Jobsite Survival",
@@ -21,8 +896,16 @@
       "shareUrl": "read/remodel-sos-volume-1/",
       "readerMode": "book",
       "spreadMode": "auto",
-      "genres": ["comedy", "construction"],
-      "tags": ["comedy", "construction", "remodeling", "jobsite"],
+      "genres": [
+        "comedy",
+        "construction"
+      ],
+      "tags": [
+        "comedy",
+        "construction",
+        "remodeling",
+        "jobsite"
+      ],
       "sequence": [
         {
           "type": "video",
@@ -33,11 +916,36 @@
           "muted": false,
           "advanceOnEnd": true
         },
-        { "type": "image", "src": "content/remodel-sos/pages/000.png", "alt": "SOS series title", "title": "Series title" },
-        { "type": "image", "src": "content/remodel-sos/pages/001.png", "alt": "Series introduction", "title": "Introduction" },
-        { "type": "image", "src": "content/remodel-sos/pages/002.png", "alt": "Where is the tile?", "title": "Where is the tile?" },
-        { "type": "image", "src": "content/remodel-sos/pages/003.png", "alt": "The wrong tile", "title": "The wrong tile" },
-        { "type": "image", "src": "content/remodel-sos/pages/004.png", "alt": "The plan change", "title": "The plan change" },
+        {
+          "type": "image",
+          "src": "content/remodel-sos/pages/000.png",
+          "alt": "SOS series title",
+          "title": "Series title"
+        },
+        {
+          "type": "image",
+          "src": "content/remodel-sos/pages/001.png",
+          "alt": "Series introduction",
+          "title": "Introduction"
+        },
+        {
+          "type": "image",
+          "src": "content/remodel-sos/pages/002.png",
+          "alt": "Where is the tile?",
+          "title": "Where is the tile?"
+        },
+        {
+          "type": "image",
+          "src": "content/remodel-sos/pages/003.png",
+          "alt": "The wrong tile",
+          "title": "The wrong tile"
+        },
+        {
+          "type": "image",
+          "src": "content/remodel-sos/pages/004.png",
+          "alt": "The plan change",
+          "title": "The plan change"
+        },
         {
           "type": "video",
           "src": "content/remodel-sos/video/01_sos.mp4",
@@ -47,10 +955,30 @@
           "muted": false,
           "advanceOnEnd": true
         },
-        { "type": "image", "src": "content/remodel-sos/pages/005.png", "alt": "The quick fix", "title": "The quick fix" },
-        { "type": "image", "src": "content/remodel-sos/pages/006.png", "alt": "The day it all happens", "title": "The day it all happens" },
-        { "type": "image", "src": "content/remodel-sos/pages/007.png", "alt": "The dry run", "title": "The dry run" },
-        { "type": "image", "src": "content/remodel-sos/pages/008.png", "alt": "The grout debacle", "title": "The grout debacle" },
+        {
+          "type": "image",
+          "src": "content/remodel-sos/pages/005.png",
+          "alt": "The quick fix",
+          "title": "The quick fix"
+        },
+        {
+          "type": "image",
+          "src": "content/remodel-sos/pages/006.png",
+          "alt": "The day it all happens",
+          "title": "The day it all happens"
+        },
+        {
+          "type": "image",
+          "src": "content/remodel-sos/pages/007.png",
+          "alt": "The dry run",
+          "title": "The dry run"
+        },
+        {
+          "type": "image",
+          "src": "content/remodel-sos/pages/008.png",
+          "alt": "The grout debacle",
+          "title": "The grout debacle"
+        },
         {
           "type": "video",
           "src": "content/remodel-sos/video/02_sos.mp4",
@@ -60,10 +988,30 @@
           "muted": false,
           "advanceOnEnd": true
         },
-        { "type": "image", "src": "content/remodel-sos/pages/009.png", "alt": "The water test", "title": "The water test" },
-        { "type": "image", "src": "content/remodel-sos/pages/010.png", "alt": "The permit pileup", "title": "The permit pileup" },
-        { "type": "image", "src": "content/remodel-sos/pages/011.png", "alt": "The supply chain", "title": "The supply chain" },
-        { "type": "image", "src": "content/remodel-sos/pages/012.png", "alt": "Unexpected deliveries", "title": "Unexpected deliveries" }
+        {
+          "type": "image",
+          "src": "content/remodel-sos/pages/009.png",
+          "alt": "The water test",
+          "title": "The water test"
+        },
+        {
+          "type": "image",
+          "src": "content/remodel-sos/pages/010.png",
+          "alt": "The permit pileup",
+          "title": "The permit pileup"
+        },
+        {
+          "type": "image",
+          "src": "content/remodel-sos/pages/011.png",
+          "alt": "The supply chain",
+          "title": "The supply chain"
+        },
+        {
+          "type": "image",
+          "src": "content/remodel-sos/pages/012.png",
+          "alt": "Unexpected deliveries",
+          "title": "Unexpected deliveries"
+        }
       ]
     },
     {
@@ -80,8 +1028,21 @@
       "shareUrl": "read/omotl-issue-1/",
       "readerMode": "book",
       "spreadMode": "auto",
-      "genres": ["comedy", "fishing", "outdoors", "folklore"],
-      "tags": ["comedy", "fishing", "lake", "bass", "outdoors", "folklore", "the general"],
+      "genres": [
+        "comedy",
+        "fishing",
+        "outdoors",
+        "folklore"
+      ],
+      "tags": [
+        "comedy",
+        "fishing",
+        "lake",
+        "bass",
+        "outdoors",
+        "folklore",
+        "the general"
+      ],
       "sequence": [
         {
           "type": "video",
@@ -92,12 +1053,42 @@
           "muted": false,
           "advanceOnEnd": true
         },
-        { "type": "image", "src": "content/OMOTL/pages/00-cover-front.png", "alt": "Old Man of the Lake — front cover", "title": "Front cover" },
-        { "type": "image", "src": "content/OMOTL/pages/01-inside-front.png", "alt": "Inside front", "title": "Inside front" },
-        { "type": "image", "src": "content/OMOTL/pages/02-p01.png", "alt": "Old Man of the Lake, page 1", "title": "Page 1" },
-        { "type": "image", "src": "content/OMOTL/pages/03-p03.png", "alt": "Old Man of the Lake, page 3", "title": "Page 3" },
-        { "type": "image", "src": "content/OMOTL/pages/04-p04.png", "alt": "Old Man of the Lake, page 4", "title": "Page 4" },
-        { "type": "image", "src": "content/OMOTL/pages/05-p05.png", "alt": "Old Man of the Lake, page 5", "title": "Page 5" },
+        {
+          "type": "image",
+          "src": "content/OMOTL/pages/00-cover-front.png",
+          "alt": "Old Man of the Lake — front cover",
+          "title": "Front cover"
+        },
+        {
+          "type": "image",
+          "src": "content/OMOTL/pages/01-inside-front.png",
+          "alt": "Inside front",
+          "title": "Inside front"
+        },
+        {
+          "type": "image",
+          "src": "content/OMOTL/pages/02-p01.png",
+          "alt": "Old Man of the Lake, page 1",
+          "title": "Page 1"
+        },
+        {
+          "type": "image",
+          "src": "content/OMOTL/pages/03-p03.png",
+          "alt": "Old Man of the Lake, page 3",
+          "title": "Page 3"
+        },
+        {
+          "type": "image",
+          "src": "content/OMOTL/pages/04-p04.png",
+          "alt": "Old Man of the Lake, page 4",
+          "title": "Page 4"
+        },
+        {
+          "type": "image",
+          "src": "content/OMOTL/pages/05-p05.png",
+          "alt": "Old Man of the Lake, page 5",
+          "title": "Page 5"
+        },
         {
           "type": "video",
           "src": "content/OMOTL/video/omotl_ep01_VID1_v01.mp4",
@@ -107,14 +1098,54 @@
           "muted": false,
           "advanceOnEnd": true
         },
-        { "type": "image", "src": "content/OMOTL/pages/06-p06.png", "alt": "Old Man of the Lake, page 6", "title": "Page 6" },
-        { "type": "image", "src": "content/OMOTL/pages/07-p07.png", "alt": "Old Man of the Lake, page 7", "title": "Page 7" },
-        { "type": "image", "src": "content/OMOTL/pages/08-p08.png", "alt": "Old Man of the Lake, page 8", "title": "Page 8" },
-        { "type": "image", "src": "content/OMOTL/pages/09-p09.png", "alt": "Old Man of the Lake, page 9", "title": "Page 9" },
-        { "type": "image", "src": "content/OMOTL/pages/10-p10.png", "alt": "Old Man of the Lake, page 10", "title": "Page 10" },
-        { "type": "image", "src": "content/OMOTL/pages/11-p11.png", "alt": "Old Man of the Lake, page 11", "title": "Page 11" },
-        { "type": "image", "src": "content/OMOTL/pages/12-p12.png", "alt": "Old Man of the Lake, page 12", "title": "Page 12" },
-        { "type": "image", "src": "content/OMOTL/pages/13-cover-back.png", "alt": "Old Man of the Lake — back cover", "title": "Back cover" }
+        {
+          "type": "image",
+          "src": "content/OMOTL/pages/06-p06.png",
+          "alt": "Old Man of the Lake, page 6",
+          "title": "Page 6"
+        },
+        {
+          "type": "image",
+          "src": "content/OMOTL/pages/07-p07.png",
+          "alt": "Old Man of the Lake, page 7",
+          "title": "Page 7"
+        },
+        {
+          "type": "image",
+          "src": "content/OMOTL/pages/08-p08.png",
+          "alt": "Old Man of the Lake, page 8",
+          "title": "Page 8"
+        },
+        {
+          "type": "image",
+          "src": "content/OMOTL/pages/09-p09.png",
+          "alt": "Old Man of the Lake, page 9",
+          "title": "Page 9"
+        },
+        {
+          "type": "image",
+          "src": "content/OMOTL/pages/10-p10.png",
+          "alt": "Old Man of the Lake, page 10",
+          "title": "Page 10"
+        },
+        {
+          "type": "image",
+          "src": "content/OMOTL/pages/11-p11.png",
+          "alt": "Old Man of the Lake, page 11",
+          "title": "Page 11"
+        },
+        {
+          "type": "image",
+          "src": "content/OMOTL/pages/12-p12.png",
+          "alt": "Old Man of the Lake, page 12",
+          "title": "Page 12"
+        },
+        {
+          "type": "image",
+          "src": "content/OMOTL/pages/13-cover-back.png",
+          "alt": "Old Man of the Lake — back cover",
+          "title": "Back cover"
+        }
       ]
     }
   ]
