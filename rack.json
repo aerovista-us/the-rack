@@ -9,8 +9,8 @@
   "books": [
     {
       "id": "last-normal-night-issue-1",
-      "series": "EchoStory \u2014 The Last Normal Night",
-      "title": "Issue No. 1 \u2014 The Crossing",
+      "series": "EchoStory — The Last Normal Night",
+      "title": "Issue No. 1 — The Crossing",
       "issue": 1,
       "status": "complete",
       "featured": true,
@@ -47,13 +47,13 @@
         {
           "type": "image",
           "src": "content/EchoStory/the-last-normal-night/issue-1/pages/00-cover-front.png?v=20260914-magazine",
-          "alt": "The Last Normal Night \u2014 Issue 1 front cover",
+          "alt": "The Last Normal Night — Issue 1 front cover",
           "title": "Front cover"
         },
         {
           "type": "image",
           "src": "content/EchoStory/the-last-normal-night/issue-1/pages/01-inside-front.png?v=20260914-magazine",
-          "alt": "The Last Normal Night \u2014 inside front",
+          "alt": "The Last Normal Night — inside front",
           "title": "Inside front"
         },
         {
@@ -888,7 +888,7 @@
         {
           "type": "image",
           "src": "content/EchoStory/the-last-normal-night/issue-1/pages/26-cover-back.png?v=20260914-magazine",
-          "alt": "The Last Normal Night \u2014 Issue 1 back cover",
+          "alt": "The Last Normal Night — Issue 1 back cover",
           "title": "Back cover"
         }
       ]
@@ -1028,7 +1028,7 @@
     {
       "id": "omotl-issue-1",
       "series": "Old Man of the Lake",
-      "title": "Issue No. 1 \u2014 The Lake's Talking",
+      "title": "Issue No. 1 — The Lake's Talking",
       "issue": 1,
       "status": "complete",
       "featured": true,
@@ -1067,7 +1067,7 @@
         {
           "type": "image",
           "src": "content/OMOTL/pages/00-cover-front.png",
-          "alt": "Old Man of the Lake \u2014 front cover",
+          "alt": "Old Man of the Lake — front cover",
           "title": "Front cover"
         },
         {
@@ -1154,7 +1154,7 @@
         {
           "type": "image",
           "src": "content/OMOTL/pages/13-cover-back.png",
-          "alt": "Old Man of the Lake \u2014 back cover",
+          "alt": "Old Man of the Lake — back cover",
           "title": "Back cover"
         }
       ]
