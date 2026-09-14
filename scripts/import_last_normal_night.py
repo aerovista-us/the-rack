@@ -10,7 +10,7 @@ DEST = ROOT / "content" / "EchoStory" / "the-last-normal-night" / "issue-1" / "p
 SOURCE_RAW = "https://raw.githubusercontent.com/aerovista-us/The-Last-Normal-Night/main/comic/issues/01-the-last-normal-night"
 BOOK_ID = "last-normal-night-issue-1"
 PLAYER_URL = "https://lastnormalnight.aerovista.us/"
-COVER_VERSION = "20260911b"
+PUBLISH_VERSION = "20260914-magazine"
 
 ASSETS = [
     "00-cover-front.png",
@@ -56,7 +56,8 @@ def main() -> None:
     expected_format = focus.get("format") or {"width": 2063, "height": 3150}
 
     prefix = "content/EchoStory/the-last-normal-night/issue-1/pages"
-    cover_src = f"{prefix}/00-cover-front.png?v={COVER_VERSION}"
+    versioned = lambda name: f"{prefix}/{name}?v={PUBLISH_VERSION}"
+    cover_src = versioned("00-cover-front.png")
     sequence = [
         image_item(
             cover_src,
@@ -64,7 +65,7 @@ def main() -> None:
             "Front cover",
         ),
         image_item(
-            f"{prefix}/01-inside-front.png",
+            versioned("01-inside-front.png"),
             "The Last Normal Night — inside front",
             "Inside front",
         ),
@@ -75,7 +76,7 @@ def main() -> None:
         key = f"p{n:02d}"
         sequence.append(
             image_item(
-                f"{prefix}/{key}.png",
+                versioned(f"{key}.png"),
                 f"The Last Normal Night, page {n}",
                 f"Page {n}",
                 pages.get(key),
@@ -84,7 +85,7 @@ def main() -> None:
 
     sequence.append(
         image_item(
-            f"{prefix}/26-cover-back.png",
+            versioned("26-cover-back.png"),
             "The Last Normal Night — Issue 1 back cover",
             "Back cover",
         )
@@ -104,7 +105,7 @@ def main() -> None:
             "push one man toward a choice the night seems to have already made for him."
         ),
         "cover": cover_src,
-        "shareImage": f"https://therack.aerovista.us/{prefix}/00-cover-front.png?v={COVER_VERSION}",
+        "shareImage": f"https://therack.aerovista.us/{cover_src}",
         "shareUrl": "read/last-normal-night-issue-1/",
         "companionUrl": PLAYER_URL,
         "companionLabel": "Listen to The Last Normal Night",
