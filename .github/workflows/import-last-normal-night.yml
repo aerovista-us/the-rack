@@ -2,6 +2,8 @@ name: Import The Last Normal Night
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '17 * * * *'
   push:
     paths:
       - '.github/workflows/import-last-normal-night.yml'
@@ -13,6 +15,9 @@ permissions:
 jobs:
   import:
     runs-on: ubuntu-latest
+    concurrency:
+      group: import-last-normal-night
+      cancel-in-progress: true
     steps:
       - name: Checkout The Rack
         uses: actions/checkout@v4
@@ -43,6 +48,13 @@ jobs:
           assert book.get('status') == 'complete'
           assert book.get('format') == {'width': 2063, 'height': 3150}
           assert len(book.get('sequence', [])) == 27, len(book.get('sequence', []))
+          assert book.get('publicationVersion'), 'dynamic cache key missing'
+          assert book.get('shareUrl') == 'read/last-normal-night-issue-1/'
+
+          route = root / 'read/last-normal-night-issue-1/index.html'
+          assert route.exists(), route
+          route_text = route.read_text(encoding='utf-8')
+          assert '#/read/last-normal-night-issue-1/1' in route_text
 
           pages = root / 'content/EchoStory/the-last-normal-night/issue-1/pages'
           names = ['00-cover-front.png', '01-inside-front.png'] + [f'p{n:02d}.png' for n in range(1, 25)] + ['26-cover-back.png']
@@ -55,14 +67,16 @@ jobs:
 
           story = book['sequence'][2:26]
           assert all(item.get('focusRegions') for item in story), 'all 24 story pages must carry authored Panel Focus regions'
-          print('RACK QA PASS: 27 publishing images, 24 authored focus maps, 2063x3150 masters')
+          versions = {item['src'].split('?v=', 1)[1] for item in book['sequence'] if item.get('type') == 'image' and '?v=' in item.get('src', '')}
+          assert versions == {book['publicationVersion']}, (versions, book['publicationVersion'])
+          print('RACK QA PASS: 27 publishing images, 24 authored focus maps, cache-safe URLs, direct read route')
           PY
 
       - name: Commit Rack publication
         run: |
           git config user.name 'AeroVista Rack Bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add rack.json content/EchoStory/the-last-normal-night/issue-1/pages
+          git add rack.json content/EchoStory/the-last-normal-night/issue-1/pages read/last-normal-night-issue-1/index.html
           if git diff --cached --quiet; then
             echo 'Rack publication already current.'
           else
