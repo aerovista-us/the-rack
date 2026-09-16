@@ -2,6 +2,7 @@ name: Import The Last Normal Night
 
 on:
   workflow_dispatch:
+  # Hourly source refresh keeps The Rack aligned with the canonical story repo.
   schedule:
     - cron: '17 * * * *'
   push:
