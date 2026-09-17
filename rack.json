@@ -16,8 +16,8 @@
       "featured": true,
       "creator": "EchoStory / Vespera Publishing",
       "description": "One ordinary late night in Coeur d'Alene starts slipping out of alignment. Familiar streets, a recurring white sedan, frozen clocks, and a voice on Frequency Three push one man toward a choice the night seems to have already made for him.",
-      "cover": "content/EchoStory/the-last-normal-night/issue-1/pages/00-cover-front.png?v=973e464fdc0f",
-      "shareImage": "https://therack.aerovista.us/content/EchoStory/the-last-normal-night/issue-1/pages/00-cover-front.png?v=973e464fdc0f",
+      "cover": "content/EchoStory/the-last-normal-night/issue-1/pages/00-cover-front.png?v=c5b25dc2d366",
+      "shareImage": "https://therack.aerovista.us/content/EchoStory/the-last-normal-night/issue-1/pages/00-cover-front.png?v=c5b25dc2d366",
       "shareUrl": "read/last-normal-night-issue-1/",
       "companionUrl": "https://lastnormalnight.aerovista.us/",
       "companionLabel": "Listen to The Last Normal Night",
@@ -46,19 +46,19 @@
       "sequence": [
         {
           "type": "image",
-          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/00-cover-front.png?v=973e464fdc0f",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/00-cover-front.png?v=c5b25dc2d366",
           "alt": "The Last Normal Night — Issue 1 front cover",
           "title": "Front cover"
         },
         {
           "type": "image",
-          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/01-inside-front.png?v=973e464fdc0f",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/01-inside-front.png?v=c5b25dc2d366",
           "alt": "The Last Normal Night — inside front",
           "title": "Inside front"
         },
         {
           "type": "image",
-          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p01.png?v=973e464fdc0f",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p01.png?v=c5b25dc2d366",
           "alt": "The Last Normal Night, page 1",
           "title": "Page 1",
           "focusRegions": [
@@ -73,7 +73,7 @@
         },
         {
           "type": "image",
-          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p02.png?v=973e464fdc0f",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p02.png?v=c5b25dc2d366",
           "alt": "The Last Normal Night, page 2",
           "title": "Page 2",
           "focusRegions": [
@@ -109,7 +109,7 @@
         },
         {
           "type": "image",
-          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p03.png?v=973e464fdc0f",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p03.png?v=c5b25dc2d366",
           "alt": "The Last Normal Night, page 3",
           "title": "Page 3",
           "focusRegions": [
@@ -152,7 +152,7 @@
         },
         {
           "type": "image",
-          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p04.png?v=973e464fdc0f",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p04.png?v=c5b25dc2d366",
           "alt": "The Last Normal Night, page 4",
           "title": "Page 4",
           "focusRegions": [
@@ -188,7 +188,7 @@
         },
         {
           "type": "image",
-          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p05.png?v=973e464fdc0f",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p05.png?v=c5b25dc2d366",
           "alt": "The Last Normal Night, page 5",
           "title": "Page 5",
           "focusRegions": [
@@ -224,7 +224,7 @@
         },
         {
           "type": "image",
-          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p06.png?v=973e464fdc0f",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p06.png?v=c5b25dc2d366",
           "alt": "The Last Normal Night, page 6",
           "title": "Page 6",
           "focusRegions": [
@@ -274,7 +274,7 @@
         },
         {
           "type": "image",
-          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p07.png?v=973e464fdc0f",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p07.png?v=c5b25dc2d366",
           "alt": "The Last Normal Night, page 7",
           "title": "Page 7",
           "focusRegions": [
@@ -310,7 +310,7 @@
         },
         {
           "type": "image",
-          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p08.png?v=973e464fdc0f",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p08.png?v=c5b25dc2d366",
           "alt": "The Last Normal Night, page 8",
           "title": "Page 8",
           "focusRegions": [
@@ -346,7 +346,7 @@
         },
         {
           "type": "image",
-          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p09.png?v=973e464fdc0f",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p09.png?v=c5b25dc2d366",
           "alt": "The Last Normal Night, page 9",
           "title": "Page 9",
           "focusRegions": [
@@ -389,7 +389,7 @@
         },
         {
           "type": "image",
-          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p10.png?v=973e464fdc0f",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p10.png?v=c5b25dc2d366",
           "alt": "The Last Normal Night, page 10",
           "title": "Page 10",
           "focusRegions": [
@@ -432,7 +432,7 @@
         },
         {
           "type": "image",
-          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p11.png?v=973e464fdc0f",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p11.png?v=c5b25dc2d366",
           "alt": "The Last Normal Night, page 11",
           "title": "Page 11",
           "focusRegions": [
@@ -482,7 +482,7 @@
         },
         {
           "type": "image",
-          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p12.png?v=973e464fdc0f",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p12.png?v=c5b25dc2d366",
           "alt": "The Last Normal Night, page 12",
           "title": "Page 12",
           "focusRegions": [
@@ -511,7 +511,7 @@
         },
         {
           "type": "image",
-          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p13.png?v=973e464fdc0f",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p13.png?v=c5b25dc2d366",
           "alt": "The Last Normal Night, page 13",
           "title": "Page 13",
           "focusRegions": [
@@ -561,7 +561,7 @@
         },
         {
           "type": "image",
-          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p14.png?v=973e464fdc0f",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p14.png?v=c5b25dc2d366",
           "alt": "The Last Normal Night, page 14",
           "title": "Page 14",
           "focusRegions": [
@@ -576,7 +576,7 @@
         },
         {
           "type": "image",
-          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p15.png?v=973e464fdc0f",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p15.png?v=c5b25dc2d366",
           "alt": "The Last Normal Night, page 15",
           "title": "Page 15",
           "focusRegions": [
@@ -591,7 +591,7 @@
         },
         {
           "type": "image",
-          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p16.png?v=973e464fdc0f",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p16.png?v=c5b25dc2d366",
           "alt": "The Last Normal Night, page 16",
           "title": "Page 16",
           "focusRegions": [
@@ -613,7 +613,7 @@
         },
         {
           "type": "image",
-          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p17.png?v=973e464fdc0f",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p17.png?v=c5b25dc2d366",
           "alt": "The Last Normal Night, page 17",
           "title": "Page 17",
           "focusRegions": [
@@ -649,7 +649,7 @@
         },
         {
           "type": "image",
-          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p18.png?v=973e464fdc0f",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p18.png?v=c5b25dc2d366",
           "alt": "The Last Normal Night, page 18",
           "title": "Page 18",
           "focusRegions": [
@@ -692,7 +692,7 @@
         },
         {
           "type": "image",
-          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p19.png?v=973e464fdc0f",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p19.png?v=c5b25dc2d366",
           "alt": "The Last Normal Night, page 19",
           "title": "Page 19",
           "focusRegions": [
@@ -728,7 +728,7 @@
         },
         {
           "type": "image",
-          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p20.png?v=973e464fdc0f",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p20.png?v=c5b25dc2d366",
           "alt": "The Last Normal Night, page 20",
           "title": "Page 20",
           "focusRegions": [
@@ -757,7 +757,7 @@
         },
         {
           "type": "image",
-          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p21.png?v=973e464fdc0f",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p21.png?v=c5b25dc2d366",
           "alt": "The Last Normal Night, page 21",
           "title": "Page 21",
           "focusRegions": [
@@ -793,7 +793,7 @@
         },
         {
           "type": "image",
-          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p22.png?v=973e464fdc0f",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p22.png?v=c5b25dc2d366",
           "alt": "The Last Normal Night, page 22",
           "title": "Page 22",
           "focusRegions": [
@@ -836,7 +836,7 @@
         },
         {
           "type": "image",
-          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p23.png?v=973e464fdc0f",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p23.png?v=c5b25dc2d366",
           "alt": "The Last Normal Night, page 23",
           "title": "Page 23",
           "focusRegions": [
@@ -865,7 +865,7 @@
         },
         {
           "type": "image",
-          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p24.png?v=973e464fdc0f",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/p24.png?v=c5b25dc2d366",
           "alt": "The Last Normal Night, page 24",
           "title": "Page 24",
           "focusRegions": [
@@ -887,12 +887,12 @@
         },
         {
           "type": "image",
-          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/26-cover-back.png?v=973e464fdc0f",
+          "src": "content/EchoStory/the-last-normal-night/issue-1/pages/26-cover-back.png?v=c5b25dc2d366",
           "alt": "The Last Normal Night — Issue 1 back cover",
           "title": "Back cover"
         }
       ],
-      "publicationVersion": "973e464fdc0f"
+      "publicationVersion": "c5b25dc2d366"
     },
     {
       "id": "remodel-sos-volume-1",
