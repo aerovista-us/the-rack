@@ -1,0 +1,78 @@
+#rackAccountButton[hidden] { display: none !important; }
+
+.rack-account-button {
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: 999px;
+  background: rgba(255,255,255,.06);
+  color: inherit;
+  padding: .55rem .85rem;
+  font: inherit;
+  cursor: pointer;
+}
+
+.rack-account-dialog {
+  width: min(760px, calc(100vw - 2rem));
+  max-height: min(86vh, 900px);
+  overflow: auto;
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 18px;
+  background: #111;
+  color: #f4f1ea;
+  padding: 0;
+}
+
+.rack-account-dialog::backdrop { background: rgba(0,0,0,.72); }
+.rack-account-shell { padding: 1.15rem; }
+.rack-account-head { display: flex; gap: 1rem; justify-content: space-between; align-items: flex-start; }
+.rack-account-head h2 { margin: .1rem 0 .25rem; }
+.rack-account-meta { margin: 0; opacity: .72; font-size: .9rem; }
+.rack-account-close { border: 0; background: transparent; color: inherit; font-size: 1.6rem; cursor: pointer; }
+.rack-account-actions { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: 1rem; }
+.rack-account-actions button,
+.rack-admin-grid button,
+.rack-admin-grid select,
+.rack-admin-grid input {
+  font: inherit;
+}
+.rack-account-actions button,
+.rack-admin-grid button {
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 10px;
+  background: rgba(255,255,255,.08);
+  color: inherit;
+  padding: .6rem .8rem;
+  cursor: pointer;
+}
+.rack-account-actions button.primary,
+.rack-admin-grid button.primary { background: #f2eadb; color: #111; border-color: transparent; }
+.rack-account-status { margin-top: 1rem; padding: .8rem; border-radius: 12px; background: rgba(255,255,255,.05); }
+.rack-account-status[data-state="error"] { outline: 1px solid rgba(255,120,120,.45); }
+
+.rack-admin { margin-top: 1.2rem; padding-top: 1.2rem; border-top: 1px solid rgba(255,255,255,.12); }
+.rack-admin h3 { margin: 0 0 .75rem; }
+.rack-admin-grid { display: grid; gap: .8rem; }
+.rack-admin-row { display: grid; grid-template-columns: minmax(130px, 180px) 1fr; gap: .65rem; align-items: center; }
+.rack-admin-row label { opacity: .76; font-size: .9rem; }
+.rack-admin-row input,
+.rack-admin-row select {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 9px;
+  background: #191919;
+  color: inherit;
+  padding: .58rem .65rem;
+}
+.rack-admin-summary { padding: .8rem; border-radius: 12px; background: rgba(255,255,255,.045); }
+.rack-admin-summary strong { display: block; margin-bottom: .25rem; }
+.rack-group-list { display: flex; flex-wrap: wrap; gap: .45rem; }
+.rack-group-chip { display: inline-flex; align-items: center; gap: .35rem; padding: .42rem .55rem; border-radius: 999px; background: rgba(255,255,255,.07); }
+.rack-history { max-height: 220px; overflow: auto; margin: 0; padding-left: 1.2rem; }
+.rack-history li { margin: .4rem 0; opacity: .82; }
+.rack-muted { opacity: .65; }
+.rack-danger { border-color: rgba(255,100,100,.35) !important; }
+
+@media (max-width: 620px) {
+  .rack-admin-row { grid-template-columns: 1fr; gap: .3rem; }
+  .rack-account-dialog { width: calc(100vw - 1rem); }
+}
