@@ -21,7 +21,7 @@ def local_path(value: str) -> Path | None:
     if parsed.scheme or parsed.netloc:
         return None
     path = parsed.path.lstrip("/")
-    if not path or path.endswith("/"):
+    if not path:
         return None
     candidate = (ROOT / path).resolve()
     try:
@@ -35,7 +35,8 @@ def local_path(value: str) -> Path | None:
 def require_file(value: str, source: str) -> None:
     path = local_path(value)
     if path is not None and not path.is_file():
-        ERRORS.append(f"missing {value!r} referenced by {source}")
+        kind = "directory" if path.is_dir() else "missing path"
+        ERRORS.append(f"{kind} {value!r} used where a file is required by {source}")
 
 
 def walk_manifest(value, source="rack.json") -> None:
