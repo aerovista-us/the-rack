@@ -6,6 +6,7 @@
   const authOrigin = String(config.authOrigin).replace(/\/$/, '');
   let session = { authenticated: false, csrfToken: null };
   let founderData = null;
+  let profileLoadGeneration = 0;
 
   accountButton.hidden = false;
 
@@ -123,11 +124,18 @@
       await renderSignedIn(dialog);
     });
     logout.addEventListener('click', async () => {
-      try { await api('/api/logout', { method: 'POST' }); } finally {
+      logout.disabled = true;
+      try {
+        await api('/api/logout', { method: 'POST' });
         session = { authenticated: false, csrfToken: null };
         founderData = null;
+        profileLoadGeneration += 1;
         dialog.close();
         updateButton();
+      } catch (error) {
+        setStatus(error.message || 'Sign out could not be confirmed. You are still signed in.', true);
+      } finally {
+        logout.disabled = false;
       }
     });
     actions.append(refresh, logout);
@@ -186,6 +194,7 @@
   }
 
   async function loadFounderProfile(identityId, grid, detail) {
+    const generation = ++profileLoadGeneration;
     Array.from(grid.querySelectorAll('[data-profile-controls]')).forEach((node) => node.remove());
     if (!identityId) {
       detail.textContent = 'Choose a profile to manage Rack-only access.';
@@ -198,6 +207,9 @@
       api(`/api/admin/profiles/${encodeURIComponent(identityId)}/access`),
       api(`/api/admin/profiles/${encodeURIComponent(identityId)}/history`),
     ]);
+    const selectedIdentityId = document.getElementById('rackAdminProfile')?.value || '';
+    if (generation !== profileLoadGeneration || selectedIdentityId !== identityId) return;
+
     const profile = profileResult.profile || accessResult.profile || {};
     const access = accessResult.access || {};
     detail.replaceChildren();
@@ -291,8 +303,8 @@
   async function refreshSession() {
     try {
       session = await api('/api/session');
-    } catch {
-      session = { authenticated: false, csrfToken: null };
+    } catch (error) {
+      setStatus(error.message || 'Account service temporarily unavailable.', true);
     }
     updateButton();
     return session;
